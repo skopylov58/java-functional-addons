@@ -1,2 +1,2 @@
 # java-async-retry
-Completely asynchronous java retry procedure using only CompletableFutures
+Single Java class utility to perform asynchronous retry procedure on given Supplier using only CompletableFutures.
