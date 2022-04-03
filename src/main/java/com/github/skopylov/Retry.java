@@ -12,7 +12,7 @@ import java.util.function.Supplier;
  * and runnable that may throw an exception.
  * <p>
  * Retry.of(...) factory methods create {@link RetryBuilder} from 
- * {@link ExceptionalSupplier} or {@link ExceptionalRunnable}
+ * {@link Supplier} or {@link Runnable}
  * <p>
  * Sample usage
  * <pre>
