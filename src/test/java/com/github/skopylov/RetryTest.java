@@ -2,6 +2,8 @@ package com.github.skopylov;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.sql.Connection;
@@ -10,10 +12,9 @@ import java.sql.SQLException;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Supplier;
 
 import org.junit.Test;
-
-import com.skopylov.functional.Try;
 
 public class RetryTest {
     
@@ -36,9 +37,7 @@ public class RetryTest {
                 .withErrorHandler(h)
                 .retry();
 
-        Try<Connection> tr = Try.of(future);
-        assertTrue(tr.isFailure());
-        assertEquals(5, h.getCounter());
+        future.whenComplete((c, t) -> {assertNull(c); assertNotNull(t);});
     }
     
     @Test
@@ -64,8 +63,12 @@ public class RetryTest {
     }
     
     
-    Connection getConnection(String url) throws SQLException {
-        return DriverManager.getConnection(url);
+    Connection getConnection(String url) {
+        try {
+            return DriverManager.getConnection(url);
+        } catch(SQLException e) {
+            throw new IllegalStateException(e);
+        }
     }
     
     static class CountingErrorHandler implements Retry.ErrorHandler {
@@ -79,4 +82,8 @@ public class RetryTest {
             System.out.println("Try # " + currentTry + "/" + maxTries + " " + exception.getCause());
         }
     }
+    
+
+    
+    
 }

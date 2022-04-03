@@ -7,9 +7,6 @@ import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Supplier;
 
-import com.skopylov.functional.ExceptionalRunnable;
-import com.skopylov.functional.ExceptionalSupplier;
-
 /**
  * Interface to perform asynchronous retry operations on supplier
  * and runnable that may throw an exception.
@@ -54,7 +51,7 @@ public interface Retry {
      * @param supplier exceptional supplier
      * @return {@link RetryBuilder}
      */
-    static <T> RetryBuilder<T> of(ExceptionalSupplier<T> supplier) {return new RetryBuilder<>(supplier);}
+    static <T> RetryBuilder<T> of(Supplier<T> supplier) {return new RetryBuilder<>(supplier);}
     
     
     /**
@@ -62,22 +59,10 @@ public interface Retry {
      * @param runnable exceptional runnable
      * @return {@link RetryBuilder}
      */
-    static RetryBuilder<Class<Void>> of(ExceptionalRunnable runnable) {
-        return of(() -> {runnable.runWithException(); return Void.TYPE;});
+    static RetryBuilder<Class<Void>> of(Runnable runnable) {
+        return of(() -> {runnable.run(); return Void.TYPE;});
     }
 
-    private static <T> Supplier<T> fromChecked(ExceptionalSupplier<T> checked) {
-        return () -> getFromChecked(checked);
-    }
-
-    private static <T> T getFromChecked(ExceptionalSupplier<T> supplier) {
-        try {
-            return supplier.get();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
-    
     /**
      * Retry options in terms of maximum numbers of tries, delay interval and time units.
      */
@@ -109,7 +94,7 @@ public interface Retry {
         private ErrorHandler errorHandler;
         private Executor executor;
         
-        RetryBuilder(ExceptionalSupplier<T> supplier) {this.supplier = fromChecked(supplier);}
+        RetryBuilder(Supplier<T> supplier) {this.supplier = supplier;}
         
         /**
          * Sets max number of tries. Default - 10.
@@ -239,16 +224,8 @@ public interface Retry {
                 CompletableFuture.delayedExecutor(opts.delay, opts.timeUnit)
                 .execute(this::tryOnce);
             } else {
-                result.completeExceptionally(rootCause(t));
+                result.completeExceptionally(t);
             }
-        }
-        
-        private static Throwable rootCause(Throwable t) {
-            Throwable cause = t;
-            while (cause.getCause() != null) {
-                cause = cause.getCause();
-            }
-            return cause;
         }
     }
 }
