@@ -1,10 +1,5 @@
 # java-async-retry
-Single Java class utility to perform asynchronous retry procedure on given Supplier using only CompletableFutures.
-
-Retry<T> interface to perform asynchronous retry operations on supplier
-and runnable that may throw an exception.
-
-Retry.of(...) factory methods create RetryBuilder from Supplier or Runnable
+Single Java class Retry<T> utility to perform asynchronous retry procedure on given Supplier or Runnable using only CompletableFutures.
 
 Sample usage
 ```java
@@ -16,6 +11,3 @@ Retry.of(() -> DriverManager.getConnection("jdbc:mysql:a:b"))
   .withExecutor(...)
   .retry();
 ```
-
-@author Sergey Kopylov
-@author skopylov@gmail.com
