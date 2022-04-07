@@ -6,7 +6,7 @@ import java.util.function.Function;
 
 /**
  * Function that may throw an Exception.
- * @author sergey.kopylov@hpe.com
+ * @author skopylov@gmail.com
  *
  * @param <T> function parameter type
  * @param <R> function result type

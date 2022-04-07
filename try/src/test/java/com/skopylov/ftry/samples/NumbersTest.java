@@ -18,7 +18,7 @@ import com.skopylov.ftry.Try;
 
 /**
  * Converts list of strings to numbers.
- * @author sergey.kopylov@hpe.com
+ * @author skopylov@gmail.com
  *
  */
 public class NumbersTest {

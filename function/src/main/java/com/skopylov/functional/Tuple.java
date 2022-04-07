@@ -4,7 +4,7 @@ package com.skopylov.functional;
 /**
  * Container for pair (first, second) objects.
  * 
- * @author sergey.kopylov@hpe.com
+ * @author skopylov@gmail.com
  *
  * @param <F> type of first object
  * @param <S> type of second object

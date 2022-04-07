@@ -8,7 +8,7 @@ import java.util.function.Supplier;
 /**
  * Supplier that may throw an Exception.
  * 
- * @author sergey.kopylov@hpe.com
+ * @author skopylov@gmail.com
  *
  * @param <T> type returned by supplier.
  */

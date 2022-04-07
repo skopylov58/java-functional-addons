@@ -7,7 +7,7 @@ import java.util.function.Predicate;
 /**
  * Predicate that may throw an Exception.
  * 
- * @author sergey.kopylov@hpe.com
+ * @author skopylov@gmail.com
  *
  * @param <T>
  */

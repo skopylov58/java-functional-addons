@@ -7,7 +7,7 @@ import java.util.function.Consumer;
 /**
  * Consumer that may throw an Exception.
  * 
- * @author sergey.kopylov@hpe.com
+ * @author skopylov@gmail.com
  *
  * @param <T>
  */

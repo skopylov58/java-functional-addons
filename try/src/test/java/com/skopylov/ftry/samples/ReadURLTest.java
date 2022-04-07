@@ -20,7 +20,7 @@ import com.skopylov.ftry.Try;
 
 /**
  * Example which reads the text from the URL.
- * @author sergey.kopylov@hpe.com
+ * @author skopylov@gmail.com
  *
  */
 public class ReadURLTest {

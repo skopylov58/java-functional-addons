@@ -6,7 +6,7 @@ import java.io.UncheckedIOException;
 /**
  * Runnable that may throw an Exception.
  * 
- * @author sergey.kopylov@hpe.com
+ * @author skopylov@gmail.com
  *
  */
 

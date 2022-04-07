@@ -23,7 +23,7 @@ import com.skopylov.ftry.Try;
  * Required: list of URL objects 
  * 
  * 
- * @author sergey.kopylov@hpe.com
+ * @author skopylov@gmail.com
  *
  */
 
