@@ -1,13 +1,27 @@
-plugins {
-    id 'java-library'
-    id 'eclipse'
-    id 'jacoco'
+subprojects {
+  apply plugin: 'java-library'
+  apply plugin: 'eclipse'
+  apply plugin: 'jacoco'
 }
 
-repositories {
-    mavenCentral()
-}
-
-dependencies {
+subprojects {
+  dependencies {
     testImplementation 'junit:junit:4.12'
+    testImplementation group: 'com.h2database', name: 'h2', version: '2.1.210'
+  }
+
+  repositories {
+    mavenCentral()
+  }
+
 }
+
+project(':try').dependencies {
+  implementation project(':function')
+}
+
+project(':retry').dependencies {
+  implementation project(':function')
+  testImplementation project(':try')
+}
+
