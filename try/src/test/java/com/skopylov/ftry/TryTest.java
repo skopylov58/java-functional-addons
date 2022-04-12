@@ -1,19 +1,18 @@
 package com.skopylov.ftry;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.*;
 
 import java.io.FileNotFoundException;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
+import java.util.function.Predicate;
 
 import javax.naming.NoPermissionException;
 
 import org.junit.Test;
 
+import com.skopylov.functional.ExceptionalPredicate;
 import com.skopylov.functional.ExceptionalRunnable;
 import com.skopylov.functional.TryException;
 
@@ -107,6 +106,18 @@ public class TryTest {
         } catch (Error er) {
             // ok we do not handle error exceptions !!!
         }
+    }
+    
+    @Test
+    public void testPredicate() throws Exception {
+        
+        Predicate<Integer> p = i -> false;
+        ExceptionalPredicate<Integer> exp = i -> false;
+        
+        //ExceptionalPredicate<T> cheched(Predicate<T> pred) {return t -> pred.test();};
+        
+//        assertTrue(Try.success(1).filter(p).isFailure());
+//        assertTrue(Try.success(1).filter(exp).isFailure());
     }
     
 }

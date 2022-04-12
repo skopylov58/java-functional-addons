@@ -25,3 +25,8 @@ project(':retry').dependencies {
   testImplementation project(':try')
 }
 
+project(':jdbc').dependencies {
+  implementation project(':function')
+  implementation project(':try')
+  implementation project(':retry')
+}

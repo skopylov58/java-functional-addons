@@ -2,14 +2,17 @@ package com.skopylov.ftry;
 
 import java.lang.System.Logger;
 import java.lang.System.Logger.Level;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Supplier;
+import java.util.function.UnaryOperator;
 import java.util.stream.Stream;
 
 import com.skopylov.functional.Either;
 import com.skopylov.functional.ExceptionalConsumer;
 import com.skopylov.functional.ExceptionalFunction;
+import com.skopylov.functional.ExceptionalPredicate;
 import com.skopylov.functional.ExceptionalRunnable;
 import com.skopylov.functional.ExceptionalSupplier;
 import com.skopylov.functional.TryException;
@@ -76,7 +79,10 @@ public class Try<T> extends TryAutoCloseable {
     private final Either<T, Exception> either;
     
     private Try(T t) {either = Either.right(t);}
-    private Try(Exception e) {either = Either.left(e);}
+    private Try(Exception e) {
+        closeResources();
+        either = Either.left(e);
+    }
     
 
     /**
@@ -95,6 +101,14 @@ public class Try<T> extends TryAutoCloseable {
             } else {
                 throw new TryException(exception);
             }
+        }
+    }
+    
+    public <X extends Throwable> T orElseThrow(Supplier<? extends X> s) throws X {
+        if (either.isRight()) {
+            return get();
+        } else {
+            throw s.get();
         }
     }
     
@@ -151,6 +165,34 @@ public class Try<T> extends TryAutoCloseable {
         return (Try<R>) this;
     }
     
+    public Try<T> filter(ExceptionalPredicate<? super T> predicate) {
+        if (isSuccess()) {
+            try  {
+                return predicate.testWithException(either.getRight()) ? this : failure(new NoSuchElementException());
+            } catch (Exception e) {
+                return failure(e);
+            }
+        }
+        return this;
+    }
+
+    public Try<T> filter(ExceptionalPredicate<? super T> predicate, ExceptionalConsumer<? super T> cons) {
+        if (isSuccess()) {
+            try  {
+                T right = either.getRight();
+                boolean tested = predicate.testWithException(right);
+                if (!tested) {
+                    cons.accept(right);
+                }
+                return tested ? this : failure(new NoSuchElementException());
+            } catch (Exception e) {
+                return failure(e);
+            }
+        }
+        return this;
+    }
+
+    
     public Try<T> onFailure(ExceptionalConsumer<Exception> cons) {
         if (either.isLeft()) {
             try {
@@ -162,6 +204,21 @@ public class Try<T> extends TryAutoCloseable {
         return this;
     }
 
+    public Try<T> onFailure(Class<? extends Exception> target, ExceptionalConsumer<Exception> c) {
+        if (either.isLeft()) {
+            Exception left = either.getLeft();
+            if (target.isAssignableFrom(left.getClass())) {
+                try {
+                    c.acceptWithException(left);
+                    return this;
+                } catch (Exception e) {
+                    return failure(e);
+                }
+            }
+        }
+        return this;
+    }
+    
     public Optional<Exception> getFailureCause() {
         if (either.isRight()) {
             return Optional.empty();
@@ -180,8 +237,28 @@ public class Try<T> extends TryAutoCloseable {
         }
         return this;
     }
-    
 
+    public <X extends Throwable> Try<T> throwing(UnaryOperator<X> op) throws X {
+        if (isFailure()) {
+            throw op.apply((X) either.getLeft());
+        }
+        return this;
+    }
+
+    public Try<T> throwing() {
+        if (isFailure()) {
+            Exception left = either.getLeft();
+            if (left instanceof RuntimeException) {
+                throw (RuntimeException) left;
+            } else {
+                throw new RuntimeException(left);
+            }
+        }
+        return this;
+    }
+
+    
+    
     /**
      * This is just for debugging purposes.
      * @param consumer of Try
@@ -303,6 +380,21 @@ public class Try<T> extends TryAutoCloseable {
     }
     
     /**
+     * Factory method to produce Try from supplier that may throw exception or may return null.
+     * @param <T> Try's result type
+     * @param supplier that gives the result of T type and may throw an exception or may return null.
+     * @return {@literal Try<Optional<T>>}
+     */
+    public static <T> Try<Optional<T>> ofNullable(ExceptionalSupplier<? extends T> supplier) {
+        try {
+            return success(Optional.ofNullable(supplier.getWithException()));
+        } catch (Exception e) {
+            return failure(e);
+        }
+    }
+    
+    
+    /**
      * Factory method to produce Try<Void> from runnable which may throw exception.
      * @param runnable which may throw exception. 
      * @return Try of Void type
@@ -331,5 +423,8 @@ public class Try<T> extends TryAutoCloseable {
             return failure(e);
         }
     }
-
+    
+    public <R> Try<R> cast(Class<R> c) {
+        return (Try<R>) this;
+    }
 }
