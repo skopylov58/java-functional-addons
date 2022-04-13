@@ -54,7 +54,7 @@ Try.of(() -> new FileInputStream("path/to/file")).autoClose()
   .getOrThrow() // <- this will automatically close FileInputStream
 ```
 
-See `Try<T>` javadoc API [here](https://github.com/skopylov58/java-async-retry/blob/master/try/javadoc/index.html)
+See `Try<T>` javadoc API [here](https://github.com/skopylov58/java-async-retry/blob/master/try/javadoc/)
 
 ## `Retry<T>` - asynchronous retry procedure
 
