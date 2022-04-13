@@ -9,7 +9,7 @@ import java.util.function.Predicate;
  * 
  * @author skopylov@gmail.com
  *
- * @param <T>
+ * @param <T> type
  */
 
 @FunctionalInterface

@@ -9,7 +9,7 @@ import java.util.function.Consumer;
  * 
  * @author skopylov@gmail.com
  *
- * @param <T>
+ * @param <T> type
  */
 @FunctionalInterface
 public interface ExceptionalConsumer<T> extends Consumer<T>{

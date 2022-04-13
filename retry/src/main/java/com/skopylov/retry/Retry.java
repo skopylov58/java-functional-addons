@@ -19,8 +19,8 @@ import com.skopylov.functional.ExceptionalSupplier;
  * <p>
  * Sample usage
  * <pre>
- *      CompletableFuture<Connection> futureConnection = 
- *      Retry.of(() -> DriverManager.getConnection("jdbc:mysql:a:b"))
+ *      CompletableFuture&lt;Connection&gt; futureConnection = 
+ *      Retry.of(() -&gt; DriverManager.getConnection("jdbc:mysql:a:b"))
  *      .maxTries(100)
  *      .delay(1, TimeUnit.SECONDS)
  *      .withErrorHandler(...)
@@ -158,7 +158,7 @@ public interface Retry {
         /**
          * Sets error handler. Default - no error handler.
          * @param errorHandler
-         * @return {@link RetryBuilder}
+         * @return {@link RetryBuilder} builder
          */
         public RetryBuilder<T> withErrorHandler(ErrorHandler errorHandler) {
             this.errorHandler = errorHandler;
@@ -168,7 +168,7 @@ public interface Retry {
         /**
          * Sets executor for retry process.
          * @param executor executor. Default - {@link ForkJoinPool#commonPool()}
-         * @return
+         * @return builder
          */
         public RetryBuilder<T> withExecutor(Executor executor) {
             this.executor = executor;

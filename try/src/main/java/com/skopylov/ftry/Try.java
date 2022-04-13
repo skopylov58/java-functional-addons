@@ -23,7 +23,7 @@ import com.skopylov.functional.TryException;
  * <p>
  * Try can be either success with value of type T or failure with an exception. 
  * In some way Try is similar to {@link Optional} which may have value or not.
- * Use {@link #isSucces()} and {@link #isFailure()} methods to determine current try.
+ * Use {@link #isSuccess()} and {@link #isFailure()} methods to determine current try.
  * 
  * <p>
  * Try has static factory methods <code>Try.of(...)</code> for producing tries from 
@@ -62,9 +62,9 @@ import com.skopylov.functional.TryException;
  * These methods will close {@link AutoCloseable} resources marked with {@link #autoClose()} method.
  * 
  * <pre>
- *   Try.of (() -> new FileInputStream("path/to/file")).autoClose()
+ *   Try.of (() -&gt; new FileInputStream("path/to/file")).autoClose()
  *   .map(...)
- *   .getOrThrow() // <- this will close FileInputStream
+ *   .getOrThrow() // this will close FileInputStream
  *   
  * </pre>
  * 
@@ -86,9 +86,10 @@ public class Try<T> extends TryAutoCloseable {
     
 
     /**
-     * Gets Try result. To make predictable result, use {@link #isSucces()} before using this method.
+     * Gets Try result. To make predictable result, use {@link #isSuccess()} before using this method.
+     * Throws original runtime exception or TryException which wraps original exception in case of failure.
+     * 
      * @return result of T in case of Success or throws an exception in case of Failure.
-     * @throws original runtime exception or TryException which wraps original exception in case of failure.
      */
     public T get() {
         closeResources();
@@ -114,7 +115,7 @@ public class Try<T> extends TryAutoCloseable {
     
     /**
      * It is just synonym for {@link #get()} 
-     * @return
+     * @return T
      */
     public T getOrThrow() {
         return get();
@@ -395,7 +396,7 @@ public class Try<T> extends TryAutoCloseable {
     
     
     /**
-     * Factory method to produce Try<Void> from runnable which may throw exception.
+     * Factory method to produce Try&lt;Void&gt; from runnable which may throw exception.
      * @param runnable which may throw exception. 
      * @return Try of Void type
      */
@@ -409,8 +410,9 @@ public class Try<T> extends TryAutoCloseable {
     }
     
     /**
-     * Factory method to produce Try<T> from future.
-     * @param future future of T 
+     * Factory method to produce Try&lt;T&gt; from future.
+     * @param future future of T
+     * @param <T> result type  
      * @return Try of T type
      */
     public static <T> Try<T> of(CompletableFuture<T> future) {
