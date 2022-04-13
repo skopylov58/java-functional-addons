@@ -14,6 +14,11 @@ subprojects {
     mavenCentral()
   }
 
+  task copyDocs(type: Copy) {
+    from 'build/docs/javadoc'
+    into 'javadoc'
+  }
+
 }
 
 project(':try').dependencies {
