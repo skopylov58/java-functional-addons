@@ -15,6 +15,13 @@ import java.util.function.Supplier;
 @FunctionalInterface
 public interface ExceptionalSupplier<T> extends Supplier<T> {
     
+    /**
+     * Gets result
+     * @return result of type T
+     * @throws Exception
+     */
+    T getWithException() throws Exception;
+    
     @Override
     default T get() {
         try {
@@ -27,11 +34,20 @@ public interface ExceptionalSupplier<T> extends Supplier<T> {
             throw new TryException(e);
         }
     }
-    
-    T getWithException() throws Exception;
 
     static <T> Supplier<T> uncheck(ExceptionalSupplier<T> s) {
         return s::get;
     }
+
+    /**
+     * Converts Supplier to ExceptionalSupplier
+     * @param <T> type
+     * @param s Supplier<T> supplier
+     * @return ExceptionalSupplier 
+     */
+    static <T> ExceptionalSupplier<T> checked(Supplier<T> s) {
+        return s::get;
+    }
+
 }
 

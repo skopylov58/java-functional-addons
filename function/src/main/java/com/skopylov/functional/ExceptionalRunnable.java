@@ -13,6 +13,8 @@ import java.io.UncheckedIOException;
 @FunctionalInterface
 public interface ExceptionalRunnable extends Runnable{
 
+    void runWithException() throws Exception;
+
     default void run() {
         try {
             runWithException();
@@ -24,9 +26,7 @@ public interface ExceptionalRunnable extends Runnable{
             throw new TryException(e);
         }
     }
-    
-    void runWithException() throws Exception;
-    
+
     static Runnable uncheck(ExceptionalRunnable r) {
         return r::run;
     }

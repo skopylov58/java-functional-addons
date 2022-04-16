@@ -12,7 +12,7 @@ import com.skopylov.functional.ExceptionalSupplier;
 
 /**
  * Interface to perform asynchronous retry operations on supplier
- * and runnable that may throw an exception.
+ * or runnable that may throw an exception.
  * <p>
  * Retry.of(...) factory methods create {@link RetryBuilder} from 
  * {@link Supplier} or {@link Runnable}
@@ -73,7 +73,10 @@ public interface Retry {
      * @return {@link RetryBuilder}
      */
     static RetryBuilder<Void> of(Runnable runnable) {
-        return of(() -> {runnable.run(); return null;});
+        return new RetryBuilder<>(() -> {
+            runnable.run();
+            return null;
+        });
     }
 
     /**
@@ -84,8 +87,6 @@ public interface Retry {
     static RetryBuilder<Void> of(ExceptionalRunnable runnable) {
         return of(ExceptionalRunnable.uncheck(runnable));
     }
-
-    
     
     /**
      * Retry options in terms of maximum numbers of tries, delay interval and time units.

@@ -8,6 +8,7 @@ import java.io.FileNotFoundException;
 import java.io.UncheckedIOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.function.Supplier;
 
 import org.junit.Test;
 
@@ -36,7 +37,28 @@ public class InterfacesTest {
             assertEquals(FileNotFoundException.class, re.getCause().getClass());
         }
     }
-
+    
+    @Test
+    public void testCast() throws Exception {
+        Supplier<Integer> intSuppl = () -> 1;
+        ExceptionalSupplier<Integer> ex = () -> intSuppl.get();
+        foo(ex);
+        
+        foo(ExceptionalSupplier.checked(intSuppl));
+        
+        try {
+            foo((ExceptionalSupplier<Integer>) intSuppl);
+            fail();
+        } catch (ClassCastException e) {
+            //ok
+        }
+    }
+    
+    void foo(ExceptionalSupplier<Integer> suppl) throws Exception {
+        Integer res = suppl.getWithException();
+        System.out.println(res);
+        
+    }
     
     @Test
     public void testExceptionalFunction() {
