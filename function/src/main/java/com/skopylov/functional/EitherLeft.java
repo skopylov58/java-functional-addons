@@ -1,6 +1,8 @@
 package com.skopylov.functional;
 
 import java.util.Objects;
+import java.util.Optional;
+import java.util.function.Predicate;
 
 class EitherLeft<R, L> implements Either<R, L>{
     final L left;
@@ -21,6 +23,16 @@ class EitherLeft<R, L> implements Either<R, L>{
     @Override
     public L getLeft() {
         return left;
+    }
+
+    @Override
+    public Optional<Either<R, L>> filter(Predicate<R> pred) {
+        return Optional.empty();
+    }
+    
+    @Override
+    public Optional<R> optionalRight() {
+        return Optional.empty();
     }
     
 }

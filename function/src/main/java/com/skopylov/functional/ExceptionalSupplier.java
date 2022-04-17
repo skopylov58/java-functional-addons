@@ -18,7 +18,7 @@ public interface ExceptionalSupplier<T> extends Supplier<T> {
     /**
      * Gets result
      * @return result of type T
-     * @throws Exception
+     * @throws Exception may throw exception
      */
     T getWithException() throws Exception;
     
@@ -42,11 +42,11 @@ public interface ExceptionalSupplier<T> extends Supplier<T> {
     /**
      * Converts Supplier to ExceptionalSupplier
      * @param <T> type
-     * @param s Supplier<T> supplier
+     * @param supplier Supplier&lt;T&gt; supplier
      * @return ExceptionalSupplier 
      */
-    static <T> ExceptionalSupplier<T> checked(Supplier<T> s) {
-        return s::get;
+    static <T> ExceptionalSupplier<T> checked(Supplier<T> supplier) {
+        return supplier::get;
     }
 
 }

@@ -79,9 +79,14 @@ public class Try<T> extends TryAutoCloseable {
     private final Either<T, Exception> either;
     
     private Try(T t) {either = Either.right(t);}
+    
     private Try(Exception e) {
         closeResources();
         either = Either.left(e);
+    }
+    
+    private Try(Either<T, Exception> either) {
+        this.either = either;
     }
     
 
@@ -135,7 +140,7 @@ public class Try<T> extends TryAutoCloseable {
      * @return Optional of T
      */
     public Optional<T> optional() {
-        return either.isRight() ? Optional.of(get()) : Optional.empty(); 
+        return either.optionalRight(); 
     }
     
     /**
@@ -165,16 +170,26 @@ public class Try<T> extends TryAutoCloseable {
         }
         return (Try<R>) this;
     }
-    
+
     public Try<T> filter(ExceptionalPredicate<? super T> predicate) {
-        if (isSuccess()) {
-            try  {
-                return predicate.testWithException(either.getRight()) ? this : failure(new NoSuchElementException());
-            } catch (Exception e) {
-                return failure(e);
+        try {
+            Optional<Either<T, Exception>> filtered = either.filter(ExceptionalPredicate.uncheck(predicate));
+            if (filtered.isPresent()) {
+                return fromEither(filtered.get());
+            } else {
+                return failure(new NoSuchElementException());
             }
+        } catch (Exception e) {
+            return failure(e);
         }
-        return this;
+//        if (isSuccess()) {
+//            try  {
+//                return predicate.testWithException(either.getRight()) ? this : failure(new NoSuchElementException());
+//            } catch (Exception e) {
+//                return failure(e);
+//            }
+//        }
+//        return this;
     }
 
     public Try<T> filter(ExceptionalPredicate<? super T> predicate, ExceptionalConsumer<? super T> cons) {
@@ -429,4 +444,18 @@ public class Try<T> extends TryAutoCloseable {
     public <R> Try<R> cast(Class<R> c) {
         return (Try<R>) this;
     }
+
+    Try<T> fromEither(Either<T, Exception> either) {
+        if (this.either == either) {
+            return this;
+        } else {
+            return new Try<>(either); 
+        }
+    }
+
+//    Try<T> fromEither(Optional<Either<T, Exception>> optEither) {
+//        return optEither.isPresent() ? fromEither(optEither.get()) : failure(new NoSuchElementException());
+//    }
+
+
 }

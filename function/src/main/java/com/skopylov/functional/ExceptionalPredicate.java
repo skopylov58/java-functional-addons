@@ -15,6 +15,8 @@ import java.util.function.Predicate;
 @FunctionalInterface
 public interface ExceptionalPredicate<T> extends Predicate<T>{
     
+    boolean testWithException(T t) throws Exception;
+
     default boolean test(T t) {
         try {
             return testWithException(t);
@@ -27,6 +29,8 @@ public interface ExceptionalPredicate<T> extends Predicate<T>{
         }
     }
     
-    boolean testWithException(T t) throws Exception;
+    static <T> Predicate<T> uncheck(ExceptionalPredicate<? super T> p) {
+        return p::test;
+    }
 
 }
