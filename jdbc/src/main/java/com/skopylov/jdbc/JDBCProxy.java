@@ -40,7 +40,7 @@ public class JDBCProxy implements InvocationHandler {
 
             //after invoke
             Duration dur = Duration.between(start, end);
-            Try.of(()->  MiddleManJDBCDriver.interceptor.afterCall(result, null, dur, thr.getId(), thr.getName()));
+            Try.of(()->  MiddleManJDBCDriver.interceptor.onSuccess(result, dur, thr.getId(), thr.getName()));
             
             if (result instanceof CallableStatement) {
                 return makeProxy(CallableStatement.class, result);
@@ -56,7 +56,7 @@ public class JDBCProxy implements InvocationHandler {
         } catch (Throwable th) {
             end = Instant.now();
             Duration dur = Duration.between(start, end);
-            Try.of(()->  MiddleManJDBCDriver.interceptor.afterCall(null, th, dur, thr.getId(), thr.getName()));
+            Try.of(()->  MiddleManJDBCDriver.interceptor.onFailure(th, dur, thr.getId(), thr.getName()));
             throw th;
         }
     }
