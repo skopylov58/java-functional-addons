@@ -39,6 +39,16 @@ public class Try0Test {
         
     }
     
+    @Test
+    public void testSupplierWithNull() {
+        Try<Integer> t = Try.of(() -> null);
+        //assertTrue(t.isFailure());
+        Try<String> ts = t.map(i -> Integer.toString(i));
+        System.out.println(ts.getFailureCause().get());
+        
+    }
+    
+    
 //    @Test
 //    public void testCompletableFuture() throws Exception {
 //        
