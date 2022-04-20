@@ -8,6 +8,14 @@ buildscript {
 
 apply plugin: 'nebula-aggregate-javadocs'
 
+task publishJavadoc (type: Copy) {
+  dependsOn 'aggregateJavadocs'
+  println 'Copying...'
+  from 'build/docs/javadoc'
+  into 'docs'
+}
+
+
 subprojects {
   apply plugin: 'java-library'
   apply plugin: 'eclipse'
@@ -30,7 +38,6 @@ subprojects {
   }
 
 }
-
 
 project(':jdbc').dependencies {
   implementation project(':function')
