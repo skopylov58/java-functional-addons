@@ -104,13 +104,17 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dt><span class="memberNameLink"><a href="com/skopylov/functional/ExceptionalConsumer.html#acceptWithException(T)">acceptWithException(T)</a></span> - Method in interface com.skopylov.functional.<a href="com/skopylov/functional/ExceptionalConsumer.html" title="interface in com.skopylov.functional">ExceptionalConsumer</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="com/skopylov/functional/Try.html#andFinally(com.skopylov.functional.ExceptionalRunnable)">andFinally(ExceptionalRunnable)</a></span> - Method in interface com.skopylov.functional.<a href="com/skopylov/functional/Try.html" title="interface in com.skopylov.functional">Try</a></dt>
-<dd>&nbsp;</dd>
+<dd>
+<div class="block">Behaves like finally block in Java's try/catch/finally.</div>
+</dd>
 <dt><span class="memberNameLink"><a href="com/skopylov/functional/ExceptionalFunction.html#apply(T)">apply(T)</a></span> - Method in interface com.skopylov.functional.<a href="com/skopylov/functional/ExceptionalFunction.html" title="interface in com.skopylov.functional">ExceptionalFunction</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="com/skopylov/functional/ExceptionalFunction.html#applyWithException(T)">applyWithException(T)</a></span> - Method in interface com.skopylov.functional.<a href="com/skopylov/functional/ExceptionalFunction.html" title="interface in com.skopylov.functional">ExceptionalFunction</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="com/skopylov/functional/Try.html#autoClose()">autoClose()</a></span> - Method in interface com.skopylov.functional.<a href="com/skopylov/functional/Try.html" title="interface in com.skopylov.functional">Try</a></dt>
-<dd>&nbsp;</dd>
+<dd>
+<div class="block">Marks this Try to be closed by <a href="com/skopylov/functional/Try.html#close()"><code>Try.close()</code></a> or <a href="com/skopylov/functional/Try.html#closeResources()"><code>Try.closeResources()</code></a> methods.</div>
+</dd>
 <dt><span class="memberNameLink"><a href="com/skopylov/functional/Try.Failure.html#autoClose()">autoClose()</a></span> - Method in class com.skopylov.functional.<a href="com/skopylov/functional/Try.Failure.html" title="class in com.skopylov.functional">Try.Failure</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="com/skopylov/functional/Try.Success.html#autoClose()">autoClose()</a></span> - Method in class com.skopylov.functional.<a href="com/skopylov/functional/Try.Success.html" title="class in com.skopylov.functional">Try.Success</a></dt>
@@ -134,15 +138,22 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <h2 class="title">C</h2>
 <dl>
 <dt><span class="memberNameLink"><a href="com/skopylov/functional/Try.html#cast(java.lang.Class)">cast(Class&lt;R&gt;)</a></span> - Method in interface com.skopylov.functional.<a href="com/skopylov/functional/Try.html" title="interface in com.skopylov.functional">Try</a></dt>
-<dd>&nbsp;</dd>
+<dd>
+<div class="block">Cast Try&lt;T&gt; to Try &lt;R&gt;</div>
+</dd>
 <dt><span class="memberNameLink"><a href="com/skopylov/functional/ExceptionalSupplier.html#checked(java.util.function.Supplier)">checked(Supplier&lt;T&gt;)</a></span> - Static method in interface com.skopylov.functional.<a href="com/skopylov/functional/ExceptionalSupplier.html" title="interface in com.skopylov.functional">ExceptionalSupplier</a></dt>
 <dd>
 <div class="block">Converts Supplier to ExceptionalSupplier</div>
 </dd>
 <dt><span class="memberNameLink"><a href="com/skopylov/functional/Try.html#close()">close()</a></span> - Method in interface com.skopylov.functional.<a href="com/skopylov/functional/Try.html" title="interface in com.skopylov.functional">Try</a></dt>
-<dd>&nbsp;</dd>
+<dd>
+<div class="block">Closes resources marked by link autoClose()</div>
+</dd>
 <dt><span class="memberNameLink"><a href="com/skopylov/functional/Try.html#closeResources()">closeResources()</a></span> - Method in interface com.skopylov.functional.<a href="com/skopylov/functional/Try.html" title="interface in com.skopylov.functional">Try</a></dt>
-<dd>&nbsp;</dd>
+<dd>
+<div class="block">Closes resources marked by <a href="com/skopylov/functional/Try.html#autoClose()"><code>Try.autoClose()</code></a>,
+ works for both cases - either success or failure.</div>
+</dd>
 <dt><a href="com/skopylov/functional/package-summary.html">com.skopylov.functional</a> - package com.skopylov.functional</dt>
 <dd>
 <div class="block">This package provides functional interfaces which throws Exceptions and some useful</div>
@@ -210,17 +221,23 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <h2 class="title">F</h2>
 <dl>
 <dt><span class="memberNameLink"><a href="com/skopylov/functional/Try.html#failure(java.lang.Exception)">failure(Exception)</a></span> - Static method in interface com.skopylov.functional.<a href="com/skopylov/functional/Try.html" title="interface in com.skopylov.functional">Try</a></dt>
-<dd>&nbsp;</dd>
+<dd>
+<div class="block">Factory method to produce Try from value of Exception.</div>
+</dd>
 <dt><span class="memberNameLink"><a href="com/skopylov/functional/Try.Failure.html#filter(com.skopylov.functional.ExceptionalPredicate)">filter(ExceptionalPredicate&lt;T&gt;)</a></span> - Method in class com.skopylov.functional.<a href="com/skopylov/functional/Try.Failure.html" title="class in com.skopylov.functional">Try.Failure</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="com/skopylov/functional/Try.html#filter(com.skopylov.functional.ExceptionalPredicate)">filter(ExceptionalPredicate&lt;T&gt;)</a></span> - Method in interface com.skopylov.functional.<a href="com/skopylov/functional/Try.html" title="interface in com.skopylov.functional">Try</a></dt>
-<dd>&nbsp;</dd>
+<dd>
+<div class="block">Filters current Try, has no action for failure.</div>
+</dd>
 <dt><span class="memberNameLink"><a href="com/skopylov/functional/Try.Success.html#filter(com.skopylov.functional.ExceptionalPredicate)">filter(ExceptionalPredicate&lt;T&gt;)</a></span> - Method in class com.skopylov.functional.<a href="com/skopylov/functional/Try.Success.html" title="class in com.skopylov.functional">Try.Success</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="com/skopylov/functional/Try.Failure.html#filter(com.skopylov.functional.ExceptionalPredicate,com.skopylov.functional.ExceptionalConsumer)">filter(ExceptionalPredicate&lt;T&gt;, ExceptionalConsumer&lt;T&gt;)</a></span> - Method in class com.skopylov.functional.<a href="com/skopylov/functional/Try.Failure.html" title="class in com.skopylov.functional">Try.Failure</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="com/skopylov/functional/Try.html#filter(com.skopylov.functional.ExceptionalPredicate,com.skopylov.functional.ExceptionalConsumer)">filter(ExceptionalPredicate&lt;T&gt;, ExceptionalConsumer&lt;T&gt;)</a></span> - Method in interface com.skopylov.functional.<a href="com/skopylov/functional/Try.html" title="interface in com.skopylov.functional">Try</a></dt>
-<dd>&nbsp;</dd>
+<dd>
+<div class="block">Filters current Try, has no action for failure.</div>
+</dd>
 <dt><span class="memberNameLink"><a href="com/skopylov/functional/Try.Success.html#filter(com.skopylov.functional.ExceptionalPredicate,com.skopylov.functional.ExceptionalConsumer)">filter(ExceptionalPredicate&lt;T&gt;, ExceptionalConsumer&lt;T&gt;)</a></span> - Method in class com.skopylov.functional.<a href="com/skopylov/functional/Try.Success.html" title="class in com.skopylov.functional">Try.Success</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="com/skopylov/functional/Tuple.html#first">first</a></span> - Variable in class com.skopylov.functional.<a href="com/skopylov/functional/Tuple.html" title="class in com.skopylov.functional">Tuple</a></dt>
@@ -238,7 +255,9 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dt><span class="memberNameLink"><a href="com/skopylov/functional/ExceptionalSupplier.html#get()">get()</a></span> - Method in interface com.skopylov.functional.<a href="com/skopylov/functional/ExceptionalSupplier.html" title="interface in com.skopylov.functional">ExceptionalSupplier</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="com/skopylov/functional/Try.html#get()">get()</a></span> - Method in interface com.skopylov.functional.<a href="com/skopylov/functional/Try.html" title="interface in com.skopylov.functional">Try</a></dt>
-<dd>&nbsp;</dd>
+<dd>
+<div class="block">Synonym for <a href="com/skopylov/functional/Try.html#orElseThrow()"><code>Try.orElseThrow()</code></a></div>
+</dd>
 <dt><span class="memberNameLink"><a href="com/skopylov/jdbc/pool/JDBCConnectionPool.html#getConnection()">getConnection()</a></span> - Method in class com.skopylov.jdbc.pool.<a href="com/skopylov/jdbc/pool/JDBCConnectionPool.html" title="class in com.skopylov.jdbc.pool">JDBCConnectionPool</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="com/skopylov/jdbc/pool/JDBCConnectionPool.html#getConnection(java.lang.String,java.lang.String)">getConnection(String, String)</a></span> - Method in class com.skopylov.jdbc.pool.<a href="com/skopylov/jdbc/pool/JDBCConnectionPool.html" title="class in com.skopylov.jdbc.pool">JDBCConnectionPool</a></dt>
@@ -246,7 +265,9 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dt><span class="memberNameLink"><a href="com/skopylov/functional/Try.Failure.html#getFailureCause()">getFailureCause()</a></span> - Method in class com.skopylov.functional.<a href="com/skopylov/functional/Try.Failure.html" title="class in com.skopylov.functional">Try.Failure</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="com/skopylov/functional/Try.html#getFailureCause()">getFailureCause()</a></span> - Method in interface com.skopylov.functional.<a href="com/skopylov/functional/Try.html" title="interface in com.skopylov.functional">Try</a></dt>
-<dd>&nbsp;</dd>
+<dd>
+<div class="block">Gets the failure cause.</div>
+</dd>
 <dt><span class="memberNameLink"><a href="com/skopylov/functional/Try.Success.html#getFailureCause()">getFailureCause()</a></span> - Method in class com.skopylov.functional.<a href="com/skopylov/functional/Try.Success.html" title="class in com.skopylov.functional">Try.Success</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="com/skopylov/functional/Either.html#getLeft()">getLeft()</a></span> - Method in interface com.skopylov.functional.<a href="com/skopylov/functional/Either.html" title="interface in com.skopylov.functional">Either</a></dt>
@@ -306,7 +327,9 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dt><span class="memberNameLink"><a href="com/skopylov/jdbc/JDBCProxy.html#invoke(java.lang.Object,java.lang.reflect.Method,java.lang.Object%5B%5D)">invoke(Object, Method, Object[])</a></span> - Method in class com.skopylov.jdbc.<a href="com/skopylov/jdbc/JDBCProxy.html" title="class in com.skopylov.jdbc">JDBCProxy</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="com/skopylov/functional/Try.html#isFailure()">isFailure()</a></span> - Method in interface com.skopylov.functional.<a href="com/skopylov/functional/Try.html" title="interface in com.skopylov.functional">Try</a></dt>
-<dd>&nbsp;</dd>
+<dd>
+<div class="block">Checks if it is failure try.</div>
+</dd>
 <dt><span class="memberNameLink"><a href="com/skopylov/functional/Either.html#isLeft()">isLeft()</a></span> - Method in interface com.skopylov.functional.<a href="com/skopylov/functional/Either.html" title="interface in com.skopylov.functional">Either</a></dt>
 <dd>
 <div class="block">Checks if this is left side.</div>
@@ -322,7 +345,9 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dt><span class="memberNameLink"><a href="com/skopylov/functional/Try.Failure.html#isSuccess()">isSuccess()</a></span> - Method in class com.skopylov.functional.<a href="com/skopylov/functional/Try.Failure.html" title="class in com.skopylov.functional">Try.Failure</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="com/skopylov/functional/Try.html#isSuccess()">isSuccess()</a></span> - Method in interface com.skopylov.functional.<a href="com/skopylov/functional/Try.html" title="interface in com.skopylov.functional">Try</a></dt>
-<dd>&nbsp;</dd>
+<dd>
+<div class="block">Checks if it is success try.</div>
+</dd>
 <dt><span class="memberNameLink"><a href="com/skopylov/functional/Try.Success.html#isSuccess()">isSuccess()</a></span> - Method in class com.skopylov.functional.<a href="com/skopylov/functional/Try.Success.html" title="class in com.skopylov.functional">Try.Success</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="com/skopylov/jdbc/pool/JDBCConnectionPool.html#isWrapperFor(java.lang.Class)">isWrapperFor(Class&lt;?&gt;)</a></span> - Method in class com.skopylov.jdbc.pool.<a href="com/skopylov/jdbc/pool/JDBCConnectionPool.html" title="class in com.skopylov.jdbc.pool">JDBCConnectionPool</a></dt>
@@ -368,7 +393,9 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dt><span class="memberNameLink"><a href="com/skopylov/functional/Try.Failure.html#map(com.skopylov.functional.ExceptionalFunction)">map(ExceptionalFunction&lt;T, R&gt;)</a></span> - Method in class com.skopylov.functional.<a href="com/skopylov/functional/Try.Failure.html" title="class in com.skopylov.functional">Try.Failure</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="com/skopylov/functional/Try.html#map(com.skopylov.functional.ExceptionalFunction)">map(ExceptionalFunction&lt;T, R&gt;)</a></span> - Method in interface com.skopylov.functional.<a href="com/skopylov/functional/Try.html" title="interface in com.skopylov.functional">Try</a></dt>
-<dd>&nbsp;</dd>
+<dd>
+<div class="block">Maps one Try of type T to type R</div>
+</dd>
 <dt><span class="memberNameLink"><a href="com/skopylov/functional/Try.Success.html#map(com.skopylov.functional.ExceptionalFunction)">map(ExceptionalFunction&lt;T, R&gt;)</a></span> - Method in class com.skopylov.functional.<a href="com/skopylov/functional/Try.Success.html" title="class in com.skopylov.functional">Try.Success</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="com/skopylov/retry/Retry.Builder.html#maxTries(long)">maxTries(long)</a></span> - Method in class com.skopylov.retry.<a href="com/skopylov/retry/Retry.Builder.html" title="class in com.skopylov.retry">Retry.Builder</a></dt>
@@ -398,13 +425,17 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <h2 class="title">O</h2>
 <dl>
 <dt><span class="memberNameLink"><a href="com/skopylov/functional/Try.html#of(com.skopylov.functional.ExceptionalRunnable)">of(ExceptionalRunnable)</a></span> - Static method in interface com.skopylov.functional.<a href="com/skopylov/functional/Try.html" title="interface in com.skopylov.functional">Try</a></dt>
-<dd>&nbsp;</dd>
+<dd>
+<div class="block">Factory method to produce Try from runnable that may throw an exception.</div>
+</dd>
 <dt><span class="memberNameLink"><a href="com/skopylov/retry/Retry.html#of(com.skopylov.functional.ExceptionalRunnable)">of(ExceptionalRunnable)</a></span> - Static method in interface com.skopylov.retry.<a href="com/skopylov/retry/Retry.html" title="interface in com.skopylov.retry">Retry</a></dt>
 <dd>
 <div class="block">Factory method to creates <a href="com/skopylov/retry/Retry.Builder.html" title="class in com.skopylov.retry"><code>Retry.Builder</code></a> for exceptional runnable.</div>
 </dd>
 <dt><span class="memberNameLink"><a href="com/skopylov/functional/Try.html#of(com.skopylov.functional.ExceptionalSupplier)">of(ExceptionalSupplier&lt;T&gt;)</a></span> - Static method in interface com.skopylov.functional.<a href="com/skopylov/functional/Try.html" title="interface in com.skopylov.functional">Try</a></dt>
-<dd>&nbsp;</dd>
+<dd>
+<div class="block">Factory method to produce Try from supplier that may throw exception.</div>
+</dd>
 <dt><span class="memberNameLink"><a href="com/skopylov/retry/Retry.html#of(com.skopylov.functional.ExceptionalSupplier)">of(ExceptionalSupplier&lt;T&gt;)</a></span> - Static method in interface com.skopylov.retry.<a href="com/skopylov/retry/Retry.html" title="interface in com.skopylov.retry">Retry</a></dt>
 <dd>
 <div class="block">Factory method to creates <a href="com/skopylov/retry/Retry.Builder.html" title="class in com.skopylov.retry"><code>Retry.Builder</code></a> for the exceptional supplier.</div>
@@ -418,11 +449,16 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="block">Factory method to creates <a href="com/skopylov/retry/Retry.Builder.html" title="class in com.skopylov.retry"><code>Retry.Builder</code></a> for supplier.</div>
 </dd>
 <dt><span class="memberNameLink"><a href="com/skopylov/functional/Try.html#ofNullable(com.skopylov.functional.ExceptionalSupplier)">ofNullable(ExceptionalSupplier&lt;T&gt;)</a></span> - Static method in interface com.skopylov.functional.<a href="com/skopylov/functional/Try.html" title="interface in com.skopylov.functional">Try</a></dt>
-<dd>&nbsp;</dd>
+<dd>
+<div class="block">Factory method to produce Try from supplier that may produce
+ some valuable result of T, return valid null or throw exception.</div>
+</dd>
 <dt><span class="memberNameLink"><a href="com/skopylov/functional/Try.Failure.html#onFailure(com.skopylov.functional.ExceptionalConsumer)">onFailure(ExceptionalConsumer&lt;Exception&gt;)</a></span> - Method in class com.skopylov.functional.<a href="com/skopylov/functional/Try.Failure.html" title="class in com.skopylov.functional">Try.Failure</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="com/skopylov/functional/Try.html#onFailure(com.skopylov.functional.ExceptionalConsumer)">onFailure(ExceptionalConsumer&lt;Exception&gt;)</a></span> - Method in interface com.skopylov.functional.<a href="com/skopylov/functional/Try.html" title="interface in com.skopylov.functional">Try</a></dt>
-<dd>&nbsp;</dd>
+<dd>
+<div class="block">Executes action on failure, has no action for success.</div>
+</dd>
 <dt><span class="memberNameLink"><a href="com/skopylov/functional/Try.Success.html#onFailure(com.skopylov.functional.ExceptionalConsumer)">onFailure(ExceptionalConsumer&lt;Exception&gt;)</a></span> - Method in class com.skopylov.functional.<a href="com/skopylov/functional/Try.Success.html" title="class in com.skopylov.functional">Try.Success</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="com/skopylov/jdbc/Interceptor.html#onFailure(java.lang.Throwable,java.time.Duration,long,java.lang.String)">onFailure(Throwable, Duration, long, String)</a></span> - Method in interface com.skopylov.jdbc.<a href="com/skopylov/jdbc/Interceptor.html" title="interface in com.skopylov.jdbc">Interceptor</a></dt>
@@ -434,7 +470,9 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dt><span class="memberNameLink"><a href="com/skopylov/functional/Try.Failure.html#onSuccess(com.skopylov.functional.ExceptionalConsumer)">onSuccess(ExceptionalConsumer&lt;T&gt;)</a></span> - Method in class com.skopylov.functional.<a href="com/skopylov/functional/Try.Failure.html" title="class in com.skopylov.functional">Try.Failure</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="com/skopylov/functional/Try.html#onSuccess(com.skopylov.functional.ExceptionalConsumer)">onSuccess(ExceptionalConsumer&lt;T&gt;)</a></span> - Method in interface com.skopylov.functional.<a href="com/skopylov/functional/Try.html" title="interface in com.skopylov.functional">Try</a></dt>
-<dd>&nbsp;</dd>
+<dd>
+<div class="block">Executes action on success, has no action for failure.</div>
+</dd>
 <dt><span class="memberNameLink"><a href="com/skopylov/functional/Try.Success.html#onSuccess(com.skopylov.functional.ExceptionalConsumer)">onSuccess(ExceptionalConsumer&lt;T&gt;)</a></span> - Method in class com.skopylov.functional.<a href="com/skopylov/functional/Try.Success.html" title="class in com.skopylov.functional">Try.Success</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="com/skopylov/jdbc/Interceptor.html#onSuccess(java.lang.Object,java.time.Duration,long,java.lang.String)">onSuccess(Object, Duration, long, String)</a></span> - Method in interface com.skopylov.jdbc.<a href="com/skopylov/jdbc/Interceptor.html" title="interface in com.skopylov.jdbc">Interceptor</a></dt>
@@ -470,7 +508,9 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dt><span class="memberNameLink"><a href="com/skopylov/functional/Try.Failure.html#orElseThrow()">orElseThrow()</a></span> - Method in class com.skopylov.functional.<a href="com/skopylov/functional/Try.Failure.html" title="class in com.skopylov.functional">Try.Failure</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="com/skopylov/functional/Try.html#orElseThrow()">orElseThrow()</a></span> - Method in interface com.skopylov.functional.<a href="com/skopylov/functional/Try.html" title="interface in com.skopylov.functional">Try</a></dt>
-<dd>&nbsp;</dd>
+<dd>
+<div class="block">Gets Try's value or throws exception</div>
+</dd>
 <dt><span class="memberNameLink"><a href="com/skopylov/functional/Try.Success.html#orElseThrow()">orElseThrow()</a></span> - Method in class com.skopylov.functional.<a href="com/skopylov/functional/Try.Success.html" title="class in com.skopylov.functional">Try.Success</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="com/skopylov/functional/Try.Failure.html#orElseThrow(java.util.function.Supplier)">orElseThrow(Supplier&lt;? extends X&gt;)</a></span> - Method in class com.skopylov.functional.<a href="com/skopylov/functional/Try.Failure.html" title="class in com.skopylov.functional">Try.Failure</a></dt>
@@ -486,7 +526,9 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <h2 class="title">P</h2>
 <dl>
 <dt><span class="memberNameLink"><a href="com/skopylov/functional/Try.html#peek(com.skopylov.functional.ExceptionalConsumer)">peek(ExceptionalConsumer&lt;Try&lt;T&gt;&gt;)</a></span> - Method in interface com.skopylov.functional.<a href="com/skopylov/functional/Try.html" title="interface in com.skopylov.functional">Try</a></dt>
-<dd>&nbsp;</dd>
+<dd>
+<div class="block">Gives access to current Try.</div>
+</dd>
 </dl>
 <a id="I:R">
 <!--   -->
@@ -496,13 +538,17 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dt><span class="memberNameLink"><a href="com/skopylov/functional/Try.Failure.html#recover(com.skopylov.functional.ExceptionalSupplier)">recover(ExceptionalSupplier&lt;T&gt;)</a></span> - Method in class com.skopylov.functional.<a href="com/skopylov/functional/Try.Failure.html" title="class in com.skopylov.functional">Try.Failure</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="com/skopylov/functional/Try.html#recover(com.skopylov.functional.ExceptionalSupplier)">recover(ExceptionalSupplier&lt;T&gt;)</a></span> - Method in interface com.skopylov.functional.<a href="com/skopylov/functional/Try.html" title="interface in com.skopylov.functional">Try</a></dt>
-<dd>&nbsp;</dd>
+<dd>
+<div class="block">Tries recover failed try with given supplier, has no action for success.</div>
+</dd>
 <dt><span class="memberNameLink"><a href="com/skopylov/functional/Try.Success.html#recover(com.skopylov.functional.ExceptionalSupplier)">recover(ExceptionalSupplier&lt;T&gt;)</a></span> - Method in class com.skopylov.functional.<a href="com/skopylov/functional/Try.Success.html" title="class in com.skopylov.functional">Try.Success</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="com/skopylov/functional/Try.Failure.html#recover(com.skopylov.functional.ExceptionalSupplier,com.skopylov.functional.ExceptionalPredicate)">recover(ExceptionalSupplier&lt;T&gt;, ExceptionalPredicate&lt;Exception&gt;)</a></span> - Method in class com.skopylov.functional.<a href="com/skopylov/functional/Try.Failure.html" title="class in com.skopylov.functional">Try.Failure</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="com/skopylov/functional/Try.html#recover(com.skopylov.functional.ExceptionalSupplier,com.skopylov.functional.ExceptionalPredicate)">recover(ExceptionalSupplier&lt;T&gt;, ExceptionalPredicate&lt;Exception&gt;)</a></span> - Method in interface com.skopylov.functional.<a href="com/skopylov/functional/Try.html" title="interface in com.skopylov.functional">Try</a></dt>
-<dd>&nbsp;</dd>
+<dd>
+<div class="block">Tries recover failed try with given supplier, has no action for success.</div>
+</dd>
 <dt><span class="memberNameLink"><a href="com/skopylov/functional/Try.Success.html#recover(com.skopylov.functional.ExceptionalSupplier,com.skopylov.functional.ExceptionalPredicate)">recover(ExceptionalSupplier&lt;T&gt;, ExceptionalPredicate&lt;Exception&gt;)</a></span> - Method in class com.skopylov.functional.<a href="com/skopylov/functional/Try.Success.html" title="class in com.skopylov.functional">Try.Success</a></dt>
 <dd>&nbsp;</dd>
 <dt><span class="memberNameLink"><a href="com/skopylov/functional/Try.html#resources">resources</a></span> - Static variable in interface com.skopylov.functional.<a href="com/skopylov/functional/Try.html" title="interface in com.skopylov.functional">Try</a></dt>
@@ -571,7 +617,9 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <div class="block">Converts this either to stream.</div>
 </dd>
 <dt><span class="memberNameLink"><a href="com/skopylov/functional/Try.html#success(T)">success(T)</a></span> - Static method in interface com.skopylov.functional.<a href="com/skopylov/functional/Try.html" title="interface in com.skopylov.functional">Try</a></dt>
-<dd>&nbsp;</dd>
+<dd>
+<div class="block">Factory method to produce Try from value of T type.</div>
+</dd>
 </dl>
 <a id="I:T">
 <!--   -->
@@ -589,11 +637,17 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <dt><span class="memberNameLink"><a href="com/skopylov/functional/Tuple3.html#toString()">toString()</a></span> - Method in class com.skopylov.functional.<a href="com/skopylov/functional/Tuple3.html" title="class in com.skopylov.functional">Tuple3</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="com/skopylov/functional/Try.html" title="interface in com.skopylov.functional"><span class="typeNameLink">Try</span></a>&lt;<a href="com/skopylov/functional/Try.html" title="type parameter in Try">T</a>&gt; - Interface in <a href="com/skopylov/functional/package-summary.html">com.skopylov.functional</a></dt>
-<dd>&nbsp;</dd>
+<dd>
+<div class="block">Interface to handle exceptions in a functional way.</div>
+</dd>
 <dt><a href="com/skopylov/functional/Try.Failure.html" title="class in com.skopylov.functional"><span class="typeNameLink">Try.Failure</span></a>&lt;<a href="com/skopylov/functional/Try.Failure.html" title="type parameter in Try.Failure">T</a>&gt; - Class in <a href="com/skopylov/functional/package-summary.html">com.skopylov.functional</a></dt>
-<dd>&nbsp;</dd>
+<dd>
+<div class="block">Try's failure projection.</div>
+</dd>
 <dt><a href="com/skopylov/functional/Try.Success.html" title="class in com.skopylov.functional"><span class="typeNameLink">Try.Success</span></a>&lt;<a href="com/skopylov/functional/Try.Success.html" title="type parameter in Try.Success">T</a>&gt; - Class in <a href="com/skopylov/functional/package-summary.html">com.skopylov.functional</a></dt>
-<dd>&nbsp;</dd>
+<dd>
+<div class="block">Try's success projection.</div>
+</dd>
 <dt><a href="com/skopylov/functional/TryException.html" title="class in com.skopylov.functional"><span class="typeNameLink">TryException</span></a> - Exception in <a href="com/skopylov/functional/package-summary.html">com.skopylov.functional</a></dt>
 <dd>
 <div class="block">Run-time exception which wraps checked exceptions.</div>
