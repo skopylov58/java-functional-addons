@@ -31,11 +31,7 @@ subprojects {
 
 }
 
-project(':retry').dependencies {
-  implementation project(':function')
-}
 
 project(':jdbc').dependencies {
   implementation project(':function')
-  implementation project(':retry')
 }

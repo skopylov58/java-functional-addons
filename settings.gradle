@@ -1,5 +1,4 @@
 rootProject.name = 'java-async-retry'
 
 include 'function'
-include 'retry'
 include 'jdbc'

@@ -14,7 +14,7 @@ import com.skopylov.functional.ExceptionalSupplier;
  * Interface to perform asynchronous retry operations on supplier
  * or runnable that may throw an exception.
  * <p>
- * Retry.of(...) factory methods create {@link RetryBuilder} from 
+ * Retry.of(...) factory methods create {@link Builder} from 
  * {@link Supplier} or {@link Runnable}
  * <p>
  * Sample usage
@@ -50,41 +50,41 @@ public interface Retry {
     }
     
     /**
-     * Factory method to creates {@link RetryBuilder} for supplier.
+     * Factory method to creates {@link Builder} for supplier.
      * @param <T> supplier's result type
      * @param supplier supplier
-     * @return {@link RetryBuilder}
+     * @return {@link Builder}
      */
-    static <T> RetryBuilder<T> of(Supplier<T> supplier) {return new RetryBuilder<>(supplier);}
+    static <T> Builder<T> of(Supplier<T> supplier) {return new Builder<>(supplier);}
 
     /**
-     * Factory method to creates {@link RetryBuilder} for the exceptional supplier.
+     * Factory method to creates {@link Builder} for the exceptional supplier.
      * @param <T> supplier's result type
      * @param supplier exceptional supplier
-     * @return {@link RetryBuilder}
+     * @return {@link Builder}
      */
-    static <T> RetryBuilder<T> of(ExceptionalSupplier<T> supplier) {
+    static <T> Builder<T> of(ExceptionalSupplier<T> supplier) {
         return of (ExceptionalSupplier.uncheck(supplier));
     }
 
     /**
-     * Factory method to creates {@link RetryBuilder} for runnable.
+     * Factory method to creates {@link Builder} for runnable.
      * @param runnable runnable
-     * @return {@link RetryBuilder}
+     * @return {@link Builder}
      */
-    static RetryBuilder<Void> of(Runnable runnable) {
-        return new RetryBuilder<>(() -> {
+    static Builder<Void> of(Runnable runnable) {
+        return new Builder<>(() -> {
             runnable.run();
             return null;
         });
     }
 
     /**
-     * Factory method to creates {@link RetryBuilder} for exceptional runnable.
+     * Factory method to creates {@link Builder} for exceptional runnable.
      * @param runnable exceptional runnable
-     * @return {@link RetryBuilder}
+     * @return {@link Builder}
      */
-    static RetryBuilder<Void> of(ExceptionalRunnable runnable) {
+    static Builder<Void> of(ExceptionalRunnable runnable) {
         return of(ExceptionalRunnable.uncheck(runnable));
     }
     
@@ -107,7 +107,7 @@ public interface Retry {
      * Retry builder to configure retry process with maxTries, delay, error handler, etc.
      *
      */
-    class RetryBuilder<T> {
+    class Builder<T> {
         private static final int DEFAULT_MAX_TRIES = 10;
         private static final int DEFAULT_DELAY = 1;
         private static final TimeUnit DEFAULT_TIME_UNIT = TimeUnit.SECONDS;
@@ -119,7 +119,7 @@ public interface Retry {
         private ErrorHandler errorHandler;
         private Executor executor;
         
-        RetryBuilder(Supplier<T> supplier) {this.supplier = supplier;}
+        Builder(Supplier<T> supplier) {this.supplier = supplier;}
         
         /**
          * Sets max number of tries. Default - 10.
@@ -128,18 +128,18 @@ public interface Retry {
          * Use {@link #forever()} for this purpose.
          * 
          * @param maxTries max number of tries
-         * @return {@link RetryBuilder}
+         * @return {@link Builder}
          */
-        public RetryBuilder<T> maxTries(long maxTries) {
+        public Builder<T> maxTries(long maxTries) {
             this.maxTries = maxTries; 
             return this;
         }
 
         /**
          * Sets infinite number of tries.
-         * @return {@link RetryBuilder}
+         * @return {@link Builder}
          */
-        public RetryBuilder<T> forever() {
+        public Builder<T> forever() {
             this.maxTries = 0;
             return this;
         }
@@ -148,9 +148,9 @@ public interface Retry {
          * Sets retry delay. 
          * @param delay retry delay. Default - 1 
          * @param timeUnit delay time unit. Default - seconds
-         * @return {@link RetryBuilder}
+         * @return {@link Builder}
          */
-        public RetryBuilder<T> delay(long delay, TimeUnit timeUnit) {
+        public Builder<T> delay(long delay, TimeUnit timeUnit) {
             this.delay = delay;
             this.timeUnit = timeUnit;
             return this;
@@ -159,9 +159,9 @@ public interface Retry {
         /**
          * Sets error handler. Default - no error handler.
          * @param errorHandler
-         * @return {@link RetryBuilder} builder
+         * @return {@link Builder} builder
          */
-        public RetryBuilder<T> withErrorHandler(ErrorHandler errorHandler) {
+        public Builder<T> withErrorHandler(ErrorHandler errorHandler) {
             this.errorHandler = errorHandler;
             return this;
         }
@@ -171,7 +171,7 @@ public interface Retry {
          * @param executor executor. Default - {@link ForkJoinPool#commonPool()}
          * @return builder
          */
-        public RetryBuilder<T> withExecutor(Executor executor) {
+        public Builder<T> withExecutor(Executor executor) {
             this.executor = executor;
             return this;
         }
@@ -182,7 +182,7 @@ public interface Retry {
          */
         public CompletableFuture<T> retry() {
             Option opt = new Option(maxTries, delay, timeUnit);
-            return new Retrier<T>(supplier, opt, errorHandler, executor).retry();
+            return new Worker<T>(supplier, opt, errorHandler, executor).retry();
         }
     }
     
@@ -191,7 +191,7 @@ public interface Retry {
      *
      * @param <T> result type
      */
-    class Retrier<T> {
+    class Worker<T> {
         private long currentTry;
         
         private final Option opts;
@@ -206,7 +206,7 @@ public interface Retry {
          * @param opts
          * @param errorHandler
          */
-        private Retrier(Supplier<T> supplier, Option opts, ErrorHandler errorHandler, Executor executor) {
+        private Worker(Supplier<T> supplier, Option opts, ErrorHandler errorHandler, Executor executor) {
             this.supplier = supplier;
             this.opts = opts;
             this.errorHandler = errorHandler;
