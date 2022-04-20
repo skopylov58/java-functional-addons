@@ -34,7 +34,7 @@ public interface Try<T> extends Either<T, Exception>, AutoCloseable {
         });
     }
     
-    class Success<T> extends EitherRight<T, Exception> implements Try<T> {
+    class Success<T> extends Either.Right<T, Exception> implements Try<T> {
         Success(T val) {super(val);}
         
         @Override
@@ -113,7 +113,7 @@ public interface Try<T> extends Either<T, Exception>, AutoCloseable {
         }
     }
     
-    class Failure<T> extends EitherLeft<T, Exception> implements Try<T> {
+    class Failure<T> extends Either.Left<T, Exception> implements Try<T> {
         Failure(Exception e) {super(e);}
         
         @SuppressWarnings("unchecked")
