@@ -28,5 +28,9 @@ public interface ExceptionalFunction <T, R> extends Function<T, R>{
     }
     
     R applyWithException(T t) throws Exception;
+    
+    static <T, R> Function<T,R> uncheck(ExceptionalFunction<T, R> func) {
+        return func::apply;
+    }
 
 }

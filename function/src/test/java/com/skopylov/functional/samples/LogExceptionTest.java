@@ -1,4 +1,4 @@
-package com.skopylov.ftry.samples;
+package com.skopylov.functional.samples;
 
 import java.io.ByteArrayInputStream;
 import java.io.FileInputStream;
@@ -6,7 +6,7 @@ import java.io.InputStream;
 
 import org.junit.Test;
 
-import com.skopylov.ftry.Try;
+import com.skopylov.functional.Try;
 
 public class LogExceptionTest {
     
@@ -16,9 +16,9 @@ public class LogExceptionTest {
         
         InputStream input = Try.<InputStream>of(() -> new FileInputStream("/a/b/c"))
                 .autoClose()
-                .logException()
+                //.logException()
                 .onFailure(this::logError)
-                .getOrDefault(new ByteArrayInputStream("foo".getBytes()));
+                .orElse(new ByteArrayInputStream("foo".getBytes()));
     }
     
     void logError(Exception e) {

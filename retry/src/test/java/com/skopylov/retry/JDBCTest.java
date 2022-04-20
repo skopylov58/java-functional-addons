@@ -16,7 +16,7 @@ import java.util.stream.Stream;
 
 import org.junit.Test;
 
-import com.skopylov.ftry.Try;
+import com.skopylov.functional.Try;
 import com.skopylov.retry.Retry;
 
 /**
@@ -48,12 +48,12 @@ public class JDBCTest {
    }
    
    public List<String> JDBCWithTry() {
-       return Try.of(getConnectionWithRetry(DB_URLS)).autoClose()
+       return Try.of(() -> getConnectionWithRetry(DB_URLS).get()).autoClose()
        .map(Connection::createStatement).autoClose()
        .map(s -> s.executeQuery(QUERY)).autoClose()
        .map(JDBCTest::processResultSet)
-       .logException()
-       .getOrDefault(Collections.emptyList());
+       //.logException()
+       .orElse(Collections.emptyList());
    }
    
    public List<String> JDBCTraditional() {
@@ -86,7 +86,7 @@ public class JDBCTest {
    public Connection getConnection(String [] jdbcUrls) throws SQLException {
        return Stream.of(jdbcUrls)
        .map(url -> Try.of(() -> DriverManager.getConnection(url, USER, PASWD)))
-       .peek(Try::logException)
+       //.peek(Try::logException)
        .flatMap(t -> t.stream())
        .findFirst()
        .get();

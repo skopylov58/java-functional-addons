@@ -8,7 +8,7 @@ import java.util.stream.Stream;
 
 import org.junit.Test;
 
-import com.skopylov.ftry.Try;
+import com.skopylov.functional.Try;
 import com.skopylov.retry.Retry;
 
 /**
@@ -49,7 +49,7 @@ public class SendMailTest {
     public void sendFirstAvailable(String [] smtpServers, String msg) throws Exception {
         Stream.of(smtpServers)
         .map(s -> Try.of(() -> sendMail(s, msg)))
-        .peek(Try::logException)
+        //.peek(Try::logException)
         .flatMap(Try::stream)
         .findFirst()
         .get();
@@ -61,7 +61,7 @@ public class SendMailTest {
                 .maxTries(10).delay(10, TimeUnit.MILLISECONDS)
                 .withErrorHandler(this::onError)
                 .retry();
-        return Try.of(future).isSuccess();
+        return Try.of(() -> future.get()).isSuccess();
     }
     
     void onError(long cur, long max, Throwable th) {

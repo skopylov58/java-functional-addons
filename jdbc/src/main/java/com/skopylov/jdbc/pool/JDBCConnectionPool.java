@@ -20,6 +20,7 @@ import java.sql.Statement;
 import java.sql.Struct;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Properties;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Executor;
@@ -29,7 +30,7 @@ import java.util.logging.Logger;
 
 import javax.sql.DataSource;
 
-import com.skopylov.ftry.Try;
+import com.skopylov.functional.Try;
 import com.skopylov.retry.Retry;
 
 public class JDBCConnectionPool implements DataSource {
@@ -121,8 +122,10 @@ public class JDBCConnectionPool implements DataSource {
     public Connection getConnection() throws SQLException {
         Connection con =
         Try.ofNullable(() -> pool.poll(loginTimeout, loginTimeoutTimeUnit))
-            .onFailure(InterruptedException.class, t -> Thread.currentThread().interrupt())
-            .orElseThrow(() -> new SQLException("InterruptedException"))
+            //.onFailure(InterruptedException.class, t -> Thread.currentThread().interrupt())
+            //.orElseThrow(() -> new SQLException("InterruptedException"))
+            .filter(opt -> !opt.isEmpty())
+            .map(Optional::get)
             .orElseThrow(() -> new SQLException(NO_AVAILABLE_CONNECTIONS));
             
         return Try.success(con)

@@ -1,4 +1,4 @@
-package com.skopylov.ftry.samples;
+package com.skopylov.functional.samples;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -9,8 +9,7 @@ import java.util.Properties;
 
 import org.junit.Test;
 
-import com.skopylov.ftry.TestBase;
-import com.skopylov.ftry.Try;
+import com.skopylov.functional.Try;
 
 public class PropertiesTest {
 
@@ -32,18 +31,19 @@ public class PropertiesTest {
         try (FileInputStream in = new FileInputStream(fileName)) {
             p.load(in);
         } catch (IOException e) {
-            TestBase.logException(e);
+            System.out.println(e.getMessage());
         }
         return p;
     }
-    
+
     public Properties fromFileWithTry(String fileName) {
         Properties props = new Properties();
         return Try.of(() -> new FileInputStream(fileName)).autoClose()
         .onSuccess(props::load)
-        .logException()
+        //.logException()
         .map(in -> props)
-        .getOrDefault(props);
+        .closeResources()
+        .orElse(props);
     }
     
 }

@@ -11,7 +11,7 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.Optional;
 
-import com.skopylov.ftry.Try;
+import com.skopylov.functional.Try;
 
 public class JDBCProxy implements InvocationHandler {
 
@@ -31,7 +31,7 @@ public class JDBCProxy implements InvocationHandler {
             Object [] newArgs = Try.ofNullable(() -> MiddleManJDBCDriver.interceptor.beforeCall(target, method, args))
             .filter(Optional::isPresent)
             .map(Optional::get)
-            .getOrDefault(args);
+            .orElse(args);
                 
             //invoke
             start = Instant.now();

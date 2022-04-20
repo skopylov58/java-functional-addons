@@ -1,4 +1,4 @@
-package com.skopylov.ftry;
+package com.skopylov.functional;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -6,7 +6,7 @@ import static org.junit.Assert.fail;
 
 import org.junit.Test;
 
-import com.skopylov.ftry.Try;
+import com.skopylov.functional.Try;
 
 public class ResourceTest extends TestBase {
     
@@ -16,7 +16,8 @@ public class ResourceTest extends TestBase {
         var r = Try.of(() -> closeable).autoClose().map(c -> 1);
         assertFalse(closeable.isClosed()); // not closed yet
         
-        Integer integer = r.get();
+        Integer integer = r.orElseThrow();
+        r.close();
         assertTrue(closeable.isClosed()); //closed after get
         System.out.println(integer);
     }
@@ -27,7 +28,7 @@ public class ResourceTest extends TestBase {
         var r = Try.success(closeable).map(c -> 1);
         assertFalse(closeable.isClosed()); // not closed yet
         
-        Integer integer = r.get();
+        Integer integer = r.orElseThrow();
         assertFalse(closeable.isClosed()); // not closed after get
         System.out.println(integer);
     }
@@ -38,7 +39,7 @@ public class ResourceTest extends TestBase {
         try {
             Try.success(closeable).map(c -> 1).autoClose();
             fail();
-        } catch (AssertionError er) {
+        } catch (IllegalArgumentException er) {
             System.out.println(er);
         }
     }

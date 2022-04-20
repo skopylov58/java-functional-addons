@@ -11,7 +11,7 @@ import java.util.Optional;
 import java.util.Properties;
 import java.util.logging.Logger;
 
-import com.skopylov.ftry.Try;
+import com.skopylov.functional.Try;
 
 public class MiddleManJDBCDriver implements Driver {
     
@@ -19,7 +19,7 @@ public class MiddleManJDBCDriver implements Driver {
     static Interceptor interceptor;
 
     static {
-        Try.of(() -> DriverManager.registerDriver(new MiddleManJDBCDriver())).getOrThrow();
+        Try.of(() -> DriverManager.registerDriver(new MiddleManJDBCDriver())).orElseThrow();
         interceptor = loadInterceptor(System.getProperty("jdbc.interceptor"));
     }
 
@@ -32,7 +32,7 @@ public class MiddleManJDBCDriver implements Driver {
         .filter(Interceptor.class::isInstance, 
                 c -> System.out.println(c.getClass().getName() + " should be Interceptor"))
         .cast(Interceptor.class)
-        .getOrDefault(new SimpleLoggingInterceptor());
+        .orElse(new SimpleLoggingInterceptor());
     }
     
     @Override

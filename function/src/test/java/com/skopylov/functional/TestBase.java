@@ -1,4 +1,4 @@
-package com.skopylov.ftry;
+package com.skopylov.functional;
 
 import java.util.Date;
 
@@ -10,7 +10,6 @@ public class TestBase {
     public static void logException(Exception e) {
         System.out.println(new Date() + " " + e);
     }
-    
     
     ConsumerMock<Exception> exceptionConsumer = new ConsumerMock<>();
     

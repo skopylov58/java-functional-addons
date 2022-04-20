@@ -31,17 +31,11 @@ subprojects {
 
 }
 
-project(':try').dependencies {
-  implementation project(':function')
-}
-
 project(':retry').dependencies {
   implementation project(':function')
-  testImplementation project(':try')
 }
 
 project(':jdbc').dependencies {
   implementation project(':function')
-  implementation project(':try')
   implementation project(':retry')
 }

@@ -1,4 +1,4 @@
-package com.skopylov.ftry.samples;
+package com.skopylov.functional.samples;
 
 import static org.junit.Assert.assertEquals;
 
@@ -12,8 +12,7 @@ import java.util.stream.Stream;
 
 import org.junit.Test;
 
-import com.skopylov.ftry.TestBase;
-import com.skopylov.ftry.Try;
+import com.skopylov.functional.Try;
 
 /**
  * Example of converting list of strings to list of URLs
@@ -48,7 +47,6 @@ public class URLStreamTest {
     
     private List<URL> urlListWithTry(String[] urls) {
         return Stream.of(urls).map(s -> Try.of(() -> new URL(s)))
-                .peek(Try::logException)
                 .flatMap(Try::stream)
                 .collect(Collectors.toList());
     }
@@ -58,7 +56,7 @@ public class URLStreamTest {
             try {
                 return new URL(s);
             } catch (MalformedURLException me) {
-                TestBase.logException(me);
+                System.out.println(me.getMessage());
                 return null;
             }
         }).filter(Objects::nonNull)

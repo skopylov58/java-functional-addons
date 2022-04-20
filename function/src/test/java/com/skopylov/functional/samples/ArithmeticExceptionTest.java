@@ -1,11 +1,11 @@
-package com.skopylov.ftry.samples;
+package com.skopylov.functional.samples;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
 import org.junit.Test;
 
-import com.skopylov.ftry.Try;
+import com.skopylov.functional.Try;
 
 public class ArithmeticExceptionTest {
     
@@ -28,8 +28,8 @@ public class ArithmeticExceptionTest {
      */
     int divWithRecover(int x, int y) {
         return Try.of(() -> div(x, y))
-                .recover(() -> x > 0 ? Integer.MAX_VALUE : Integer.MIN_VALUE, ArithmeticException.class)
-                .get();
+                .recover(() -> x > 0 ? Integer.MAX_VALUE : Integer.MIN_VALUE, ArithmeticException.class::isInstance)
+                .orElseThrow();
     }
 
     @Test

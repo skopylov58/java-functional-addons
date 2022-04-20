@@ -1,4 +1,4 @@
-package com.skopylov.ftry.samples;
+package com.skopylov.functional.samples;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -14,7 +14,7 @@ import java.util.stream.Stream;
 
 import org.junit.Test;
 
-import com.skopylov.ftry.Try;
+import com.skopylov.functional.Try;
 
 /**
  * Converts list of strings to numbers.
@@ -41,7 +41,6 @@ public class NumbersTest {
     List<Number> fromStringArrayWithTry(String [] nums) {
         return Stream.of(nums)
         .map(s -> Try.of(() ->Integer.valueOf(s)))
-        .peek(Try::logException)
         .flatMap(Try::stream)  //stream for Failure is empty
         .collect(Collectors.toList());
     }

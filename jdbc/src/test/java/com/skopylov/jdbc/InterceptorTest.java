@@ -4,8 +4,6 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-import com.skopylov.ftry.Try;
-
 public class InterceptorTest {
 
     @Test

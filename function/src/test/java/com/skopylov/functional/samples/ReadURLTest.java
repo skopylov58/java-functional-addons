@@ -1,4 +1,4 @@
-package com.skopylov.ftry.samples;
+package com.skopylov.functional.samples;
 
 import static org.junit.Assert.assertTrue;
 
@@ -15,8 +15,7 @@ import java.util.stream.Collectors;
 
 import org.junit.Test;
 
-import com.skopylov.ftry.TestBase;
-import com.skopylov.ftry.Try;
+import com.skopylov.functional.Try;
 
 /**
  * Example which reads the text from the URL.
@@ -44,14 +43,14 @@ public class ReadURLTest {
         try {
             url = new URL(urlString);
         } catch (MalformedURLException e) {
-            TestBase.logException(e);
+            System.out.println(e.getMessage());
             return Collections.emptyList();
         }
         try (InputStream inputStream = url.openStream()) {
             BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
             return reader.lines().collect(Collectors.toList());
         } catch (IOException e) {
-            TestBase.logException(e);
+            System.out.println(e.getMessage());
             return Collections.emptyList();
         }
     }
@@ -61,9 +60,8 @@ public class ReadURLTest {
                 .map(URL::openStream)
                 .map(i -> new BufferedReader(new InputStreamReader(i))).autoClose()
                 .map(BufferedReader::lines)
-                .logException()
                 .map(s -> s.collect(Collectors.toList()))
-                .getOrDefault(Collections.emptyList());
+                .orElse(Collections.emptyList());
     }
 
     @Test

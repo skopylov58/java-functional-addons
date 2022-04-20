@@ -1,4 +1,4 @@
-package com.skopylov.ftry;
+package com.skopylov.functional;
 
 import static org.junit.Assert.*;
 
@@ -16,14 +16,14 @@ import com.skopylov.functional.ExceptionalPredicate;
 import com.skopylov.functional.ExceptionalRunnable;
 import com.skopylov.functional.TryException;
 
-public class TryTest {
+public class Try0Test {
     
     @Test
     public void testSupplier() throws Exception {
         
         Try<Integer> tr = Try.of(() -> 20/4);
         assertTrue(tr.isSuccess());
-        assertEquals(Integer.valueOf(5), tr.get());
+        assertEquals(Integer.valueOf(5), tr.orElseThrow());
         
         tr = Try.of(() -> {throw new NullPointerException();});
         assertTrue(tr.isFailure());
@@ -31,7 +31,7 @@ public class TryTest {
         assertNotNull(exception);
         assertEquals(NullPointerException.class, exception.getClass());
         try {
-            tr.getOrThrow();
+            tr.orElseThrow();
             fail();
         } catch (NullPointerException npe) {
             //expected
@@ -39,30 +39,30 @@ public class TryTest {
         
     }
     
-    @Test
-    public void testCompletableFuture() throws Exception {
-        
-        CompletableFuture<Integer> f = new CompletableFuture<>();
-        f.complete(5);
-        Try<Integer> tr = Try.of(f);
-        assertTrue(tr.isSuccess());
-        
-        f = new CompletableFuture<>();
-        f.completeExceptionally(new FileNotFoundException());
-        tr = Try.of(f);
-        assertTrue(tr.isFailure());
-        Exception cause = tr.getFailureCause().get();
-        assertEquals(ExecutionException.class, cause.getClass());
-        cause = (Exception) cause.getCause();
-        assertEquals(FileNotFoundException.class, cause.getClass());
-    }
+//    @Test
+//    public void testCompletableFuture() throws Exception {
+//        
+//        CompletableFuture<Integer> f = new CompletableFuture<>();
+//        f.complete(5);
+//        Try<Integer> tr = Try.of(f);
+//        assertTrue(tr.isSuccess());
+//        
+//        f = new CompletableFuture<>();
+//        f.completeExceptionally(new FileNotFoundException());
+//        tr = Try.of(f);
+//        assertTrue(tr.isFailure());
+//        Exception cause = tr.getFailureCause().get();
+//        assertEquals(ExecutionException.class, cause.getClass());
+//        cause = (Exception) cause.getCause();
+//        assertEquals(FileNotFoundException.class, cause.getClass());
+//    }
     
     @Test
     public void testRunnable() throws Exception {
         
         Try<Class<Void>> run = Try.of(() -> System.out.println("Runnable"));
         assertTrue(run.isSuccess());
-        assertEquals(Void.TYPE, run.get());
+        assertEquals(Void.TYPE, run.orElseThrow());
 
         ExceptionalRunnable er = () -> {throw new FileNotFoundException();};
         
@@ -75,7 +75,7 @@ public class TryTest {
         try {
             run.get();
             fail();
-        } catch (TryException e) {
+        } catch (RuntimeException e) {
             //expected
         }
     }
