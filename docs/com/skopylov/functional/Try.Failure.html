@@ -136,6 +136,10 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <ul class="blockList">
 <li class="blockList">
 <dl>
+<dt><span class="paramLabel">Type Parameters:</span></dt>
+<dd><code>T</code> - result type</dd>
+</dl>
+<dl>
 <dt>All Implemented Interfaces:</dt>
 <dd><code><a href="Either.html" title="interface in com.skopylov.functional">Either</a>&lt;T,&#8203;java.lang.Exception&gt;</code>, <code><a href="Try.html" title="interface in com.skopylov.functional">Try</a>&lt;T&gt;</code>, <code>java.lang.AutoCloseable</code></dd>
 </dl>
@@ -147,6 +151,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <pre>public static class <span class="typeNameLabel">Try.Failure&lt;T&gt;</span>
 extends <a href="Either.Left.html" title="class in com.skopylov.functional">Either.Left</a>&lt;T,&#8203;java.lang.Exception&gt;
 implements <a href="Try.html" title="interface in com.skopylov.functional">Try</a>&lt;T&gt;</pre>
+<div class="block">Try's failure projection.</div>
 </li>
 </ul>
 </div>
@@ -218,48 +223,66 @@ implements <a href="Try.html" title="interface in com.skopylov.functional">Try</
 <tr id="i0" class="altColor">
 <td class="colFirst"><code><a href="Try.html" title="interface in com.skopylov.functional">Try</a>&lt;<a href="Try.Failure.html" title="type parameter in Try.Failure">T</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#autoClose()">autoClose</a></span>()</code></th>
-<td class="colLast">&nbsp;</td>
+<td class="colLast">
+<div class="block">Marks this Try to be closed by <a href="Try.html#close()"><code>Try.close()</code></a> or <a href="Try.html#closeResources()"><code>Try.closeResources()</code></a> methods.</div>
+</td>
 </tr>
 <tr id="i1" class="rowColor">
 <td class="colFirst"><code><a href="Try.html" title="interface in com.skopylov.functional">Try</a>&lt;<a href="Try.Failure.html" title="type parameter in Try.Failure">T</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#filter(com.skopylov.functional.ExceptionalPredicate)">filter</a></span>&#8203;(<a href="ExceptionalPredicate.html" title="interface in com.skopylov.functional">ExceptionalPredicate</a>&lt;<a href="Try.Failure.html" title="type parameter in Try.Failure">T</a>&gt;&nbsp;pred)</code></th>
-<td class="colLast">&nbsp;</td>
+<td class="colLast">
+<div class="block">Filters current Try, has no action for failure.</div>
+</td>
 </tr>
 <tr id="i2" class="altColor">
 <td class="colFirst"><code><a href="Try.html" title="interface in com.skopylov.functional">Try</a>&lt;<a href="Try.Failure.html" title="type parameter in Try.Failure">T</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#filter(com.skopylov.functional.ExceptionalPredicate,com.skopylov.functional.ExceptionalConsumer)">filter</a></span>&#8203;(<a href="ExceptionalPredicate.html" title="interface in com.skopylov.functional">ExceptionalPredicate</a>&lt;<a href="Try.Failure.html" title="type parameter in Try.Failure">T</a>&gt;&nbsp;pred,
       <a href="ExceptionalConsumer.html" title="interface in com.skopylov.functional">ExceptionalConsumer</a>&lt;<a href="Try.Failure.html" title="type parameter in Try.Failure">T</a>&gt;&nbsp;consumer)</code></th>
-<td class="colLast">&nbsp;</td>
+<td class="colLast">
+<div class="block">Filters current Try, has no action for failure.</div>
+</td>
 </tr>
 <tr id="i3" class="rowColor">
 <td class="colFirst"><code>java.util.Optional&lt;java.lang.Exception&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getFailureCause()">getFailureCause</a></span>()</code></th>
-<td class="colLast">&nbsp;</td>
+<td class="colLast">
+<div class="block">Gets the failure cause.</div>
+</td>
 </tr>
 <tr id="i4" class="altColor">
 <td class="colFirst"><code>boolean</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#isSuccess()">isSuccess</a></span>()</code></th>
-<td class="colLast">&nbsp;</td>
+<td class="colLast">
+<div class="block">Checks if it is success try.</div>
+</td>
 </tr>
 <tr id="i5" class="rowColor">
 <td class="colFirst"><code>&lt;R&gt;&nbsp;<a href="Try.html" title="interface in com.skopylov.functional">Try</a>&lt;R&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#map(com.skopylov.functional.ExceptionalFunction)">map</a></span>&#8203;(<a href="ExceptionalFunction.html" title="interface in com.skopylov.functional">ExceptionalFunction</a>&lt;<a href="Try.Failure.html" title="type parameter in Try.Failure">T</a>,&#8203;R&gt;&nbsp;mapper)</code></th>
-<td class="colLast">&nbsp;</td>
+<td class="colLast">
+<div class="block">Maps one Try of type T to type R</div>
+</td>
 </tr>
 <tr id="i6" class="altColor">
 <td class="colFirst"><code><a href="Try.html" title="interface in com.skopylov.functional">Try</a>&lt;<a href="Try.Failure.html" title="type parameter in Try.Failure">T</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#onFailure(com.skopylov.functional.ExceptionalConsumer)">onFailure</a></span>&#8203;(<a href="ExceptionalConsumer.html" title="interface in com.skopylov.functional">ExceptionalConsumer</a>&lt;java.lang.Exception&gt;&nbsp;consumer)</code></th>
-<td class="colLast">&nbsp;</td>
+<td class="colLast">
+<div class="block">Executes action on failure, has no action for success.</div>
+</td>
 </tr>
 <tr id="i7" class="rowColor">
 <td class="colFirst"><code><a href="Try.html" title="interface in com.skopylov.functional">Try</a>&lt;<a href="Try.Failure.html" title="type parameter in Try.Failure">T</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#onSuccess(com.skopylov.functional.ExceptionalConsumer)">onSuccess</a></span>&#8203;(<a href="ExceptionalConsumer.html" title="interface in com.skopylov.functional">ExceptionalConsumer</a>&lt;<a href="Try.Failure.html" title="type parameter in Try.Failure">T</a>&gt;&nbsp;consumer)</code></th>
-<td class="colLast">&nbsp;</td>
+<td class="colLast">
+<div class="block">Executes action on success, has no action for failure.</div>
+</td>
 </tr>
 <tr id="i8" class="altColor">
 <td class="colFirst"><code><a href="Try.Failure.html" title="type parameter in Try.Failure">T</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#orElseThrow()">orElseThrow</a></span>()</code></th>
-<td class="colLast">&nbsp;</td>
+<td class="colLast">
+<div class="block">Gets Try's value or throws exception</div>
+</td>
 </tr>
 <tr id="i9" class="rowColor">
 <td class="colFirst"><code>&lt;X extends java.lang.Throwable&gt;<br><a href="Try.Failure.html" title="type parameter in Try.Failure">T</a></code></td>
@@ -269,13 +292,17 @@ implements <a href="Try.html" title="interface in com.skopylov.functional">Try</
 <tr id="i10" class="altColor">
 <td class="colFirst"><code><a href="Try.html" title="interface in com.skopylov.functional">Try</a>&lt;<a href="Try.Failure.html" title="type parameter in Try.Failure">T</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#recover(com.skopylov.functional.ExceptionalSupplier)">recover</a></span>&#8203;(<a href="ExceptionalSupplier.html" title="interface in com.skopylov.functional">ExceptionalSupplier</a>&lt;<a href="Try.Failure.html" title="type parameter in Try.Failure">T</a>&gt;&nbsp;supplier)</code></th>
-<td class="colLast">&nbsp;</td>
+<td class="colLast">
+<div class="block">Tries recover failed try with given supplier, has no action for success.</div>
+</td>
 </tr>
 <tr id="i11" class="rowColor">
 <td class="colFirst"><code><a href="Try.html" title="interface in com.skopylov.functional">Try</a>&lt;<a href="Try.Failure.html" title="type parameter in Try.Failure">T</a>&gt;</code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#recover(com.skopylov.functional.ExceptionalSupplier,com.skopylov.functional.ExceptionalPredicate)">recover</a></span>&#8203;(<a href="ExceptionalSupplier.html" title="interface in com.skopylov.functional">ExceptionalSupplier</a>&lt;<a href="Try.Failure.html" title="type parameter in Try.Failure">T</a>&gt;&nbsp;supplier,
        <a href="ExceptionalPredicate.html" title="interface in com.skopylov.functional">ExceptionalPredicate</a>&lt;java.lang.Exception&gt;&nbsp;predicate)</code></th>
-<td class="colLast">&nbsp;</td>
+<td class="colLast">
+<div class="block">Tries recover failed try with given supplier, has no action for success.</div>
+</td>
 </tr>
 </table>
 <ul class="blockList">
@@ -329,9 +356,17 @@ implements <a href="Try.html" title="interface in com.skopylov.functional">Try</
 <li class="blockList">
 <h4>map</h4>
 <pre class="methodSignature">public&nbsp;&lt;R&gt;&nbsp;<a href="Try.html" title="interface in com.skopylov.functional">Try</a>&lt;R&gt;&nbsp;map&#8203;(<a href="ExceptionalFunction.html" title="interface in com.skopylov.functional">ExceptionalFunction</a>&lt;<a href="Try.Failure.html" title="type parameter in Try.Failure">T</a>,&#8203;R&gt;&nbsp;mapper)</pre>
+<div class="block"><span class="descfrmTypeLabel">Description copied from interface:&nbsp;<code><a href="Try.html#map(com.skopylov.functional.ExceptionalFunction)">Try</a></code></span></div>
+<div class="block">Maps one Try of type T to type R</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
 <dd><code><a href="Try.html#map(com.skopylov.functional.ExceptionalFunction)">map</a></code>&nbsp;in interface&nbsp;<code><a href="Try.html" title="interface in com.skopylov.functional">Try</a>&lt;<a href="Try.Failure.html" title="type parameter in Try.Failure">T</a>&gt;</code></dd>
+<dt><span class="paramLabel">Type Parameters:</span></dt>
+<dd><code>R</code> - new result type</dd>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>mapper</code> - mapper</dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>new Try of R type or failure if mapper throws exception/</dd>
 </dl>
 </li>
 </ul>
@@ -342,9 +377,15 @@ implements <a href="Try.html" title="interface in com.skopylov.functional">Try</
 <li class="blockList">
 <h4>recover</h4>
 <pre class="methodSignature">public&nbsp;<a href="Try.html" title="interface in com.skopylov.functional">Try</a>&lt;<a href="Try.Failure.html" title="type parameter in Try.Failure">T</a>&gt;&nbsp;recover&#8203;(<a href="ExceptionalSupplier.html" title="interface in com.skopylov.functional">ExceptionalSupplier</a>&lt;<a href="Try.Failure.html" title="type parameter in Try.Failure">T</a>&gt;&nbsp;supplier)</pre>
+<div class="block"><span class="descfrmTypeLabel">Description copied from interface:&nbsp;<code><a href="Try.html#recover(com.skopylov.functional.ExceptionalSupplier)">Try</a></code></span></div>
+<div class="block">Tries recover failed try with given supplier, has no action for success.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
 <dd><code><a href="Try.html#recover(com.skopylov.functional.ExceptionalSupplier)">recover</a></code>&nbsp;in interface&nbsp;<code><a href="Try.html" title="interface in com.skopylov.functional">Try</a>&lt;<a href="Try.Failure.html" title="type parameter in Try.Failure">T</a>&gt;</code></dd>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>supplier</code> - supplier to recover</dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>this Try for success, new success or new failure depending on if supplier had thrown exception.</dd>
 </dl>
 </li>
 </ul>
@@ -356,9 +397,16 @@ implements <a href="Try.html" title="interface in com.skopylov.functional">Try</
 <h4>recover</h4>
 <pre class="methodSignature">public&nbsp;<a href="Try.html" title="interface in com.skopylov.functional">Try</a>&lt;<a href="Try.Failure.html" title="type parameter in Try.Failure">T</a>&gt;&nbsp;recover&#8203;(<a href="ExceptionalSupplier.html" title="interface in com.skopylov.functional">ExceptionalSupplier</a>&lt;<a href="Try.Failure.html" title="type parameter in Try.Failure">T</a>&gt;&nbsp;supplier,
                       <a href="ExceptionalPredicate.html" title="interface in com.skopylov.functional">ExceptionalPredicate</a>&lt;java.lang.Exception&gt;&nbsp;predicate)</pre>
+<div class="block"><span class="descfrmTypeLabel">Description copied from interface:&nbsp;<code><a href="Try.html#recover(com.skopylov.functional.ExceptionalSupplier,com.skopylov.functional.ExceptionalPredicate)">Try</a></code></span></div>
+<div class="block">Tries recover failed try with given supplier, has no action for success.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
 <dd><code><a href="Try.html#recover(com.skopylov.functional.ExceptionalSupplier,com.skopylov.functional.ExceptionalPredicate)">recover</a></code>&nbsp;in interface&nbsp;<code><a href="Try.html" title="interface in com.skopylov.functional">Try</a>&lt;<a href="Try.Failure.html" title="type parameter in Try.Failure">T</a>&gt;</code></dd>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>supplier</code> - supplier to recover</dd>
+<dd><code>predicate</code> - recover attempt happens if predicate returns true.</dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>this Try for success, new success or new failure depending on if supplier had thrown exception.</dd>
 </dl>
 </li>
 </ul>
@@ -369,9 +417,15 @@ implements <a href="Try.html" title="interface in com.skopylov.functional">Try</
 <li class="blockList">
 <h4>filter</h4>
 <pre class="methodSignature">public&nbsp;<a href="Try.html" title="interface in com.skopylov.functional">Try</a>&lt;<a href="Try.Failure.html" title="type parameter in Try.Failure">T</a>&gt;&nbsp;filter&#8203;(<a href="ExceptionalPredicate.html" title="interface in com.skopylov.functional">ExceptionalPredicate</a>&lt;<a href="Try.Failure.html" title="type parameter in Try.Failure">T</a>&gt;&nbsp;pred)</pre>
+<div class="block"><span class="descfrmTypeLabel">Description copied from interface:&nbsp;<code><a href="Try.html#filter(com.skopylov.functional.ExceptionalPredicate)">Try</a></code></span></div>
+<div class="block">Filters current Try, has no action for failure.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
 <dd><code><a href="Try.html#filter(com.skopylov.functional.ExceptionalPredicate)">filter</a></code>&nbsp;in interface&nbsp;<code><a href="Try.html" title="interface in com.skopylov.functional">Try</a>&lt;<a href="Try.Failure.html" title="type parameter in Try.Failure">T</a>&gt;</code></dd>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>pred</code> - predicate to test</dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>this Try if predicate returns true or new fail with <code>NoSuchElementException</code></dd>
 </dl>
 </li>
 </ul>
@@ -382,9 +436,13 @@ implements <a href="Try.html" title="interface in com.skopylov.functional">Try</
 <li class="blockList">
 <h4>isSuccess</h4>
 <pre class="methodSignature">public&nbsp;boolean&nbsp;isSuccess()</pre>
+<div class="block"><span class="descfrmTypeLabel">Description copied from interface:&nbsp;<code><a href="Try.html#isSuccess()">Try</a></code></span></div>
+<div class="block">Checks if it is success try.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
 <dd><code><a href="Try.html#isSuccess()">isSuccess</a></code>&nbsp;in interface&nbsp;<code><a href="Try.html" title="interface in com.skopylov.functional">Try</a>&lt;<a href="Try.Failure.html" title="type parameter in Try.Failure">T</a>&gt;</code></dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>true if it is success.</dd>
 </dl>
 </li>
 </ul>
@@ -395,9 +453,15 @@ implements <a href="Try.html" title="interface in com.skopylov.functional">Try</
 <li class="blockList">
 <h4>onSuccess</h4>
 <pre class="methodSignature">public&nbsp;<a href="Try.html" title="interface in com.skopylov.functional">Try</a>&lt;<a href="Try.Failure.html" title="type parameter in Try.Failure">T</a>&gt;&nbsp;onSuccess&#8203;(<a href="ExceptionalConsumer.html" title="interface in com.skopylov.functional">ExceptionalConsumer</a>&lt;<a href="Try.Failure.html" title="type parameter in Try.Failure">T</a>&gt;&nbsp;consumer)</pre>
+<div class="block"><span class="descfrmTypeLabel">Description copied from interface:&nbsp;<code><a href="Try.html#onSuccess(com.skopylov.functional.ExceptionalConsumer)">Try</a></code></span></div>
+<div class="block">Executes action on success, has no action for failure.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
 <dd><code><a href="Try.html#onSuccess(com.skopylov.functional.ExceptionalConsumer)">onSuccess</a></code>&nbsp;in interface&nbsp;<code><a href="Try.html" title="interface in com.skopylov.functional">Try</a>&lt;<a href="Try.Failure.html" title="type parameter in Try.Failure">T</a>&gt;</code></dd>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>consumer</code> - consumer</dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>this Try or new failure is consumer throws an exception</dd>
 </dl>
 </li>
 </ul>
@@ -408,9 +472,15 @@ implements <a href="Try.html" title="interface in com.skopylov.functional">Try</
 <li class="blockList">
 <h4>onFailure</h4>
 <pre class="methodSignature">public&nbsp;<a href="Try.html" title="interface in com.skopylov.functional">Try</a>&lt;<a href="Try.Failure.html" title="type parameter in Try.Failure">T</a>&gt;&nbsp;onFailure&#8203;(<a href="ExceptionalConsumer.html" title="interface in com.skopylov.functional">ExceptionalConsumer</a>&lt;java.lang.Exception&gt;&nbsp;consumer)</pre>
+<div class="block"><span class="descfrmTypeLabel">Description copied from interface:&nbsp;<code><a href="Try.html#onFailure(com.skopylov.functional.ExceptionalConsumer)">Try</a></code></span></div>
+<div class="block">Executes action on failure, has no action for success.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
 <dd><code><a href="Try.html#onFailure(com.skopylov.functional.ExceptionalConsumer)">onFailure</a></code>&nbsp;in interface&nbsp;<code><a href="Try.html" title="interface in com.skopylov.functional">Try</a>&lt;<a href="Try.Failure.html" title="type parameter in Try.Failure">T</a>&gt;</code></dd>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>consumer</code> - consumer</dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>this Try or new failure is consumer throws an exception</dd>
 </dl>
 </li>
 </ul>
@@ -422,9 +492,16 @@ implements <a href="Try.html" title="interface in com.skopylov.functional">Try</
 <h4>filter</h4>
 <pre class="methodSignature">public&nbsp;<a href="Try.html" title="interface in com.skopylov.functional">Try</a>&lt;<a href="Try.Failure.html" title="type parameter in Try.Failure">T</a>&gt;&nbsp;filter&#8203;(<a href="ExceptionalPredicate.html" title="interface in com.skopylov.functional">ExceptionalPredicate</a>&lt;<a href="Try.Failure.html" title="type parameter in Try.Failure">T</a>&gt;&nbsp;pred,
                      <a href="ExceptionalConsumer.html" title="interface in com.skopylov.functional">ExceptionalConsumer</a>&lt;<a href="Try.Failure.html" title="type parameter in Try.Failure">T</a>&gt;&nbsp;consumer)</pre>
+<div class="block"><span class="descfrmTypeLabel">Description copied from interface:&nbsp;<code><a href="Try.html#filter(com.skopylov.functional.ExceptionalPredicate,com.skopylov.functional.ExceptionalConsumer)">Try</a></code></span></div>
+<div class="block">Filters current Try, has no action for failure.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
 <dd><code><a href="Try.html#filter(com.skopylov.functional.ExceptionalPredicate,com.skopylov.functional.ExceptionalConsumer)">filter</a></code>&nbsp;in interface&nbsp;<code><a href="Try.html" title="interface in com.skopylov.functional">Try</a>&lt;<a href="Try.Failure.html" title="type parameter in Try.Failure">T</a>&gt;</code></dd>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>pred</code> - predicate to test</dd>
+<dd><code>consumer</code> - consumer to notify in case of predicate returns false.</dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>this Try if predicate returns true or new fail with <code>NoSuchElementException</code></dd>
 </dl>
 </li>
 </ul>
@@ -435,9 +512,13 @@ implements <a href="Try.html" title="interface in com.skopylov.functional">Try</
 <li class="blockList">
 <h4>orElseThrow</h4>
 <pre class="methodSignature">public&nbsp;<a href="Try.Failure.html" title="type parameter in Try.Failure">T</a>&nbsp;orElseThrow()</pre>
+<div class="block"><span class="descfrmTypeLabel">Description copied from interface:&nbsp;<code><a href="Try.html#orElseThrow()">Try</a></code></span></div>
+<div class="block">Gets Try's value or throws exception</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
 <dd><code><a href="Try.html#orElseThrow()">orElseThrow</a></code>&nbsp;in interface&nbsp;<code><a href="Try.html" title="interface in com.skopylov.functional">Try</a>&lt;<a href="Try.Failure.html" title="type parameter in Try.Failure">T</a>&gt;</code></dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>value of T in case of success</dd>
 </dl>
 </li>
 </ul>
@@ -452,7 +533,14 @@ implements <a href="Try.html" title="interface in com.skopylov.functional">Try</
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
 <dd><code><a href="Try.html#orElseThrow(java.util.function.Supplier)">orElseThrow</a></code>&nbsp;in interface&nbsp;<code><a href="Try.html" title="interface in com.skopylov.functional">Try</a>&lt;<a href="Try.Failure.html" title="type parameter in Try.Failure">T</a>&gt;</code></dd>
+<dt><span class="paramLabel">Type Parameters:</span></dt>
+<dd><code>X</code> - throws type</dd>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>s</code> - exception supplier</dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>value of type T in case of success.</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
+<dd><code>X</code> - it this is failure</dd>
 <dd><code>X extends java.lang.Throwable</code></dd>
 </dl>
 </li>
@@ -464,9 +552,15 @@ implements <a href="Try.html" title="interface in com.skopylov.functional">Try</
 <li class="blockList">
 <h4>autoClose</h4>
 <pre class="methodSignature">public&nbsp;<a href="Try.html" title="interface in com.skopylov.functional">Try</a>&lt;<a href="Try.Failure.html" title="type parameter in Try.Failure">T</a>&gt;&nbsp;autoClose()</pre>
+<div class="block"><span class="descfrmTypeLabel">Description copied from interface:&nbsp;<code><a href="Try.html#autoClose()">Try</a></code></span></div>
+<div class="block">Marks this Try to be closed by <a href="Try.html#close()"><code>Try.close()</code></a> or <a href="Try.html#closeResources()"><code>Try.closeResources()</code></a> methods.
+ <p>
+ Note that Try's value should be <code>AutoCloseable</code> instance.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
 <dd><code><a href="Try.html#autoClose()">autoClose</a></code>&nbsp;in interface&nbsp;<code><a href="Try.html" title="interface in com.skopylov.functional">Try</a>&lt;<a href="Try.Failure.html" title="type parameter in Try.Failure">T</a>&gt;</code></dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>this Try</dd>
 </dl>
 </li>
 </ul>
@@ -477,9 +571,13 @@ implements <a href="Try.html" title="interface in com.skopylov.functional">Try</
 <li class="blockList">
 <h4>getFailureCause</h4>
 <pre class="methodSignature">public&nbsp;java.util.Optional&lt;java.lang.Exception&gt;&nbsp;getFailureCause()</pre>
+<div class="block"><span class="descfrmTypeLabel">Description copied from interface:&nbsp;<code><a href="Try.html#getFailureCause()">Try</a></code></span></div>
+<div class="block">Gets the failure cause.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
 <dd><code><a href="Try.html#getFailureCause()">getFailureCause</a></code>&nbsp;in interface&nbsp;<code><a href="Try.html" title="interface in com.skopylov.functional">Try</a>&lt;<a href="Try.Failure.html" title="type parameter in Try.Failure">T</a>&gt;</code></dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>Optional of Exception</dd>
 </dl>
 </li>
 </ul>
