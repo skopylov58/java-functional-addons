@@ -2,9 +2,39 @@
 
 ## `Try<T>` - functional exception handling
 
-`Try<T>` presents computation that may produce success result of type T or failure with exception. It is quite similar to Java `Optional<T>` which may have result value of type T or nothing (null pointer problem). 
+### Rational behind `Try<T>`
 
-I've intentionally made `Try<T>` API similar in some way to `Optional<T>` to smooth learning/using curve. If you familiar to Optional then you are ready to use Try with easy.
+I really like Java's functional features (streams, optionals, etc.) very much but it becomes painful 
+when using them in the real context. That is because Java's functional interfaces are Exception unaware
+and you must handle checked exceptions inside lambdas.
+Lets look at simple procedure of converting list of strings to list of URLs.
+
+```java
+    private List<URL> urlListTraditional(String[] urls) {
+        return Stream.of(urls).map(s -> {
+            try {
+                return new URL(s);
+            } catch (MalformedURLException me) { // Ops..., not too pretty
+                return null;
+            }
+        }).filter(Objects::nonNull)
+          .collect(Collectors.toList());
+    }
+```
+
+`Try<T>` presents computation that may produce success result of type T or failure with exception. It is quite similar to Java `Optional<T>` which may have result value of type T or nothing (null pointer problem). From the technical point of view, `Try<T>` is specialization of `Either<T, Exception>` interface. With `Try<T>`, sample above will look like this:
+
+```java
+    private List<URL> urlListWithTry(String[] urls) {
+        return Stream.of(urls).map(s -> Try.of(() -> new URL(s)))
+             .flatMap(Try::stream) //Failure gives empty stream
+             .collect(Collectors.toList());
+    }
+```
+### `Try<T>` with `Stream<T>` and `Optional<T>`
+
+`Try<T>` can be seamlessly converted to `Stream<T>` or `Optional<T>`.
+I've intentionally made `Try<T>` API similar in some way to `Stream<T>` and `Optional<T>` interfaces to smooth learning/using curve. If you familiar to Stream/Optional then you are ready to use Try with easy.
 
 ```java
 Try.of(...)
@@ -13,48 +43,51 @@ Try.of(...)
   .filter(...)
   .recover(...)
   .recover(...)
-  .logException(...)
   .onSuccess(...)
-  .getOrDefault(...)
+  .orElse(...)
 ```
 
-`Try<T>` seamlessly integrated with Java's `Stream<T>` API.
-Example shows converting array of strings to URLs.
+### Recovering failed `Try<T>`
+
+Do you have plans to recover from failures? If yes then `Try<T>` will help you to recover with easy.
+You can chain as many recover strategies as you want.
 
 ```java
-    private List<URL> urlListWithTry(String[] urls) {
-        return Stream.of(urls).map(s -> Try.of(() -> new URL(s)))
-                .peek(Try::logException)
-                .flatMap(Try::stream) //Failure gives empty stream
-                .collect(Collectors.toList());
-    }
-```
-
-Without `Try<T>` you must handle `MalformedURLException` explicitly.
-
-```java
-    private List<URL> urlListTraditional(String[] urls) {
-        return Stream.of(urls).map(s -> {
-            try {
-                return new URL(s);
-            } catch (MalformedURLException me) {
-                TestBase.logException(me);
-                return null;
-            }
-        }).filter(Objects::nonNull)
-          .collect(Collectors.toList());
-    }
-```
-
-`Try<T>` emulates Java's `try-with-resource` feature with `autoClose()` Try's method.
-
-```java
-Try.of(() -> new FileInputStream("path/to/file")).autoClose()
+Try.of(...)
   .map(...)
-  .getOrThrow() // <- this will automatically close FileInputStream
+  .map(...)
+  .filter(...)
+  .recover(recoverPlanA)
+  .recover(recoverPlanB)
+  .recover(recoverPlanC)
+  .onSuccess(...)
+  .orElse(...)
 ```
 
-See `Try<T>` [javadoc API here](https://github.com/skopylov58/java-async-retry/blob/master/try/javadoc/)
+If planA succeeds then PlanB and PlanC will not have effect (will not be invoked). Explanation is 
+simple - recover procedure has no effect for successful Try, so the only the first successful
+plan will be in action.
+
+### `Try<T>` with resources
+
+```java
+Try.of(() -> new FileInputStream("path/to/file")) // !!! hey, how we are going close this input stream?
+  .map(...)
+  .getOrElse(...)
+```
+
+`Try<T>` `autoClose()` method marks auto-closeable resources to be closed in some appropriate moment. So the code above should be re-written as follows:
+
+```java
+Try.of(() -> new FileInputStream("path/to/file"))
+  .autoClose() // marks input stream to close in the future
+  .map(...)
+  ...
+  .close() //closes all marked resources
+  .getOrElse(...)
+```
+
+`Try<T>` implements AutoCloseable interface and all marked resources will be closed automatically if Try is used inside Java' `try-with-resource` block.
 
 ## `Retry<T>` - asynchronous retry procedure
 
