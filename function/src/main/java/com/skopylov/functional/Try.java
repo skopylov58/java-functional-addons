@@ -124,7 +124,7 @@ public interface Try<T> extends Either<T, Exception>, AutoCloseable {
         Success(T val) {super(val);}
         
         @Override
-        public <R> Try<R> map(ExceptionalFunction<T, R> mapper) {
+        public <R> Try<R> map(ExceptionalFunction<? super T, ? extends R> mapper) {
           try {
               return success(mapper.applyWithException(right));
           } catch (Exception e) {
@@ -132,6 +132,15 @@ public interface Try<T> extends Either<T, Exception>, AutoCloseable {
           }
         }
         
+        @Override
+        public <R> Try<R> flatMap(ExceptionalFunction<? super T, Try<R>> mapper) {
+            try {
+                return mapper.applyWithException(right);
+            } catch (Exception e) {
+                return failure(e);
+            }
+        }
+
         @Override
         public Try<T> recover(ExceptionalSupplier<T> supplier) {return this;}
         
@@ -165,7 +174,7 @@ public interface Try<T> extends Either<T, Exception>, AutoCloseable {
         public boolean isSuccess() {return true;}
         
         @Override
-        public Try<T> onSuccess(ExceptionalConsumer<T> consumer) {
+        public Try<T> onSuccess(ExceptionalConsumer<? super T> consumer) {
             try {
                 consumer.acceptWithException(right);
                 return this;
@@ -197,6 +206,7 @@ public interface Try<T> extends Either<T, Exception>, AutoCloseable {
         public Optional<Exception> getFailureCause() {
             return Optional.empty();
         }
+
     }
     
     /**
@@ -210,7 +220,7 @@ public interface Try<T> extends Either<T, Exception>, AutoCloseable {
         
         @SuppressWarnings("unchecked")
         @Override
-        public <R> Try<R> map(ExceptionalFunction<T, R> mapper) {return (Try<R>) this;}
+        public <R> Try<R> map(ExceptionalFunction<? super T, ? extends R> mapper) {return (Try<R>) this;}
         
         @Override
         public Try<T> recover(ExceptionalSupplier<T> supplier) {
@@ -236,7 +246,7 @@ public interface Try<T> extends Either<T, Exception>, AutoCloseable {
         public boolean isSuccess() {return false;}
         
         @Override
-        public Try<T> onSuccess(ExceptionalConsumer<T> consumer) {return this;}
+        public Try<T> onSuccess(ExceptionalConsumer<? super T> consumer) {return this;}
         
         @Override
         public Try<T> onFailure(ExceptionalConsumer<Exception> consumer) {
@@ -274,6 +284,10 @@ public interface Try<T> extends Either<T, Exception>, AutoCloseable {
         public Optional<Exception> getFailureCause() {
             return Optional.of(left);
         }
+
+        @SuppressWarnings("unchecked")
+        @Override
+        public <R> Try<R> flatMap(ExceptionalFunction<? super T, Try<R>> mapper) {return (Try<R>) this;}
         
     }
 
@@ -303,6 +317,7 @@ public interface Try<T> extends Either<T, Exception>, AutoCloseable {
     /**
      * Closes resources marked by link autoClose()
      */
+    @Override
     default void close() {
         closeResources();
     }
@@ -402,7 +417,7 @@ public interface Try<T> extends Either<T, Exception>, AutoCloseable {
      * @param consumer consumer
      * @return this Try or new failure is consumer throws an exception
      */
-    Try<T> onSuccess(ExceptionalConsumer<T> consumer);
+    Try<T> onSuccess(ExceptionalConsumer<? super T> consumer);
 
     /**
      * Executes action on failure, has no action for success.
@@ -427,12 +442,21 @@ public interface Try<T> extends Either<T, Exception>, AutoCloseable {
     Try<T> recover(ExceptionalSupplier<T> supplier, ExceptionalPredicate<Exception> predicate);
 
     /**
-     * Maps one Try of type T to type R 
+     * Maps Try of type T to type R 
      * @param <R> new result type
      * @param mapper mapper
      * @return new Try of R type or failure if mapper throws exception/
      */
-    <R> Try<R> map(ExceptionalFunction<T, R> mapper); 
+    <R> Try<R> map(ExceptionalFunction<? super T, ? extends R> mapper); 
+
+    /**
+     * Maps Try of type T to type R 
+     * @param <R> new result type
+     * @param mapper mapper
+     * @return new Try of R type or failure if mapper throws exception/
+     */
+    <R> Try<R> flatMap(ExceptionalFunction<? super T, Try<R>> mapper); 
+
     
     /**
      * Filters current Try, has no action for failure.
