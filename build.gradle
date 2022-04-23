@@ -1,5 +1,7 @@
 buildscript {
-    repositories { mavenCentral() }
+    repositories { 
+      mavenCentral() 
+    }
 
     dependencies {
         classpath 'com.netflix.nebula:gradle-aggregate-javadocs-plugin:2.2.+'
@@ -15,11 +17,11 @@ task publishJavadoc (type: Copy) {
   into 'docs'
 }
 
-
 subprojects {
   apply plugin: 'java-library'
   apply plugin: 'eclipse'
   apply plugin: 'jacoco'
+  apply plugin: 'maven-publish'
 }
 
 subprojects {
@@ -38,6 +40,22 @@ subprojects {
   }
 
 }
+
+project(':function') {
+  publishing {
+    publications {
+        maven(MavenPublication) {
+            groupId = 'org.skopylov'
+            artifactId = 'functional'
+            version = '0.1'
+
+            from components.java
+        }
+    }
+  }
+
+}
+
 
 project(':jdbc').dependencies {
   implementation project(':function')

@@ -22,7 +22,10 @@ Lets look at simple procedure of converting list of strings to list of URLs.
     }
 ```
 
-`Try<T>` presents computation that may produce success result of type T or failure with exception. It is quite similar to Java `Optional<T>` which may have result value of type T or nothing (null pointer problem). From the technical point of view, `Try<T>` is specialization of `Either<T, Exception>` interface. With `Try<T>`, sample above will look like this:
+`Try<T>` presents computation that may produce success result of type T or failure with exception.
+It is quite similar to Java `Optional<T>` which may have result value of type T or nothing (null pointer problem).
+From the technical point of view, `Try<T>` is specialization of `Either<T, Exception>` interface.
+With `Try<T>`, sample above will look like this:
 
 ```java
     private List<URL> urlListWithTry(String[] urls) {
@@ -34,7 +37,8 @@ Lets look at simple procedure of converting list of strings to list of URLs.
 ### `Try<T>` with `Stream<T>` and `Optional<T>`
 
 `Try<T>` can be seamlessly converted to `Stream<T>` or `Optional<T>`.
-I've intentionally made `Try<T>` API similar in some way to `Stream<T>` and `Optional<T>` interfaces to smooth learning/using curve. If you familiar to Stream/Optional then you are ready to use Try with easy.
+I've intentionally made `Try<T>` API similar in some way to `Stream<T>` and `Optional<T>` 
+interfaces to smooth learning/using curve. If you familiar to Stream/Optional then you are ready to use Try with easy.
 
 ```java
 Try.of(...)
@@ -76,14 +80,15 @@ Try.of(() -> new FileInputStream("path/to/file")) // !!! hey, how we are going c
   .getOrElse(...)
 ```
 
-`Try<T>` `autoClose()` method marks auto-closeable resources to be closed in some appropriate moment. So the code above should be re-written as follows:
+`Try<T>` `autoClose()` method marks auto-closeable resources to be closed in some appropriate moment.
+So the code above should be re-written as follows:
 
 ```java
 Try.of(() -> new FileInputStream("path/to/file"))
   .autoClose() // marks input stream to close in the future
   .map(...)
   ...
-  .close() //closes all marked resources
+  .closeResources() //closes all marked resources
   .getOrElse(...)
 ```
 
