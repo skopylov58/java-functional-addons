@@ -1,4 +1,4 @@
-# java-async-retry
+# java-functional-addons
 
 ![example workflow](https://github.com/skopylov58/java-functional-addons/actions/workflows/gradle.yml/badge.svg)
 
