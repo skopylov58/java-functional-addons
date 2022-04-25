@@ -1,6 +1,6 @@
 # java-async-retry
 
-![example workflow](https://github.com/skopylov58/java-functional-adons/.github/workflows/gradle.yml/badge.svg)
+![example workflow](https://github.com/skopylov58/java-functional-addons/.github/workflows/gradle.yml/badge.svg)
 
 ## `Try<T>` - functional exception handling
 
