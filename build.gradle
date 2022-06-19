@@ -1,6 +1,7 @@
 buildscript {
     repositories { 
       mavenCentral() 
+      mavenLocal()
     }
 
     dependencies {
@@ -12,7 +13,6 @@ apply plugin: 'nebula-aggregate-javadocs'
 
 task publishJavadoc (type: Copy) {
   dependsOn 'aggregateJavadocs'
-  println 'Copying...'
   from 'build/docs/javadoc'
   into 'docs'
 }
@@ -21,7 +21,7 @@ subprojects {
   apply plugin: 'java-library'
   apply plugin: 'eclipse'
   apply plugin: 'jacoco'
-  apply plugin: 'maven-publish'
+  //apply plugin: 'maven-publish'
 }
 
 subprojects {
@@ -32,6 +32,7 @@ subprojects {
 
   repositories {
     mavenCentral()
+    mavenLocal()
   }
 
   task copyDocs(type: Copy) {
@@ -41,6 +42,7 @@ subprojects {
 
 }
 
+/*
 project(':function') {
   publishing {
     publications {
@@ -55,7 +57,31 @@ project(':function') {
   }
 
 }
+*/
 
+project(':function') {
+    apply plugin: "maven-publish"
+    publishing {
+        repositories {
+            maven {
+                name = "GitHubPackages"
+                url = uri("https://maven.pkg.github.com/skopylov58/java-functional-addons")
+                credentials {
+                    username = 'skopylov58' //project.findProperty("gpr.user") ?: System.getenv("USERNAME")
+                    password = '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' //project.findProperty("gpr.key") ?: System.getenv("TOKEN")
+                }
+            }
+        }
+        publications {
+            gpr(MavenPublication) {
+              groupId = 'org.skopylov'
+              artifactId = 'functional-addons'
+              version = '0.1'
+              from(components.java)
+            }
+        }
+    }
+}
 
 project(':jdbc').dependencies {
   implementation project(':function')

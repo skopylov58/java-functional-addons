@@ -23,15 +23,14 @@ public class Try0Test {
         
         Try<Integer> tr = Try.of(() -> 20/4);
         assertTrue(tr.isSuccess());
-        assertEquals(Integer.valueOf(5), tr.orElseThrow());
+        assertEquals(Integer.valueOf(5), tr.optional().get());
         
         tr = Try.of(() -> {throw new NullPointerException();});
         assertTrue(tr.isFailure());
-        Exception exception = tr.getFailureCause().get();
-        assertNotNull(exception);
-        assertEquals(NullPointerException.class, exception.getClass());
+        
+        tr.onFailure(e -> assertTrue(e instanceof NullPointerException));
         try {
-            tr.orElseThrow();
+            tr.get();
             fail();
         } catch (NullPointerException npe) {
             //expected
@@ -42,46 +41,23 @@ public class Try0Test {
     @Test
     public void testSupplierWithNull() {
         Try<Integer> t = Try.of(() -> null);
-        //assertTrue(t.isFailure());
-        Try<String> ts = t.map(i -> Integer.toString(i));
-        System.out.println(ts.getFailureCause().get());
-        
-    }
-    
-    
-//    @Test
-//    public void testCompletableFuture() throws Exception {
-//        
-//        CompletableFuture<Integer> f = new CompletableFuture<>();
-//        f.complete(5);
-//        Try<Integer> tr = Try.of(f);
-//        assertTrue(tr.isSuccess());
-//        
-//        f = new CompletableFuture<>();
-//        f.completeExceptionally(new FileNotFoundException());
-//        tr = Try.of(f);
-//        assertTrue(tr.isFailure());
-//        Exception cause = tr.getFailureCause().get();
-//        assertEquals(ExecutionException.class, cause.getClass());
-//        cause = (Exception) cause.getCause();
-//        assertEquals(FileNotFoundException.class, cause.getClass());
-//    }
+        assertTrue(t.isSuccess());
+        assertTrue(t.optional().isEmpty());
+    }    
     
     @Test
     public void testRunnable() throws Exception {
         
         Try<Class<Void>> run = Try.of(() -> System.out.println("Runnable"));
         assertTrue(run.isSuccess());
-        assertEquals(Void.TYPE, run.orElseThrow());
+        assertEquals(Void.TYPE, run.get());
 
         ExceptionalRunnable er = () -> {throw new FileNotFoundException();};
         
         run = Try.of(er);
         assertTrue(run.isFailure());
-        Optional<Exception> opt = run.getFailureCause();
-        assertTrue(opt.isPresent());
-        Exception exception = opt.get();
-        assertEquals(FileNotFoundException.class, exception.getClass());
+        run.onFailure(e -> assertTrue(e instanceof FileNotFoundException));
+        
         try {
             run.get();
             fail();
@@ -123,11 +99,6 @@ public class Try0Test {
         
         Predicate<Integer> p = i -> false;
         ExceptionalPredicate<Integer> exp = i -> false;
-        
-        //ExceptionalPredicate<T> cheched(Predicate<T> pred) {return t -> pred.test();};
-        
-//        assertTrue(Try.success(1).filter(p).isFailure());
-//        assertTrue(Try.success(1).filter(exp).isFailure());
     }
     
 }

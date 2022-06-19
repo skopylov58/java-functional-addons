@@ -1,9 +1,5 @@
 package com.skopylov.functional;
 
-import java.util.Optional;
-import java.util.function.Supplier;
-import java.util.stream.Stream;
-
 /**
  * Minimal functional Either implementation.
  * 
@@ -27,32 +23,6 @@ public interface Either<R, L> {
      */
     default boolean isRight() {return !isLeft();}
     
-    /**
-     * Gets right side with default value for left side.
-     * @param defaultValue default value to return if this is left.
-     * @return right side or default value in case of left side.
-     */
-    R orElse(R defaultValue);
-
-    /**
-     * Gets right side with default value for left side using supplier.
-     * @param supplier supplier to use for left side.
-     * @return right side or supplied value in case of left side.
-     */
-    R orElseGet(Supplier<R> supplier);
-    
-    /**
-     * Converts this either to optional.
-     * @return right side optional or Optional.empty() for the left side.
-     */
-    Optional<R> optional();
-    
-    /**
-     * Converts this either to stream.
-     * @return one element stream for right side or empty stream for left side.
-     */
-    Stream<R> stream();
-
     /**
      * Gets right side of either.
      * @return right side or throws {@link IllegalStateException} for the left side.
@@ -106,18 +76,6 @@ public interface Either<R, L> {
         public boolean isLeft() {return false;}
 
         @Override
-        public R orElse(R def) {return right;}
-
-        @Override
-        public R orElseGet(Supplier<R> supplier) {return right;}
-
-        @Override
-        public Optional<R> optional() {return Optional.ofNullable(right);}
-
-        @Override
-        public Stream<R> stream() {return Stream.of(right);}
-
-        @Override
         public R getRight() {return right;}
 
         @Override
@@ -143,26 +101,6 @@ public interface Either<R, L> {
         public boolean isLeft() {return true;}
 
         @Override
-        public R orElse(R def) {
-            return def;
-        }
-
-        @Override
-        public R orElseGet(Supplier<R> supplier) {
-            return supplier.get();
-        }
-
-        @Override
-        public Optional<R> optional() {
-            return Optional.empty();
-        }
-
-        @Override
-        public Stream<R> stream() {
-            return Stream.empty();
-        }
-
-        @Override
         public R getRight() {
             throw new IllegalStateException("This is left");
         }
@@ -174,6 +112,5 @@ public interface Either<R, L> {
         
     }
 }
-    
-        
+
 

@@ -10,6 +10,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -39,6 +40,9 @@ public class ReadURLTest {
     }
 
     public List<String> readURLTraditional(String urlString) {
+        if (urlString == null) {
+            return Collections.emptyList();
+        }
         URL url;
         try {
             url = new URL(urlString);
@@ -56,12 +60,17 @@ public class ReadURLTest {
     }
 
     public List<String> readURLWithTry(String urlString) {
-        return Try.of(() -> new URL(urlString))
+        try(var reader = Try.success(urlString)
+                .filter(Objects::nonNull)
+                .map(URL::new)
                 .map(URL::openStream)
-                .map(i -> new BufferedReader(new InputStreamReader(i))).autoClose()
-                .map(BufferedReader::lines)
-                .map(s -> s.collect(Collectors.toList()))
-                .orElse(Collections.emptyList());
+                .map(i -> new BufferedReader(new InputStreamReader(i)))) {
+            
+            return reader.map(r -> r.lines().collect(Collectors.toList()))
+            .onFailure(e -> System.out.println(e.getMessage()))
+            .optional()
+            .orElse(Collections.emptyList());
+        }
     }
 
     @Test

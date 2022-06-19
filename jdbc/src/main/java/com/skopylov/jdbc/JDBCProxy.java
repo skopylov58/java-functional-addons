@@ -28,9 +28,8 @@ public class JDBCProxy implements InvocationHandler {
         Instant end = null;
         try {
             
-            Object [] newArgs = Try.ofNullable(() -> MiddleManJDBCDriver.interceptor.beforeCall(target, method, args))
-            .filter(Optional::isPresent)
-            .map(Optional::get)
+            Object [] newArgs = Try.of(() -> MiddleManJDBCDriver.interceptor.beforeCall(target, method, args))
+            .optional()
             .orElse(args);
                 
             //invoke

@@ -37,13 +37,13 @@ public class PropertiesTest {
     }
 
     public Properties fromFileWithTry(String fileName) {
-        Properties props = new Properties();
-        return Try.of(() -> new FileInputStream(fileName)).autoClose()
-        .onSuccess(props::load)
-        //.logException()
-        .map(in -> props)
-        .closeResources()
-        .orElse(props);
+        Properties p = new Properties();
+        try (var input = Try.of(() -> new FileInputStream(fileName))) {
+            return input.map(in -> {p.load(in);return p;})
+            .onFailure(System.out::println)
+            .optional()
+            .orElse(p);
+        }
     }
-    
+
 }

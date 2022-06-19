@@ -1,6 +1,6 @@
 package com.skopylov.jdbc.pool;
 
-import java.io.PrintWriter;
+import java.lang.System.Logger.Level;
 import java.sql.Array;
 import java.sql.Blob;
 import java.sql.CallableStatement;
@@ -12,44 +12,50 @@ import java.sql.NClob;
 import java.sql.PreparedStatement;
 import java.sql.SQLClientInfoException;
 import java.sql.SQLException;
-import java.sql.SQLFeatureNotSupportedException;
 import java.sql.SQLWarning;
 import java.sql.SQLXML;
 import java.sql.Savepoint;
 import java.sql.Statement;
 import java.sql.Struct;
+import java.time.Duration;
+import java.time.Instant;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Properties;
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
-import java.util.logging.Logger;
+import java.util.function.Supplier;
+import java.util.stream.Stream;
 
-import javax.sql.DataSource;
-
+import com.skopylov.functional.ExceptionalSupplier;
 import com.skopylov.functional.Try;
+import com.skopylov.functional.Tuple;
 import com.skopylov.retry.Retry;
 
-public class JDBCConnectionPool implements DataSource {
+public class JDBCConnectionPool {
     
     private static final String NO_AVAILABLE_CONNECTIONS = "No available connections in the pool";
     private int maxConnections = 10;
-    private long retryInterval = 10;
-    private TimeUnit retryIntervalTimeUnit = TimeUnit.SECONDS;
     
-    private int loginTimeout = 1;
-    private TimeUnit loginTimeoutTimeUnit = TimeUnit.SECONDS;
+    private RetryOptions poolRetryOptions = new RetryOptions(10, 1, TimeUnit.SECONDS);
+    private RetryOptions clientRetryOptions = new RetryOptions(10, 200, TimeUnit.MILLISECONDS);
     
     private boolean checkConnection = true;
-    int validTimeOut = 10; //in sec
+    int connectionValidationTimeOut = 10; //in seconds
 
-    String userName;
-    String password;
-    
-    PrintWriter out;
+    private boolean checkOrphans = false;
+    private Duration orphanDuration = Duration.ofSeconds(30);
+    private ConcurrentHashMap<Connection, Tuple<Instant,StackTraceElement[]>> orphaned;
+    private ScheduledExecutorService orpansWatchDog;
+
+//    String userName;
+//    String password;
     
     private final String dbUrl;
 
@@ -64,96 +70,157 @@ public class JDBCConnectionPool implements DataSource {
         maxConnections = maxCon;
     }
 
-    //== Data source implementation ===
-    @Override
-    public void setLoginTimeout(int seconds) throws SQLException {
-        loginTimeout = seconds;
-    }
-
-    @Override
-    public int getLoginTimeout() throws SQLException {
-        return loginTimeout;
-    }
-
-    @Override
-    public boolean isWrapperFor(Class<?> iface) throws SQLException {
-        return false;
-    }    
-    
-    @Override
-    public <T> T unwrap(Class<T> iface) throws SQLException {
-        return null;
-    }
-    @Override
-    public Connection getConnection(String username, String password) throws SQLException {
-        Objects.requireNonNull(username);
-        Objects.requireNonNull(password);
-        this.userName = username;
-        this.password = password;
-        return null;
-    }
-    
-    @Override
-    public void setLogWriter(PrintWriter out) throws SQLException {
-        this.out = out;
-    }
-
-    @Override
-    public PrintWriter getLogWriter() throws SQLException {
-        return out;
-    }
-    
-    @Override
-    public Logger getParentLogger() throws SQLFeatureNotSupportedException {
-        throw new SQLFeatureNotSupportedException();
-    }
-    
     public void start() {
         for (int i = 0; i < maxConnections; i++) {
-            getDbConnection(dbUrl);
+            aquireDbConnection(dbUrl);
+        }
+        if (checkOrphans) {
+            orphaned = new ConcurrentHashMap<>(maxConnections);
+            orpansWatchDog = Executors.newScheduledThreadPool(1);
+            orpansWatchDog.schedule(this::checkOrphan, 1, TimeUnit.SECONDS);
         }
     }
     
     public void stop() {
         pool.forEach(c -> Try.of(c.getDelegate()::close));
         pool.clear();
+        if (checkOrphans) {
+            orpansWatchDog.shutdown();
+        }
     }
     
     public Connection getConnection() throws SQLException {
-        Connection con =
-        Try.ofNullable(() -> pool.poll(loginTimeout, loginTimeoutTimeUnit))
-            //.onFailure(InterruptedException.class, t -> Thread.currentThread().interrupt())
-            //.orElseThrow(() -> new SQLException("InterruptedException"))
-            .filter(opt -> !opt.isEmpty())
-            .map(Optional::get)
-            .orElseThrow(() -> new SQLException(NO_AVAILABLE_CONNECTIONS));
-            
-        return Try.success(con)
-            .filter(c -> !checkConnection || c.isValid(validTimeOut))
-            .onFailure(t -> handleInvalidConnection(con))
-            .orElseThrow(() -> new SQLException(NO_AVAILABLE_CONNECTIONS));
-    }        
-
-    void handleInvalidConnection(Connection con) {
-        Try.of(con::close); //better abort()
-        getDbConnection(dbUrl);
+        Connection result = Stream.generate(() -> 
+            Try.of(this::getConnectionFromPool)
+            .ifInterrupted()
+            .optional())
+        .limit(clientRetryOptions.numOfRetries) //Stream.generate().limit() emulates loop
+        .flatMap(Optional::stream)              //Filter empty optional
+        .findFirst()                            //stops on first connection
+        .orElseThrow(() -> new SQLException(NO_AVAILABLE_CONNECTIONS));
+        
+        if (checkOrphans) {
+            StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
+            orphaned.put(result, new Tuple<Instant, StackTraceElement[]>(Instant.now(),stackTrace));
+        }
+        return result;
     }
 
-    private void getDbConnection(String dbUrl) {
+    public Connection getConnectionWithLoopAndTry() throws SQLException {
+        for (long i = 0; i < clientRetryOptions.numOfRetries; i++) {
+            Try<Connection> tried = Try.of(this::getConnectionFromPool)
+                    .ifInterrupted()
+                    .filter(Objects::nonNull);
+            if (tried.isSuccess()) {
+                return tried.optional().get();
+            }
+        }
+        throw new SQLException(NO_AVAILABLE_CONNECTIONS);
+    }
+
+    public Connection getConnectionWithLoopAndOptional() throws SQLException {
+        for (long i = 0; i < clientRetryOptions.numOfRetries; i++) {
+            var opt = Try.of(this::getConnectionFromPool)
+                    .ifInterrupted()
+                    .optional();
+            if (opt.isPresent()) {
+                return opt.get();
+            }
+        }
+        throw new SQLException(NO_AVAILABLE_CONNECTIONS);
+    }
+
+    public Connection getConnectionTraditional() throws SQLException {
+        for (long i = 0; i < clientRetryOptions.numOfRetries; i++) {
+            try {
+                Connection c = getConnectionFromPool();
+                if (c != null) {
+                    return c;
+                }
+            } catch (InterruptedException  ie) {
+                Thread.currentThread().interrupt();
+            } catch (SQLException e) {
+                // continue
+            }
+        }
+        throw new SQLException(NO_AVAILABLE_CONNECTIONS);
+    }
+
+    void checkOrphan() {
+        orphaned.forEachValue(0, p -> {
+            Duration d = Duration.between(p.first, Instant.now());
+            if (d.compareTo(orphanDuration) > 0) {
+                System.getLogger(JDBCConnectionPool.class.getName())
+                .log(Level.WARNING, "Orphaned connection detected");
+            }
+        });
+    }
+
+    private Connection getConnectionFromPool() throws InterruptedException, SQLException {
+        PooledConnection connection = pool.poll(clientRetryOptions.delay, clientRetryOptions.timeUnit);
+        if (connection != null && checkConnection) {
+            if (!connection.isValid(connectionValidationTimeOut)) {
+                handleInvalidConnection(connection);
+                connection = null;
+            }
+        }
+        return connection;
+    }
+    
+    private void handleInvalidConnection(Connection con) {
+        Try.of(con::close);
+        aquireDbConnection(dbUrl);
+    }
+
+    private void aquireDbConnection(String dbUrl) {
         Retry.of(() -> DriverManager.getConnection(dbUrl))
-        .delay(retryInterval, retryIntervalTimeUnit)
+        .maxTries(poolRetryOptions.numOfRetries)
+        .delay(poolRetryOptions.delay, poolRetryOptions.timeUnit)
+        .withErrorHandler((i, j, th) -> System.out.println(th))
         .retry()
         .thenAccept(c -> pool.add(new PooledConnection(c)));
     }
+
+    /**
+     * Retry options in terms of number of retries, delays and time units.
+     */
+    public static class RetryOptions {
+        final long numOfRetries;
+        final long delay;
+        final TimeUnit timeUnit;
+        
+        public RetryOptions(long num, long delay, TimeUnit unit) {
+            numOfRetries = num;
+            this.delay = delay;
+            timeUnit = unit;
+        }
+    }
     
+    /**
+     * Wrapper class for physical DB connection.
+     * 
+     * Delegates calls to the physical connection.
+     * Overrides {@link #close()} method to return connection to the pool.
+     * 
+     * @author skopylov@gmail.com
+     *
+     */
     class PooledConnection implements Connection {
         
         private final Connection delegate;
 
+        /**
+         * Constructor
+         * @param c physical DB connection
+         */
         PooledConnection(Connection c) {
             delegate = c;
         }
         
+        /**
+         * Gets physical connection
+         * @return physical connection
+         */
         public Connection getDelegate() {
             return delegate;
         }
@@ -210,6 +277,12 @@ public class JDBCConnectionPool implements DataSource {
 
         @Override
         public void close() throws SQLException {
+            if (checkOrphans) {
+                Tuple<Instant,StackTraceElement[]> remove = orphaned.remove(this);
+                if (remove == null) {
+                    throw new IllegalStateException();
+                }
+            }
             pool.add(this);
         }
 

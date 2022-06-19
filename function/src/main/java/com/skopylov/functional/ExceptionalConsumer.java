@@ -25,6 +25,18 @@ public interface ExceptionalConsumer<T> extends Consumer<T>{
             throw new TryException(e);
         }
     }
+
+    default Exception accept0(T t) {
+        try {
+            acceptWithException(t);
+            return null;
+        } catch (RuntimeException re) {
+            throw re;
+        } catch (Exception e) {
+            return e;
+        }
+    }
+
     
     void acceptWithException(T t) throws Exception;
     

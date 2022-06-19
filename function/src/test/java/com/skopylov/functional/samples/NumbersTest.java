@@ -8,6 +8,8 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
+import java.util.function.BiConsumer;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -15,6 +17,7 @@ import java.util.stream.Stream;
 import org.junit.Test;
 
 import com.skopylov.functional.Try;
+import com.skopylov.functional.Tuple;
 
 /**
  * Converts list of strings to numbers.
@@ -41,13 +44,25 @@ public class NumbersTest {
     List<Number> fromStringArrayWithTry(String [] nums) {
         return Stream.of(nums)
         .map(s -> Try.of(() ->Integer.valueOf(s)))
+        .peek(t -> t.onFailure(this::logError, e -> e instanceof NumberFormatException))
         .flatMap(Try::stream)  //stream for Failure is empty
         .collect(Collectors.toList());
     }
 
+    List<Number> fromStringArrayWithTry0(String [] nums) {
+        return Stream.of(nums)
+        .filter(Objects::nonNull)
+        .map(s -> Try.success(s).map(i-> Integer.valueOf(i) , (i, e) -> logError(e)))
+        .flatMap(Try::stream)  //stream for Failure is empty
+        .collect(Collectors.toList());
+    }
+    
     List<Number> fromStringArrayTraditional(String [] nums) {
         List<Number> res = new LinkedList<>();
         for (String s : nums) {
+            if (s == null) {
+                continue;
+            }
             try {
                 Number n = Integer.valueOf(s);
                 res.add(n);
@@ -61,6 +76,18 @@ public class NumbersTest {
     void logError(Exception e) {
         System.out.println(e.getClass().getName() + " " + e.getMessage());
     }
+
+    List<Number> fromStringArrayWithTuple(String [] nums) {
+        return Stream.of(nums)
+        .map(s -> new Tuple<String, Try<Integer>>(s,Try.of(() ->Integer.valueOf(s))))
+        .collect(Collectors.groupingBy(t -> t.second.isSuccess()))
+        .get(true)
+        .stream()
+        .map(t -> t.second.get())
+        .collect(Collectors.toList());
+    }
+
+    
     
     @Test
     public void testAssign() {

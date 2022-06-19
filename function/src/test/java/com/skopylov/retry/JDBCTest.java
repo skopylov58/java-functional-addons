@@ -48,11 +48,12 @@ public class JDBCTest {
    }
    
    public List<String> JDBCWithTry() {
-       return Try.of(() -> getConnectionWithRetry(DB_URLS).get()).autoClose()
-       .map(Connection::createStatement).autoClose()
-       .map(s -> s.executeQuery(QUERY)).autoClose()
+       return Try.of(() -> getConnectionWithRetry(DB_URLS).get())
+       .map(Connection::createStatement)
+       .map(s -> s.executeQuery(QUERY))
        .map(JDBCTest::processResultSet)
        //.logException()
+       .optional()
        .orElse(Collections.emptyList());
    }
    
@@ -81,7 +82,6 @@ public class JDBCTest {
     * 
     * @param jdbcUrls list of databases to connect
     * @return connection to first alive database
-    * @throws Exception if can't connect to any database
     */
    public Connection getConnection(String [] jdbcUrls) throws SQLException {
        return Stream.of(jdbcUrls)

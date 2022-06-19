@@ -15,9 +15,8 @@ public class LogExceptionTest {
     public void testName() throws Exception {
         
         InputStream input = Try.<InputStream>of(() -> new FileInputStream("/a/b/c"))
-                .autoClose()
-                //.logException()
                 .onFailure(this::logError)
+                .optional()
                 .orElse(new ByteArrayInputStream("foo".getBytes()));
     }
     

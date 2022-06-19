@@ -7,7 +7,7 @@ import java.sql.DriverManager;
 import java.sql.DriverPropertyInfo;
 import java.sql.SQLException;
 import java.sql.SQLFeatureNotSupportedException;
-import java.util.Optional;
+import java.util.Objects;
 import java.util.Properties;
 import java.util.logging.Logger;
 
@@ -24,14 +24,14 @@ public class MiddleManJDBCDriver implements Driver {
     }
 
     static Interceptor loadInterceptor(String className) {
-        return Try.ofNullable(() -> className)
-        .filter(Optional::isPresent)
-        .map(Optional::get)
+        return Try.of(() -> className)
+        .filter(Objects::nonNull)
         .map(s -> Thread.currentThread().getContextClassLoader().loadClass(s))
-        .map(c -> c.getConstructor().newInstance())
-        .filter(Interceptor.class::isInstance, 
-                c -> System.out.println(c.getClass().getName() + " should be Interceptor"))
-        .cast(Interceptor.class)
+        .map(c -> (Interceptor)c.getConstructor().newInstance())
+//        .filter(Interceptor.class::isInstance, 
+//                c -> System.out.println(c.getClass().getName() + " should be Interceptor"))
+        //.cast(Interceptor.class)
+        .optional()
         .orElse(new SimpleLoggingInterceptor());
     }
     
