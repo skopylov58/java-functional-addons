@@ -111,11 +111,11 @@ public interface SimpleTry<T> extends AutoCloseable{
         @Override
         public SimpleTry<T> closeable() {
             if (either.isRight()) {
-                if (either.getRight() instanceof AutoCloseable auto) {
+                if (either.getRight() instanceof AutoCloseable) {
                     if (resources == null) {
                         resources = new LinkedList<>();
                     }
-                    resources.add(auto);
+                    resources.add((AutoCloseable) either.getRight());
                 } else {
                     throw new IllegalArgumentException(either.getRight() + " should be AutoCloseable");
                 }

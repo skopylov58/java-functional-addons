@@ -360,9 +360,9 @@ public interface Try<T> extends AutoCloseable {
 
         @Override
         public void close() {
-            if (value instanceof AutoCloseable auto) {
+            if (value instanceof AutoCloseable) {
                 try {
-                    auto.close();
+                    ((AutoCloseable) value).close();
                 } catch (Exception e) {
                 }
             } else {
