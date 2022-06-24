@@ -9,7 +9,6 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.time.Duration;
 import java.time.Instant;
-import java.util.Optional;
 
 import com.skopylov.functional.Try;
 

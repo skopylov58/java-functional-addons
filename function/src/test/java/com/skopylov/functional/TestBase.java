@@ -2,8 +2,6 @@ package com.skopylov.functional;
 
 import java.util.Date;
 
-import com.skopylov.functional.ExceptionalConsumer;
-
 public class TestBase {
     
     

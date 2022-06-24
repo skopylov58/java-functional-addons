@@ -18,8 +18,6 @@ import java.util.concurrent.TimeoutException;
 
 import org.junit.Test;
 
-import com.skopylov.retry.Retry;
-
 public class RetryTest {
     
     @Test

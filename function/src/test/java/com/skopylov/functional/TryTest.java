@@ -1,12 +1,8 @@
 package com.skopylov.functional;
 
-import static org.junit.Assert.*;
-
-import java.io.FileNotFoundException;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
-
-import com.skopylov.functional.Try;
 
 public class TryTest {
 

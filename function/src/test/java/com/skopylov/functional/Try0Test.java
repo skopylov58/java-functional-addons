@@ -1,20 +1,15 @@
 package com.skopylov.functional;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.io.FileNotFoundException;
-import java.util.Optional;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
 import java.util.function.Predicate;
 
 import javax.naming.NoPermissionException;
 
 import org.junit.Test;
-
-import com.skopylov.functional.ExceptionalPredicate;
-import com.skopylov.functional.ExceptionalRunnable;
-import com.skopylov.functional.TryException;
 
 public class Try0Test {
     
