@@ -15,8 +15,6 @@ import java.util.stream.Stream;
  * In some way Try is similar to {@link Optional} which may have value or not.
  * Use {@link #isSuccess()} and {@link #isFailure()} methods to determine flavor of current try.
  *
- * From the technical perspective, Try&lt;T&gt; is specialization of {@link Either} &lt;T, Exception&gt;
- * 
  * <p>
  * Try has static factory methods <code>Try.of(...)</code> for producing tries from 
  * {@link ExceptionalSupplier}, {@link ExceptionalRunnable} functional interfaces.
