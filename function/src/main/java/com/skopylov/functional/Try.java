@@ -34,7 +34,7 @@ import java.util.stream.Stream;
  * 
  * <p>
  * Be aware that these Try methods behave differently depending on success or failure.
- * For example {@link #onSuccess(Consumer)} method does not have any effect 
+ * For example {@link #onSuccess(ExceptionalConsumer)} method does not have any effect 
  * in case of failure and {@link #onFailure(Consumer)} does not have any effect for success. 
  * 
  * <p>
