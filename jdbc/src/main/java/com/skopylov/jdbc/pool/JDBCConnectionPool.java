@@ -137,6 +137,7 @@ public class JDBCConnectionPool {
                 }
             } catch (InterruptedException  ie) {
                 Thread.currentThread().interrupt();
+                throw new SQLException(ie);
             } catch (SQLException e) {
                 // continue
             }

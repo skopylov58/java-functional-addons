@@ -44,13 +44,6 @@ import java.util.stream.Stream;
  * If some <code>recover</code> method succeeds, then remaining <code>recover</code> methods 
  * will not have an action/effect. 
  *
- * <pre>
- *   Try.of (() -&gt; new FileInputStream("path/to/file")).autoClose()
- *   .map(...)
- *   .getOrThrow() // this will close FileInputStream
- *   
- * </pre>
- * 
  * @author skopylov@gmail.com
  * 
  * @param <T> type of Try's success result.
@@ -66,7 +59,7 @@ public interface Try<T> extends AutoCloseable {
      * @param consumer consumer
      * @return this Try or new failure is consumer throws an exception
      */
-    Try<T> onSuccess(Consumer<? super T> consumer);
+    Try<T> onSuccess(ExceptionalConsumer<? super T> consumer);
 
     /**
      * Executes action on failure, has no action for success.
@@ -330,9 +323,13 @@ public interface Try<T> extends AutoCloseable {
         public boolean isSuccess() {return true;}
         
         @Override
-        public Try<T> onSuccess(Consumer<? super T> consumer) {
-            consumer.accept(value);
-            return this;
+        public Try<T> onSuccess(ExceptionalConsumer<? super T> consumer) {
+            try {
+                consumer.acceptWithException(value);
+                return this;
+            } catch (Exception e) {
+                return failure(e);
+            }
         }
         
         @Override
@@ -411,7 +408,7 @@ public interface Try<T> extends AutoCloseable {
         public boolean isSuccess() {return false;}
         
         @Override
-        public Try<T> onSuccess(Consumer<? super T> consumer) {return this;}
+        public Try<T> onSuccess(ExceptionalConsumer<? super T> consumer) {return this;}
         
         @Override
         public Try<T> filter(Predicate<T> pred, Consumer<T> consumer) {return this;}
