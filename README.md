@@ -13,7 +13,8 @@ Lets look at simple procedure of converting list of strings to list of URLs.
 
 ```java
     private List<URL> urlListTraditional(String[] urls) {
-        return Stream.of(urls).map(s -> {
+        return Stream.of(urls)
+        .map(s -> {
             try {
                 return new URL(s);
             } catch (MalformedURLException me) { // Ops..., not too pretty
@@ -25,33 +26,47 @@ Lets look at simple procedure of converting list of strings to list of URLs.
 ```
 
 `Try<T>` presents computation that may produce success result of type T or failure with exception.
-It is quite similar to Java `Optional<T>` which may have result value of type T or nothing (null pointer problem).
-From the technical point of view, `Try<T>` is specialization of `Either<T, Exception>` interface.
+It is quite similar to Java `Optional<T>` which may have result value of type T or nothing (null value).
 With `Try<T>`, sample above will look like this:
 
 ```java
     private List<URL> urlListWithTry(String[] urls) {
-        return Stream.of(urls).map(s -> Try.of(() -> new URL(s)))
-             .flatMap(Try::stream) //Failure gives empty stream
-             .collect(Collectors.toList());
+        return Stream.of(urls)
+            .map(s -> Try.of(() -> new URL(s)))
+            .flatMap(Try::stream) //Failure gives empty stream
+            .collect(Collectors.toList());
     }
 ```
 ### `Try<T>` with `Stream<T>` and `Optional<T>`
 
-`Try<T>` can be seamlessly converted to `Stream<T>` or `Optional<T>`.
-I've intentionally made `Try<T>` API similar in some way to `Stream<T>` and `Optional<T>` 
-interfaces to smooth learning/using curve. If you familiar to Stream/Optional then you are ready to use Try with easy.
+`Try<T>` can be easily converted  to the `Optional<T>` by using `Try#optional()` such way that failed Try will be converted to the `Optional.empty`.
 
-```java
-Try.of(...)
-  .map(...)
-  .map(...)
-  .filter(...)
-  .recover(...)
-  .recover(...)
-  .onSuccess(...)
-  .orElse(...)
+I have intentionally made `Try<T>` API very similar to the Java `Optional<T>` API.
+`Try#filter(Predicate<T>)` and`Try#map(Function<T,R>)` methods have the same semantics as corresponding Optional methods.
+So if you are familiar to `Optional<T>` then you will get used to `Try<T>` with easy.
+
+`Try<T>` can be easily converted  to the `Stream<T>` by using `Try#stream()` the same way as it is done for `Optional#stream()`.
+Successful `Try<T>` will be converted to one element stream of type T, failed Try will be converted to the empty stream.
+
+You can filter failed tries in the stream two possible ways - first is traditional by using `Try#filter()`
+
 ```
+    ...
+    .filter(Try::isSuccess)
+    .map(Try::get)
+    ...
+
+```
+
+Second approach is a bit shorter by using `Try#stream()`
+
+```
+    ...
+    .flatMap(Try::stream)
+    ...
+```
+
+This code will filter failed tries and return stream of successful values of type T.
 
 ### Recovering failed `Try<T>`
 
@@ -76,25 +91,19 @@ plan will be in action.
 
 ### `Try<T>` with resources
 
-```java
-Try.of(() -> new FileInputStream("path/to/file")) // !!! hey, how we are going close this input stream?
-  .map(...)
-  .getOrElse(...)
+`Try<T>` implements AutoCloseable interface, and `Try<T>` can be used inside `try-with-resource` block. 
+Let's imagine we need open socket, write a few bytes to the socket's output stream and then close socket.
+This code with `Try<T>` will look as following:
+
+```
+    try (var s = Try.of(() -> new Socket("host", 8888))) {
+        s.map(Socket::getOutputStream)
+        .onSuccess(out -> out.write(new byte[] {1,2,3}))
+        .onFailure(e -> System.out.println(e));
+    }
 ```
 
-`Try<T>` `autoClose()` method marks auto-closeable resources to be closed in some appropriate moment.
-So the code above should be re-written as follows:
-
-```java
-Try.of(() -> new FileInputStream("path/to/file"))
-  .autoClose() // marks input stream to close in the future
-  .map(...)
-  ...
-  .closeResources() //closes all marked resources
-  .getOrElse(...)
-```
-
-`Try<T>` implements AutoCloseable interface and all marked resources will be closed automatically if Try is used inside Java' `try-with-resource` block.
+Socket will be closed after last curly bracket.
 
 ## `Retry<T>` - asynchronous retry procedure
 
