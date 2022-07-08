@@ -21,10 +21,13 @@ subprojects {
   apply plugin: 'java-library'
   apply plugin: 'eclipse'
   apply plugin: 'jacoco'
-  //apply plugin: 'maven-publish'
   java {
     sourceCompatibility = "11"
     targetCompatibility = "11"
+  }
+  java {
+    withJavadocJar()
+    withSourcesJar()
   }
 }
 
@@ -47,23 +50,6 @@ subprojects {
 
 }
 
-/*
-project(':function') {
-  publishing {
-    publications {
-        maven(MavenPublication) {
-            groupId = 'org.skopylov'
-            artifactId = 'functional'
-            version = '0.1'
-
-            from components.java
-        }
-    }
-  }
-
-}
-*/
-
 project(':function') {
     apply plugin: "maven-publish"
     publishing {
@@ -79,7 +65,7 @@ project(':function') {
         }
         publications {
             gpr(MavenPublication) {
-              groupId = 'org.skopylov'
+              groupId = 'com.github.skopylov58'
               artifactId = 'functional-addons'
               version = '0.1'
               from(components.java)

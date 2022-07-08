@@ -7,8 +7,8 @@ import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Supplier;
 
-import com.skopylov.functional.ExceptionalRunnable;
-import com.skopylov.functional.ExceptionalSupplier;
+import com.github.skopylov58.functional.ExceptionalRunnable;
+import com.github.skopylov58.functional.ExceptionalSupplier;
 
 /**
  * Interface to perform asynchronous retry operations on supplier
