@@ -57,7 +57,7 @@ public class RecoverTest {
     }
     
     Optional<String> getPropertyWithTryAndStream(String fileName, String propName) {
-        return Stream.of((ExceptionalSupplier<String>) 
+        return Stream.of((Try.CheckedSupplier<String>) 
             () -> readPropertyFromFile(fileName, propName),
             () -> readPropertyFromFile(System.getProperty("user.home")+"/"+ fileName, propName),
             () -> System.getenv(propName),

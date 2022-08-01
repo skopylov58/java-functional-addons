@@ -17,7 +17,7 @@ import java.util.stream.Stream;
  *
  * <p>
  * Try has static factory methods <code>Try.of(...)</code> for producing tries from 
- * {@link ExceptionalSupplier}, {@link ExceptionalRunnable} functional interfaces.
+ * {@link CheckedSupplier}, {@link CheckedRunnable} functional interfaces.
  * 
  * <p>Methods that return Try could be used for method chaining.
  * <pre>
@@ -34,7 +34,7 @@ import java.util.stream.Stream;
  * 
  * <p>
  * Be aware that these Try methods behave differently depending on success or failure.
- * For example {@link #onSuccess(ExceptionalConsumer)} method does not have any effect 
+ * For example {@link #onSuccess(CheckedConsumer)} method does not have any effect 
  * in case of failure and {@link #onFailure(Consumer)} does not have any effect for success. 
  * 
  * <p>
@@ -50,7 +50,21 @@ import java.util.stream.Stream;
  */
 
 public interface Try<T> extends AutoCloseable {
+    
+    
+    @FunctionalInterface
+    interface CheckedSupplier<T> {T get() throws Exception;}
 
+    @FunctionalInterface
+    interface CheckedConsumer<T> {void accept(T t) throws Exception;}
+    
+    @FunctionalInterface
+    interface CheckedFunction<T, R> {R apply(T t) throws Exception;}
+    
+    @FunctionalInterface
+    interface CheckedRunnable {void run() throws Exception;}
+
+    
     //------------------
     // Interface methods
     //------------------
@@ -59,7 +73,7 @@ public interface Try<T> extends AutoCloseable {
      * @param consumer consumer
      * @return this Try or new failure is consumer throws an exception
      */
-    Try<T> onSuccess(ExceptionalConsumer<? super T> consumer);
+    Try<T> onSuccess(CheckedConsumer<? super T> consumer);
 
     /**
      * Executes action on failure, has no action for success.
@@ -87,7 +101,7 @@ public interface Try<T> extends AutoCloseable {
      * @param supplier supplier to recover
      * @return this Try for success, new success or new failure depending on if supplier had thrown exception.
      */
-    Try<T> recover(ExceptionalSupplier<T> supplier);
+    Try<T> recover(CheckedSupplier<T> supplier);
 
     /**
      * Tries recover failed try with given supplier, has no action for success.
@@ -95,7 +109,7 @@ public interface Try<T> extends AutoCloseable {
      * @param predicate recover attempt happens if predicate returns true.
      * @return this Try for success, new success or new failure depending on if supplier had thrown exception.
      */
-    Try<T> recover(ExceptionalSupplier<T> supplier, ExceptionalPredicate<Exception> predicate);
+    Try<T> recover(CheckedSupplier<T> supplier, Predicate<Exception> predicate);
 
     /**
      * Maps Try of type T to type R 
@@ -103,9 +117,9 @@ public interface Try<T> extends AutoCloseable {
      * @param mapper mapper
      * @return new Try of R type or failure if mapper throws exception/
      */
-    <R> Try<R> map(ExceptionalFunction<? super T, ? extends R> mapper); 
+    <R> Try<R> map(CheckedFunction<? super T, ? extends R> mapper); 
 
-    <R> Try<R> map(ExceptionalFunction<? super T, ? extends R> mapper, BiConsumer<T, Exception> errHandler); 
+    <R> Try<R> map(CheckedFunction<? super T, ? extends R> mapper, BiConsumer<T, Exception> errHandler); 
 
     
     /**
@@ -114,7 +128,7 @@ public interface Try<T> extends AutoCloseable {
      * @param mapper mapper
      * @return new Try of R type or failure if mapper throws exception/
      */
-    <R> Try<R> flatMap(ExceptionalFunction<? super T, Try<R>> mapper); 
+    <R> Try<R> flatMap(CheckedFunction<? super T, Try<R>> mapper); 
 
     
     /**
@@ -170,9 +184,9 @@ public interface Try<T> extends AutoCloseable {
      * @param runnable runnable to execute
      * @return this Try or new failure if runnable throws exception.
      */
-    default Try<T> andFinally(ExceptionalRunnable runnable) {
+    default Try<T> andFinally(CheckedRunnable runnable) {
         try {
-            runnable.runWithException();
+            runnable.run();
             return this;
         } catch (Exception e) {
             return failure(e);
@@ -184,9 +198,9 @@ public interface Try<T> extends AutoCloseable {
      * @param consumer Try's consumer
      * @return this Try or failure if consumer throws an exception.
      */
-    default Try<T> peek(ExceptionalConsumer<Try<T>> consumer) {
+    default Try<T> peek(CheckedConsumer<Try<T>> consumer) {
         try {
-            consumer.acceptWithException(this);
+            consumer.accept(this);
             return this;
         } catch (Exception e) {
             return failure(e);
@@ -229,9 +243,9 @@ public interface Try<T> extends AutoCloseable {
      * @return Try of T type
      * @throws NullPointerException if supplier returns null.
      */
-    static <T> Try<T> of(ExceptionalSupplier<T> supplier) {
+    static <T> Try<T> of(CheckedSupplier<T> supplier) {
         try {
-            return success(supplier.getWithException());
+            return success(supplier.get());
         } catch (Exception e) {
             return failure(e);
         }
@@ -242,15 +256,12 @@ public interface Try<T> extends AutoCloseable {
      * @param runnable exceptional runnable
      * @return Try of {@link Void} type
      */
-    static Try<Class<Void>> of(ExceptionalRunnable runnable) {
+    static Try<Class<Void>> of(CheckedRunnable runnable) {
         return of(() -> {
-            runnable.runWithException();
+            runnable.run();
             return Void.TYPE;
         });
     }
-    
-    
-    
     
     /**
      * Try's success projection.
@@ -267,18 +278,18 @@ public interface Try<T> extends AutoCloseable {
         }
         
         @Override
-        public <R> Try<R> map(ExceptionalFunction<? super T, ? extends R> mapper) {
+        public <R> Try<R> map(CheckedFunction<? super T, ? extends R> mapper) {
           try {
-              return success(mapper.applyWithException(value));
+              return success(mapper.apply(value));
           } catch (Exception e) {
               return failure(e);
           }
         }
         
         @Override
-        public <R> Try<R> map(ExceptionalFunction<? super T, ? extends R> mapper, BiConsumer<T, Exception> errHandler) {
+        public <R> Try<R> map(CheckedFunction<? super T, ? extends R> mapper, BiConsumer<T, Exception> errHandler) {
             try {
-                return success(mapper.applyWithException(value));
+                return success(mapper.apply(value));
             } catch (Exception e) {
                 errHandler.accept(value, e);
                 return failure(e);
@@ -286,25 +297,25 @@ public interface Try<T> extends AutoCloseable {
         }
         
         @Override
-        public <R> Try<R> flatMap(ExceptionalFunction<? super T, Try<R>> mapper) {
+        public <R> Try<R> flatMap(CheckedFunction<? super T, Try<R>> mapper) {
             try {
-                return mapper.applyWithException(value);
+                return mapper.apply(value);
             } catch (Exception e) {
                 return failure(e);
             }
         }
 
         @Override
-        public Try<T> recover(ExceptionalSupplier<T> supplier) {return this;}
+        public Try<T> recover(CheckedSupplier<T> supplier) {return this;}
         
         @Override
-        public Try<T> recover(ExceptionalSupplier<T> supplier, ExceptionalPredicate<Exception> predicate) {
+        public Try<T> recover(CheckedSupplier<T> supplier, Predicate<Exception> predicate) {
             return this;
         }
         
         @Override
         public Try<T> filter(Predicate<T> pred) {
-            return filter(pred, (ExceptionalConsumer<T>) null);
+            return filter(pred, (Consumer<T>) null);
         }
 
         @Override
@@ -323,9 +334,9 @@ public interface Try<T> extends AutoCloseable {
         public boolean isSuccess() {return true;}
         
         @Override
-        public Try<T> onSuccess(ExceptionalConsumer<? super T> consumer) {
+        public Try<T> onSuccess(CheckedConsumer<? super T> consumer) {
             try {
-                consumer.acceptWithException(value);
+                consumer.accept(value);
                 return this;
             } catch (Exception e) {
                 return failure(e);
@@ -382,20 +393,20 @@ public interface Try<T> extends AutoCloseable {
         
         @SuppressWarnings("unchecked")
         @Override
-        public <R> Try<R> map(ExceptionalFunction<? super T, ? extends R> mapper) {return (Try<R>) this;}
+        public <R> Try<R> map(CheckedFunction<? super T, ? extends R> mapper) {return (Try<R>) this;}
         
         @Override
-        public Try<T> recover(ExceptionalSupplier<T> supplier) {
+        public Try<T> recover(CheckedSupplier<T> supplier) {
             return recover(supplier, null);
         }
         
         @Override
-        public Try<T> recover(ExceptionalSupplier<T> supplier, ExceptionalPredicate<Exception> predicate) {
+        public Try<T> recover(CheckedSupplier<T> supplier, Predicate<Exception> predicate) {
             try {
-                if (predicate != null && !predicate.testWithException(exception)) {
+                if (predicate != null && !predicate.test(exception)) {
                     return this;
                 }
-                return success(supplier.getWithException());
+                return success(supplier.get());
             } catch (Exception e) {
                 return failure(e);
             }            
@@ -408,7 +419,7 @@ public interface Try<T> extends AutoCloseable {
         public boolean isSuccess() {return false;}
         
         @Override
-        public Try<T> onSuccess(ExceptionalConsumer<? super T> consumer) {return this;}
+        public Try<T> onSuccess(CheckedConsumer<? super T> consumer) {return this;}
         
         @Override
         public Try<T> filter(Predicate<T> pred, Consumer<T> consumer) {return this;}
@@ -424,7 +435,7 @@ public interface Try<T> extends AutoCloseable {
         
         @SuppressWarnings("unchecked")
         @Override
-        public <R> Try<R> flatMap(ExceptionalFunction<? super T, Try<R>> mapper) {return (Try<R>) this;}
+        public <R> Try<R> flatMap(CheckedFunction<? super T, Try<R>> mapper) {return (Try<R>) this;}
 
         @Override
         public Try<T> onFailure(Consumer<Exception> consumer) {
@@ -451,7 +462,7 @@ public interface Try<T> extends AutoCloseable {
         }
 
         @Override
-        public <R> Try<R> map(ExceptionalFunction<? super T, ? extends R> mapper, BiConsumer<T, Exception> errHandler) {
+        public <R> Try<R> map(CheckedFunction<? super T, ? extends R> mapper, BiConsumer<T, Exception> errHandler) {
             return (Try<R>) this;
         }
 

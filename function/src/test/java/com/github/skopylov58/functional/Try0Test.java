@@ -51,7 +51,7 @@ public class Try0Test {
         assertTrue(run.isSuccess());
         assertEquals(Void.TYPE, run.get());
 
-        ExceptionalRunnable er = () -> {throw new FileNotFoundException();};
+        Try.CheckedRunnable er = () -> {throw new FileNotFoundException();};
         
         run = Try.of(er);
         assertTrue(run.isFailure());
@@ -70,7 +70,7 @@ public class Try0Test {
         Try<Integer> tr = Try.of(() -> 1).andFinally(() -> System.out.println("Finally"));
         assertTrue(tr.isSuccess());
         
-        ExceptionalRunnable er = () -> {throw new FileNotFoundException();};
+        Try.CheckedRunnable er = () -> {throw new FileNotFoundException();};
         tr = Try.of(() -> 1).andFinally(er);
         assertTrue(tr.isFailure());
     }
