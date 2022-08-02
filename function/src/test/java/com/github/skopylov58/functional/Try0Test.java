@@ -11,10 +11,6 @@ import javax.naming.NoPermissionException;
 
 import org.junit.Test;
 
-import com.github.skopylov58.functional.ExceptionalPredicate;
-import com.github.skopylov58.functional.ExceptionalRunnable;
-import com.github.skopylov58.functional.Try;
-
 public class Try0Test {
     
     @Test
@@ -91,13 +87,6 @@ public class Try0Test {
         } catch (Error er) {
             // ok we do not handle error exceptions !!!
         }
-    }
-    
-    @Test
-    public void testPredicate() throws Exception {
-        
-        Predicate<Integer> p = i -> false;
-        ExceptionalPredicate<Integer> exp = i -> false;
     }
     
 }

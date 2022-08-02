@@ -13,7 +13,6 @@ import java.util.stream.Stream;
 
 import org.junit.Test;
 
-import com.github.skopylov58.functional.ExceptionalSupplier;
 import com.github.skopylov58.functional.Try;
 
 public class RecoverTest {

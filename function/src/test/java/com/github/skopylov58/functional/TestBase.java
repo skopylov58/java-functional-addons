@@ -2,8 +2,6 @@ package com.github.skopylov58.functional;
 
 import java.util.Date;
 
-import com.github.skopylov58.functional.ExceptionalConsumer;
-
 public class TestBase {
     
     
@@ -13,10 +11,10 @@ public class TestBase {
     
     ConsumerMock<Exception> exceptionConsumer = new ConsumerMock<>();
     
-    public class ConsumerMock<T> implements ExceptionalConsumer<T> {
+    public class ConsumerMock<T> implements Try.CheckedConsumer<T> {
         private T value;
         @Override
-        public void acceptWithException(T t) throws Exception {
+        public void accept(T t) throws Exception {
             value = t;
             System.out.println("Consumed: " + t.toString());
         }
