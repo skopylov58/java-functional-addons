@@ -1,5 +1,8 @@
 package com.github.skopylov58.functional;
 
+import java.util.function.Function;
+import java.util.stream.Stream;
+
 /**
  * Minimal functional Either implementation.
  * 
@@ -37,6 +40,14 @@ public interface Either<R, L> {
      */
     L getLeft();
     
+    Stream<R> stream();
+    
+    <T> Either<T, L> map(Function<R, T> mapper);
+    
+    Either<L, R> swap();
+
+    <T> Either<T, L> flatMap(Function<R, Either<T,L>> mapper);
+
     /**
      * Factory method to produce right side of Either from R value
      * @param <R> type of right side
@@ -44,9 +55,7 @@ public interface Either<R, L> {
      * @param right right value
      * @return {@link Either.Right}
      */
-    static <R, L> Either<R, L> right(R right) {
-        return new Right<>(right);
-    }
+    static <R, L> Either<R, L> right(R right) {return new Right<>(right);}
 
     /**
      * Factory method to produce left side of Either from L value
@@ -55,9 +64,7 @@ public interface Either<R, L> {
      * @param left left value
      * @return {@link Either.Left}
      */
-    static <R, L> Either<R, L> left(L left) {
-        return new Left<>(left);
-    }
+    static <R, L> Either<R, L> left(L left) {return new Left<>(left);}
     
     /**
      * Right side of Either.
@@ -80,7 +87,18 @@ public interface Either<R, L> {
 
         @Override
         public L getLeft() {throw new IllegalStateException("This is right");}
+        
+        @Override
+        public Stream<R> stream() {return Stream.of(right);}
+        
+        @Override
+        public <T> Either<T, L> map(Function<R, T> mapper) {return right(mapper.apply(right));}
 
+        @Override
+        public <T> Either<T, L> flatMap(Function<R, Either<T, L>> mapper) {return mapper.apply(right);}
+        
+        @Override
+        public Either<L, R> swap() {return left(right);}
     }
     
     /**
@@ -101,15 +119,22 @@ public interface Either<R, L> {
         public boolean isLeft() {return true;}
 
         @Override
-        public R getRight() {
-            throw new IllegalStateException("This is left");
-        }
+        public R getRight() {throw new IllegalStateException("This is left");}
 
         @Override
-        public L getLeft() {
-            return left;
-        }
+        public L getLeft() {return left;}
         
+        @Override
+        public Stream<R> stream() {return Stream.empty();}
+        
+        @Override
+        public <T> Either<T, L> map(Function<R, T> mapper) {return (Either<T, L>) this;}
+        
+        @Override
+        public <T> Either<T, L> flatMap(Function<R, Either<T, L>> mapper) {return (Either<T, L>) this;}
+        
+        @Override
+        public Either<L, R> swap() {return right(left);}
     }
 }
 
