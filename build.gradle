@@ -22,8 +22,8 @@ subprojects {
   apply plugin: 'eclipse'
   apply plugin: 'jacoco'
   java {
-    sourceCompatibility = "11"
-    targetCompatibility = "11"
+    sourceCompatibility = "17"
+    targetCompatibility = "17"
   }
   java {
     withJavadocJar()
