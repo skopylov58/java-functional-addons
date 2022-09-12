@@ -7,8 +7,4 @@ function/bin/
 .classpath
 .project
 .settings
-
-
-
-
-
+.vscode/settings.json
