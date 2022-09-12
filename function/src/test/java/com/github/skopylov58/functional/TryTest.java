@@ -1,51 +1,45 @@
 package com.github.skopylov58.functional;
 
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
+import java.io.FileNotFoundException;
+
+import javax.naming.NoPermissionException;
 
 import org.junit.Test;
 
-import com.github.skopylov58.functional.Try;
-
 public class TryTest {
-
+    
+    
     @Test
-    public void test0() throws Exception {
-       
-        Try<Integer> t = Try.success(3);
+    public void testFinally() throws Exception {
+        Try<Integer> tr = Try.of(() -> 1).andFinally(() -> System.out.println("Finally"));
+        assertTrue(tr.isSuccess());
         
-        Try<Integer> filtered = t.filter(i -> i%2 == 0);
-        assertTrue(filtered.isFailure());
-        
-    }
-
-    @Test
-    public void test1() throws Exception {
-        Try<Integer> t = Try.success(3);
+        Try.CheckedRunnable er = () -> {throw new FileNotFoundException();};
+        tr = Try.of(() -> 1).andFinally(er);
+        assertTrue(tr.isFailure());
     }
     
     @Test
-    public void testRunnableLambda() throws Exception {
-        Try<Class<Void>> of = Try.of(() -> System.out.println("Runnable"));
-        assertTrue(of.isSuccess());
+    public void testPeek() throws Exception {
+        Try.of(() -> 1).peek(t -> assertTrue(t.isSuccess()));
+        
+        Try<Integer> tr = Try.of(() -> 1).peek(t -> {throw new NoPermissionException();});
+        assertTrue(tr.isFailure());
+    }
+    
+    @Test
+    public void testError() throws Exception {
+        try {
+            Try<Integer> t = Try.of(() -> {throw new AssertionError();});
+            fail();
+        } catch (Error er) {
+            // ok we do not handle error exceptions !!!
+        }
     }
 
-    @Test
-    public void testPureRunnable() throws Exception {
-        Runnable r = new Runnable() {
-            @Override
-            public void run() {
-                System.out.println("Run runnable");
-            }
-        };
-        assertTrue(Try.of(() -> r.run()).isSuccess());
-    }
 
-    @Test
-    public void testNull() throws Exception {
-        var opt = Try.of(() -> null)
-        .peek(t -> assertTrue(t.isSuccess()))
-        .optional();
-        assertTrue(opt.isEmpty());
-    }
 
 }
