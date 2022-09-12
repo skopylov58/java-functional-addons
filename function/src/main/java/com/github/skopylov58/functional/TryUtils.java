@@ -13,11 +13,15 @@ import java.util.stream.Stream;
  */
 public interface TryUtils {
 
+    /**
+     * Function that may throw an exception.
+     */
     @FunctionalInterface
     interface CheckedFunction<T, R > {
         R apply(T t) throws Exception;
     }
 
+    /** Supplier that may throw an exception. */
     @FunctionalInterface
     interface CheckedSupplier<T> {
         T get() throws Exception;
@@ -43,8 +47,8 @@ public interface TryUtils {
      * Higher-order function to convert partial function {@code T=>R} to total function {@code T=>Result<R>}
      * @param <T> function input parameter type
      * @param <R> function result type
-     * @param func partial function T=>R that may throw checked exception
-     * @return total function {@code T => Result<R>}
+     * @param func partial function {@code T=>R} that may throw checked exception
+     * @return total function {@code T=>Result<R>}
      */
     static <T, R> Function<T, Result<R>> toResult(CheckedFunction<T, R> func) {
         return param -> {
@@ -62,8 +66,8 @@ public interface TryUtils {
      * Higher-order function to convert partial function {@code T=>R} to total function {@code T=>Optional<R>}
      * @param <T> function input parameter type
      * @param <R> function result type
-     * @param func partial function {@code T => R} that may throw checked exception
-     * @return total function {@code T => Optional<R>}
+     * @param func partial function {@code T=>R} that may throw checked exception
+     * @return total function {@code T=>Optional<R>}
      */
     static <T, R> Function<T, Optional<R>> toOptional(CheckedFunction<T, R> func) {
         return param -> {
@@ -78,10 +82,10 @@ public interface TryUtils {
     }
 
     /**
-     * Higher-order function to convert partial supplier {@code () => T} to total supplier {@code () => Optional<T>}
+     * Higher-order function to convert partial supplier {@code ()=>T} to total supplier {@code ()=>Optional<T>}
      * @param <T> supplier result type
-     * @param supplier {@code () => T} that may throw an exception
-     * @return total supplier {@code () => Optional<T>}
+     * @param supplier {@code ()=>T} that may throw an exception
+     * @return total supplier {@code ()=>Optional<T>}
      */
     static <T> Supplier<Optional<T>> toOptional(CheckedSupplier<T> supplier) {
         return () -> {
@@ -93,11 +97,11 @@ public interface TryUtils {
         };
     }
     /**
-     * Higher-order function to convert partial function {@code T => R} to total function {@code T=>Either<R, Exception>}
+     * Higher-order function to convert partial function {@code T=>R} to total function {@code T=>Either<R, Exception>}
      * @param <T> function input parameter type
      * @param <R> function result type
-     * @param func partial function {@code T => R} that may throw an exception
-     * @return total function {@code T => Either<R, Exception>}
+     * @param func partial function {@code T=>R} that may throw an exception
+     * @return total function {@code T=>Either<R, Exception>}
      */
     static <T, R> Function<T, Either<R, Exception>> toEither(CheckedFunction<T, R> func) {
         return param -> {
