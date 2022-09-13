@@ -143,10 +143,14 @@
 2. Написать функцию высшего порядка которая преобразует частичную функцию `T => R`, которая может выбросить исключение, в полную функцию `T => YourContainer<R>` и применять ее в случае необходимости.
 
 ## Ссылки
+На github-e
+
+[JavaDoc](https://skopylov58.github.io/java-functional-addons/com/github/skopylov58/functional/TryUtils.html)
+
+[Source Code](https://github.com/skopylov58/java-functional-addons/blob/master/function/src/main/java/com/github/skopylov58/functional/TryUtils.java)
+
+[Junit tests](https://github.com/skopylov58/java-functional-addons/blob/master/function/src/test/java/com/github/skopylov58/functional/TryUtilsTest.java)
 
 Автор - Сергей А. Копылов  
 e-mail skopylov@gmail.com
-
-[Код на github - https://github.com/skopylov58/java-functional-addons](https://github.com/skopylov58/java-functional-addons)
-
 
