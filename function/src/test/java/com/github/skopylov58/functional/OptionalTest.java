@@ -6,8 +6,6 @@ import java.math.BigDecimal;
 import java.util.Optional;
 import java.util.function.Function;
 
-import javax.annotation.processing.SupportedSourceVersion;
-
 import org.junit.Test;
 
 public class OptionalTest {
