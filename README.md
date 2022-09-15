@@ -2,6 +2,8 @@
 
 ![example workflow](https://github.com/skopylov58/java-functional-addons/actions/workflows/gradle.yml/badge.svg)
 
+[JavaDocs](https://skopylov58.github.io/java-functional-addons/)
+
 ## `Try<T>` - functional exception handling
 
 ### Rational behind `Try<T>`
