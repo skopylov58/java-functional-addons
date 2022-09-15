@@ -4,8 +4,6 @@ import java.util.Date;
 
 import org.junit.Test;
 
-import com.github.skopylov58.functional.Tuple3;
-
 public class TupleTest {
 
     @Test

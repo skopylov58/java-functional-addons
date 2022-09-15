@@ -9,8 +9,6 @@ import java.util.concurrent.TimeUnit;
 
 import org.junit.Test;
 
-import com.github.skopylov58.retry.Retry;
-
 
 public class RetryRunnableTest {
 

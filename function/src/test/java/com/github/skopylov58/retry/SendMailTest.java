@@ -9,7 +9,6 @@ import java.util.stream.Stream;
 import org.junit.Test;
 
 import com.github.skopylov58.functional.Try;
-import com.github.skopylov58.retry.Retry;
 
 /**
  * Example to try and retry exceptional runnables.

@@ -8,8 +8,6 @@ import java.sql.SQLException;
 
 import org.junit.Test;
 
-import com.github.skopylov58.jdbc.pool.JDBCConnectionPool;
-
 public class JdbcConnectionPoolTest {
 
     

@@ -4,10 +4,6 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-import com.github.skopylov58.jdbc.Interceptor;
-import com.github.skopylov58.jdbc.MiddleManJDBCDriver;
-import com.github.skopylov58.jdbc.SimpleLoggingInterceptor;
-
 public class InterceptorTest {
 
     @Test
