@@ -122,4 +122,20 @@ public interface TryUtils {
             }
         };
     }
+
+    public static <E extends Throwable> void sneakyThrow(Throwable e) throws E {
+        throw (E) e;
+    }
+
+    static <T> Supplier<T> toSupplier(CheckedSupplier<T> supplier) {
+        return () -> {
+            try {
+                return supplier.get();
+            } catch (Exception e) {
+                sneakyThrow(e);
+                return null;  // we never will get here
+            }
+        };
+    }
+
 }

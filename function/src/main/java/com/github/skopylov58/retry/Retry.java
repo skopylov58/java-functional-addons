@@ -7,17 +7,16 @@ import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Supplier;
 
-import com.github.skopylov58.functional.ExceptionalRunnable;
-import com.github.skopylov58.functional.ExceptionalSupplier;
 
 /**
  * Interface to perform asynchronous retry operations on supplier
  * or runnable that may throw an exception.
  * <p>
- * Retry.of(...) factory methods create {@link Builder} from 
+ * Retry.of(...) factory methods create {@link Builder} from
  * {@link Supplier} or {@link Runnable}
  * <p>
  * Sample usage
+ * 
  * <pre>
  *      CompletableFuture&lt;Connection&gt; futureConnection = 
  *      Retry.of(() -&gt; DriverManager.getConnection("jdbc:mysql:a:b"))
@@ -33,7 +32,7 @@ import com.github.skopylov58.functional.ExceptionalSupplier;
  *
  */
 public interface Retry {
-    
+
     /**
      * Handles errors happening during retry process.
      *
@@ -41,61 +40,76 @@ public interface Retry {
     @FunctionalInterface
     /** Retry error handler. */
     interface ErrorHandler {
-         /** Handles errors during retry process.
+        /**
+         * Handles errors during retry process.
+         * 
          * @param currentTry current try
-         * @param maxTries maximum number of tries
-         * @param exception exception occurred during current try  
+         * @param maxTries   maximum number of tries
+         * @param exception  exception occurred during current try
          */
         void handle(long currentTry, long maxTries, Throwable exception);
     }
-    
-    /**
-     * Factory method to creates {@link Builder} for supplier.
-     * @param <T> supplier's result type
-     * @param supplier supplier
-     * @return {@link Builder}
-     */
-    static <T> Builder<T> of(Supplier<T> supplier) {return new Builder<>(supplier);}
 
-    /**
-     * Factory method to creates {@link Builder} for the exceptional supplier.
-     * @param <T> supplier's result type
-     * @param supplier exceptional supplier
-     * @return {@link Builder}
-     */
-    static <T> Builder<T> of(ExceptionalSupplier<T> supplier) {
-        return of (ExceptionalSupplier.uncheck(supplier));
+    /** Supplier that may throw an exception. */
+    @FunctionalInterface
+    interface CheckedSupplier<T> {
+        T get() throws Exception;
+    }
+
+    /** Supplier that may throw an exception. */
+    @FunctionalInterface
+    interface CheckedRunnable {
+        void run() throws Exception;
     }
 
     /**
-     * Factory method to creates {@link Builder} for runnable.
-     * @param runnable runnable
+     * Factory method to creates {@link Builder} for the exceptional supplier.
+     * 
+     * @param <T>      supplier's result type
+     * @param supplier exceptional supplier
      * @return {@link Builder}
      */
-    static Builder<Void> of(Runnable runnable) {
+    static <T> Builder<T> of(CheckedSupplier<T> supplier) {
+        // return new Builder<>(TryUtils.toSupplier(supplier));
         return new Builder<>(() -> {
-            runnable.run();
-            return null;
+            try {
+                return supplier.get();
+            } catch (RuntimeException re) {
+                throw re;
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
         });
     }
 
     /**
      * Factory method to creates {@link Builder} for exceptional runnable.
+     * 
      * @param runnable exceptional runnable
      * @return {@link Builder}
      */
-    static Builder<Void> of(ExceptionalRunnable runnable) {
-        return of(ExceptionalRunnable.uncheck(runnable));
+    static Builder<Void> of(CheckedRunnable runnable) {
+        return new Builder<>(() -> {
+            try{
+                runnable.run();
+                return null;
+            } catch (RuntimeException re) {
+                throw re;
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        });
     }
-    
+
     /**
-     * Retry options in terms of maximum numbers of tries, delay interval and time units.
+     * Retry options in terms of maximum numbers of tries, delay interval and time
+     * units.
      */
     class Option {
         final long maxTries;
         final long delay;
         final TimeUnit timeUnit;
-        
+
         Option(long maxTries, long delay, TimeUnit timeUnit) {
             this.maxTries = maxTries;
             this.delay = delay;
@@ -104,39 +118,43 @@ public interface Retry {
     }
 
     /**
-     * Retry builder to configure retry process with maxTries, delay, error handler, etc.
+     * Retry builder to configure retry process with maxTries, delay, error handler,
+     * etc.
      *
      */
     class Builder<T> {
         private static final int DEFAULT_MAX_TRIES = 10;
         private static final int DEFAULT_DELAY = 1;
         private static final TimeUnit DEFAULT_TIME_UNIT = TimeUnit.SECONDS;
-        
+
         private final Supplier<T> supplier;
         private long maxTries = DEFAULT_MAX_TRIES;
         private long delay = DEFAULT_DELAY;
         private TimeUnit timeUnit = DEFAULT_TIME_UNIT;
         private ErrorHandler errorHandler;
         private Executor executor;
-        
-        Builder(Supplier<T> supplier) {this.supplier = supplier;}
-        
+
+        Builder(Supplier<T> supplier) {
+            this.supplier = supplier;
+        }
+
         /**
          * Sets max number of tries. Default - 10.
          * <p>
-         * Zero or negative value means infinite number of tries. 
+         * Zero or negative value means infinite number of tries.
          * Use {@link #forever()} for this purpose.
          * 
          * @param maxTries max number of tries
          * @return {@link Builder}
          */
         public Builder<T> maxTries(long maxTries) {
-            this.maxTries = maxTries; 
+            this.maxTries = maxTries;
             return this;
         }
 
         /**
          * Sets infinite number of tries.
+         * 
          * @return {@link Builder}
          */
         public Builder<T> forever() {
@@ -145,8 +163,9 @@ public interface Retry {
         }
 
         /**
-         * Sets retry delay. 
-         * @param delay retry delay. Default - 1 
+         * Sets retry delay.
+         * 
+         * @param delay    retry delay. Default - 1
          * @param timeUnit delay time unit. Default - seconds
          * @return {@link Builder}
          */
@@ -158,6 +177,7 @@ public interface Retry {
 
         /**
          * Sets error handler. Default - no error handler.
+         * 
          * @param errorHandler
          * @return {@link Builder} builder
          */
@@ -168,6 +188,7 @@ public interface Retry {
 
         /**
          * Sets executor for retry process.
+         * 
          * @param executor executor. Default - {@link ForkJoinPool#commonPool()}
          * @return builder
          */
@@ -178,6 +199,7 @@ public interface Retry {
 
         /**
          * Non blocking final builder operation.
+         * 
          * @return immediately returns {@link CompletableFuture}
          */
         public CompletableFuture<T> retry() {
@@ -185,7 +207,7 @@ public interface Retry {
             return new Worker<T>(supplier, opt, errorHandler, executor).retry();
         }
     }
-    
+
     /**
      * Class that actually performs asynchronous retries.
      *
@@ -193,7 +215,7 @@ public interface Retry {
      */
     class Worker<T> {
         private long currentTry;
-        
+
         private final Option opts;
         private final Supplier<T> supplier;
         private final ErrorHandler errorHandler;
@@ -202,6 +224,7 @@ public interface Retry {
 
         /**
          * Constructor.
+         * 
          * @param supplier
          * @param opts
          * @param errorHandler
@@ -217,7 +240,7 @@ public interface Retry {
             tryOnce();
             return result;
         }
-        
+
         private void tryOnce() {
             if (executor == null) {
                 CompletableFuture.supplyAsync(supplier).whenComplete(this::whenComplete);
@@ -236,7 +259,7 @@ public interface Retry {
                 result.complete(res);
             }
         }
-        
+
         private void handleError(Throwable t) {
             Objects.requireNonNull(t);
             ++currentTry;
@@ -244,12 +267,12 @@ public interface Retry {
                 try {
                     errorHandler.handle(currentTry, opts.maxTries, t);
                 } catch (Throwable th) {
-                    //ignore
+                    // ignore
                 }
             }
             if (currentTry < opts.maxTries || opts.maxTries <= 0) {
                 CompletableFuture.delayedExecutor(opts.delay, opts.timeUnit)
-                .execute(this::tryOnce);
+                        .execute(this::tryOnce);
             } else {
                 result.completeExceptionally(t);
             }

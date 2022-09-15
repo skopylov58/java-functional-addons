@@ -19,7 +19,7 @@ public class RetryRunnableTest {
     public void testFailure() throws Exception {
         //Number of tries is not enough
         FailingRunnable r = new FailingRunnable(5);
-        CompletableFuture<Void> future = Retry.of(r)
+        CompletableFuture<Void> future = Retry.of(() -> r.run())
                 .maxTries(4)
                 .delay(100, TimeUnit.MILLISECONDS)
                 .retry();
@@ -35,7 +35,7 @@ public class RetryRunnableTest {
     @Test
     public void testSuccess() throws Exception {
         FailingRunnable r = new FailingRunnable(5);
-        CompletableFuture<Void> future = Retry.of(r)
+        CompletableFuture<Void> future = Retry.of(() -> r.run())
                 .maxTries(5)
                 .delay(100, TimeUnit.MILLISECONDS)
                 .retry();

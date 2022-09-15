@@ -18,7 +18,7 @@ public class RetrySupplierTest {
     public void testFailure() throws Exception {
         //Not enough num of tries
         FailingOp op = new FailingOp(5);
-        CompletableFuture<Long> future = Retry.of(op)
+        CompletableFuture<Long> future = Retry.of(() -> op.get())
         .maxTries(4)
         .delay(100, TimeUnit.MILLISECONDS)
         .retry();
@@ -34,7 +34,7 @@ public class RetrySupplierTest {
     @Test
     public void testSuccess() throws Exception {
         FailingOp op = new FailingOp(5);
-        CompletableFuture<Long> future = Retry.of(op)
+        CompletableFuture<Long> future = Retry.of(() -> op.get())
         .maxTries(6)
         .delay(100, TimeUnit.MILLISECONDS)
         .retry();
@@ -49,7 +49,7 @@ public class RetrySupplierTest {
         //Make sure bad error handler will not spoil result
         Retry.ErrorHandler throwingHandler = (i,max,t) -> {throw new IllegalStateException();};
         FailingOp op = new FailingOp(5);
-        CompletableFuture<Long> future = Retry.of(op)
+        CompletableFuture<Long> future = Retry.of(() -> op.get())
         .maxTries(6)
         .delay(100, TimeUnit.MILLISECONDS)
         .withErrorHandler(throwingHandler)
