@@ -227,62 +227,69 @@ extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/ja
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#map(com.github.skopylov58.functional.Try.CheckedFunction,java.util.function.BiConsumer)" class="member-name-link">map</a><wbr>(<a href="Try.CheckedFunction.html" title="interface in com.github.skopylov58.functional">Try.CheckedFunction</a>&lt;? super <a href="Try.html" title="type parameter in Try">T</a>,<wbr>? extends R&gt;&nbsp;mapper,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/BiConsumer.html" title="class or interface in java.util.function" class="external-link">BiConsumer</a>&lt;<a href="Try.html" title="type parameter in Try">T</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Exception.html" title="class or interface in java.lang" class="external-link">Exception</a>&gt;&nbsp;errHandler)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">&nbsp;</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab1"><code>static <a href="Try.html" title="interface in com.github.skopylov58.functional">Try</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Void.html" title="class or interface in java.lang" class="external-link">Void</a>&gt;&gt;</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab1"><code><a href="#of(com.github.skopylov58.functional.Try.CheckedRunnable)" class="member-name-link">of</a><wbr>(<a href="Try.CheckedRunnable.html" title="interface in com.github.skopylov58.functional">Try.CheckedRunnable</a>&nbsp;runnable)</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1"><code>static &lt;T,<wbr>
+R&gt;&nbsp;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/Function.html" title="class or interface in java.util.function" class="external-link">Function</a>&lt;T,<wbr><a href="Try.html" title="interface in com.github.skopylov58.functional">Try</a>&lt;R&gt;&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1"><code><a href="#of(com.github.skopylov58.functional.Try.CheckedFunction)" class="member-name-link">of</a><wbr>(<a href="Try.CheckedFunction.html" title="interface in com.github.skopylov58.functional">Try.CheckedFunction</a>&lt;T,<wbr>R&gt;&nbsp;func)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab1">
+<div class="block">Higher order function to transform partial <code>T-&gt;R</code> function 
+ to the total <code>T-&gt;Try&lt;R&gt;</code> function.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1"><code>static <a href="Try.html" title="interface in com.github.skopylov58.functional">Try</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Void.html" title="class or interface in java.lang" class="external-link">Void</a>&gt;&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1"><code><a href="#of(com.github.skopylov58.functional.Try.CheckedRunnable)" class="member-name-link">of</a><wbr>(<a href="Try.CheckedRunnable.html" title="interface in com.github.skopylov58.functional">Try.CheckedRunnable</a>&nbsp;runnable)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1">
 <div class="block">Factory method to produce Try from runnable that may throw an exception.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab1"><code>static &lt;T&gt;&nbsp;<a href="Try.html" title="interface in com.github.skopylov58.functional">Try</a>&lt;T&gt;</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab1"><code><a href="#of(com.github.skopylov58.functional.Try.CheckedSupplier)" class="member-name-link">of</a><wbr>(<a href="Try.CheckedSupplier.html" title="interface in com.github.skopylov58.functional">Try.CheckedSupplier</a>&lt;T&gt;&nbsp;supplier)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab1">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1"><code>static &lt;T&gt;&nbsp;<a href="Try.html" title="interface in com.github.skopylov58.functional">Try</a>&lt;T&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1"><code><a href="#of(com.github.skopylov58.functional.Try.CheckedSupplier)" class="member-name-link">of</a><wbr>(<a href="Try.CheckedSupplier.html" title="interface in com.github.skopylov58.functional">Try.CheckedSupplier</a>&lt;T&gt;&nbsp;supplier)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1">
 <div class="block">Factory method to produce Try from supplier that may throw an exception.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="Try.html" title="interface in com.github.skopylov58.functional">Try</a>&lt;<a href="Try.html" title="type parameter in Try">T</a>&gt;</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#onFailure(java.util.function.Consumer)" class="member-name-link">onFailure</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/Consumer.html" title="class or interface in java.util.function" class="external-link">Consumer</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Exception.html" title="class or interface in java.lang" class="external-link">Exception</a>&gt;&nbsp;consumer)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="Try.html" title="interface in com.github.skopylov58.functional">Try</a>&lt;<a href="Try.html" title="type parameter in Try">T</a>&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#onFailure(java.util.function.Consumer)" class="member-name-link">onFailure</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/Consumer.html" title="class or interface in java.util.function" class="external-link">Consumer</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Exception.html" title="class or interface in java.lang" class="external-link">Exception</a>&gt;&nbsp;consumer)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
 <div class="block">Executes action on failure, has no action for success.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="Try.html" title="interface in com.github.skopylov58.functional">Try</a>&lt;<a href="Try.html" title="type parameter in Try">T</a>&gt;</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#onFailure(java.util.function.Consumer,java.util.function.Predicate)" class="member-name-link">onFailure</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/Consumer.html" title="class or interface in java.util.function" class="external-link">Consumer</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Exception.html" title="class or interface in java.lang" class="external-link">Exception</a>&gt;&nbsp;consumer,
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="Try.html" title="interface in com.github.skopylov58.functional">Try</a>&lt;<a href="Try.html" title="type parameter in Try">T</a>&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#onFailure(java.util.function.Consumer,java.util.function.Predicate)" class="member-name-link">onFailure</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/Consumer.html" title="class or interface in java.util.function" class="external-link">Consumer</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Exception.html" title="class or interface in java.lang" class="external-link">Exception</a>&gt;&nbsp;consumer,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/Predicate.html" title="class or interface in java.util.function" class="external-link">Predicate</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Exception.html" title="class or interface in java.lang" class="external-link">Exception</a>&gt;&nbsp;predicate)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
 <div class="block">Executes action on failure if predicate is true, has no action for success.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="Try.html" title="interface in com.github.skopylov58.functional">Try</a>&lt;<a href="Try.html" title="type parameter in Try">T</a>&gt;</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#onSuccess(com.github.skopylov58.functional.Try.CheckedConsumer)" class="member-name-link">onSuccess</a><wbr>(<a href="Try.CheckedConsumer.html" title="interface in com.github.skopylov58.functional">Try.CheckedConsumer</a>&lt;? super <a href="Try.html" title="type parameter in Try">T</a>&gt;&nbsp;consumer)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="Try.html" title="interface in com.github.skopylov58.functional">Try</a>&lt;<a href="Try.html" title="type parameter in Try">T</a>&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#onSuccess(com.github.skopylov58.functional.Try.CheckedConsumer)" class="member-name-link">onSuccess</a><wbr>(<a href="Try.CheckedConsumer.html" title="interface in com.github.skopylov58.functional">Try.CheckedConsumer</a>&lt;? super <a href="Try.html" title="type parameter in Try">T</a>&gt;&nbsp;consumer)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
 <div class="block">Executes action on success, has no action for failure.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Optional.html" title="class or interface in java.util" class="external-link">Optional</a>&lt;<a href="Try.html" title="type parameter in Try">T</a>&gt;</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#optional()" class="member-name-link">optional</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">&nbsp;</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="Try.html" title="type parameter in Try">T</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#orElseThrow()" class="member-name-link">orElseThrow</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Optional.html" title="class or interface in java.util" class="external-link">Optional</a>&lt;<a href="Try.html" title="type parameter in Try">T</a>&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#optional()" class="member-name-link">optional</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">&nbsp;</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="Try.html" title="type parameter in Try">T</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#orElseThrow()" class="member-name-link">orElseThrow</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
 <div class="block">Gets Try's value or throws exception</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5"><code>default <a href="Try.html" title="interface in com.github.skopylov58.functional">Try</a>&lt;<a href="Try.html" title="type parameter in Try">T</a>&gt;</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5"><code><a href="#peek(com.github.skopylov58.functional.Try.CheckedConsumer)" class="member-name-link">peek</a><wbr>(<a href="Try.CheckedConsumer.html" title="interface in com.github.skopylov58.functional">Try.CheckedConsumer</a>&lt;<a href="Try.html" title="interface in com.github.skopylov58.functional">Try</a>&lt;<a href="Try.html" title="type parameter in Try">T</a>&gt;&gt;&nbsp;consumer)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5"><code>default <a href="Try.html" title="interface in com.github.skopylov58.functional">Try</a>&lt;<a href="Try.html" title="type parameter in Try">T</a>&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5"><code><a href="#peek(com.github.skopylov58.functional.Try.CheckedConsumer)" class="member-name-link">peek</a><wbr>(<a href="Try.CheckedConsumer.html" title="interface in com.github.skopylov58.functional">Try.CheckedConsumer</a>&lt;<a href="Try.html" title="interface in com.github.skopylov58.functional">Try</a>&lt;<a href="Try.html" title="type parameter in Try">T</a>&gt;&gt;&nbsp;consumer)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5">
 <div class="block">Gives access to current Try.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="Try.html" title="interface in com.github.skopylov58.functional">Try</a>&lt;<a href="Try.html" title="type parameter in Try">T</a>&gt;</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#recover(com.github.skopylov58.functional.Try.CheckedSupplier)" class="member-name-link">recover</a><wbr>(<a href="Try.CheckedSupplier.html" title="interface in com.github.skopylov58.functional">Try.CheckedSupplier</a>&lt;<a href="Try.html" title="type parameter in Try">T</a>&gt;&nbsp;supplier)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
-<div class="block">Tries recover failed try with given supplier, has no action for success.</div>
-</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="Try.html" title="interface in com.github.skopylov58.functional">Try</a>&lt;<a href="Try.html" title="type parameter in Try">T</a>&gt;</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#recover(com.github.skopylov58.functional.Try.CheckedSupplier,java.util.function.Predicate)" class="member-name-link">recover</a><wbr>(<a href="Try.CheckedSupplier.html" title="interface in com.github.skopylov58.functional">Try.CheckedSupplier</a>&lt;<a href="Try.html" title="type parameter in Try">T</a>&gt;&nbsp;supplier,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/Predicate.html" title="class or interface in java.util.function" class="external-link">Predicate</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Exception.html" title="class or interface in java.lang" class="external-link">Exception</a>&gt;&nbsp;predicate)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#recover(com.github.skopylov58.functional.Try.CheckedSupplier)" class="member-name-link">recover</a><wbr>(<a href="Try.CheckedSupplier.html" title="interface in com.github.skopylov58.functional">Try.CheckedSupplier</a>&lt;<a href="Try.html" title="type parameter in Try">T</a>&gt;&nbsp;supplier)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
 <div class="block">Tries recover failed try with given supplier, has no action for success.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/stream/Stream.html" title="class or interface in java.util.stream" class="external-link">Stream</a>&lt;<a href="Try.html" title="type parameter in Try">T</a>&gt;</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#stream()" class="member-name-link">stream</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab1"><code>static &lt;T&gt;&nbsp;<a href="Try.html" title="interface in com.github.skopylov58.functional">Try</a>&lt;T&gt;</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab1"><code><a href="#success(T)" class="member-name-link">success</a><wbr>(T&nbsp;value)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab1">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="Try.html" title="interface in com.github.skopylov58.functional">Try</a>&lt;<a href="Try.html" title="type parameter in Try">T</a>&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#recover(com.github.skopylov58.functional.Try.CheckedSupplier,java.util.function.Predicate)" class="member-name-link">recover</a><wbr>(<a href="Try.CheckedSupplier.html" title="interface in com.github.skopylov58.functional">Try.CheckedSupplier</a>&lt;<a href="Try.html" title="type parameter in Try">T</a>&gt;&nbsp;supplier,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/Predicate.html" title="class or interface in java.util.function" class="external-link">Predicate</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Exception.html" title="class or interface in java.lang" class="external-link">Exception</a>&gt;&nbsp;predicate)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
+<div class="block">Tries recover failed try with given supplier, has no action for success.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/stream/Stream.html" title="class or interface in java.util.stream" class="external-link">Stream</a>&lt;<a href="Try.html" title="type parameter in Try">T</a>&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#stream()" class="member-name-link">stream</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">&nbsp;</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1"><code>static &lt;T&gt;&nbsp;<a href="Try.html" title="interface in com.github.skopylov58.functional">Try</a>&lt;T&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1"><code><a href="#success(T)" class="member-name-link">success</a><wbr>(T&nbsp;value)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1">
 <div class="block">Factory method to produce Try from value of T type.</div>
 </div>
 </div>
@@ -597,6 +604,33 @@ extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/ja
 <dd><code>runnable</code> - exceptional runnable</dd>
 <dt>Returns:</dt>
 <dd>Try of <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Void.html" title="class or interface in java.lang" class="external-link"><code>Void</code></a> type</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="of(com.github.skopylov58.functional.Try.CheckedFunction)">
+<h3>of</h3>
+<div class="member-signature"><span class="modifiers">static</span>&nbsp;<span class="type-parameters">&lt;T,<wbr>
+R&gt;</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/Function.html" title="class or interface in java.util.function" class="external-link">Function</a>&lt;T,<wbr><a href="Try.html" title="interface in com.github.skopylov58.functional">Try</a>&lt;R&gt;&gt;</span>&nbsp;<span class="element-name">of</span><wbr><span class="parameters">(<a href="Try.CheckedFunction.html" title="interface in com.github.skopylov58.functional">Try.CheckedFunction</a>&lt;T,<wbr>R&gt;&nbsp;func)</span></div>
+<div class="block">Higher order function to transform partial <code>T-&gt;R</code> function 
+ to the total <code>T-&gt;Try&lt;R&gt;</code> function.
+ <br>
+ Simplifies using Try with Java's streams and optionals.
+ Sample usage:
+ <pre><code>
+  Stream.of("1", "2")           //Stream&lt;String&gt;
+  .map(Try.of(Integer::valueOf) //Stream&lt;Try&lt;Integer&gt;&gt;
+  .flatMap(Try::stream)         //Stream&lt;Integer&gt;
+  .toList()                     //List&lt;Integer&gt;
+ </code></pre></div>
+<dl class="notes">
+<dt>Type Parameters:</dt>
+<dd><code>T</code> - function parameter type</dd>
+<dd><code>R</code> - function result type</dd>
+<dt>Parameters:</dt>
+<dd><code>func</code> - partial function <code>T-&gt;R</code></dd>
+<dt>Returns:</dt>
+<dd>total function <code>T-&gt;Try&lt;R&gt;</code></dd>
 </dl>
 </section>
 </li>
