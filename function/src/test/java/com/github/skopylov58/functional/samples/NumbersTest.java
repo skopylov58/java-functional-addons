@@ -76,6 +76,15 @@ public class NumbersTest {
         System.out.println(e.getClass().getName() + " " + e.getMessage());
     }
 
+    //With higher order function
+    List<Number> fromStringArrayWithHOF(String [] nums) {
+        return Stream.of(nums)
+        .filter(Objects::nonNull)
+        .map(Try.of(Integer::valueOf))
+        .flatMap(Try::stream)  //stream for Failure is empty
+        .collect(Collectors.toList());
+    }
+    
     List<Number> fromStringArrayWithTuple(String [] nums) {
         return Stream.of(nums)
         .map(s -> new Tuple<String, Try<Integer>>(s,Try.of(() ->Integer.valueOf(s))))

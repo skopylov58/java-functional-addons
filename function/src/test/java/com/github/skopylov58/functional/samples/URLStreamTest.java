@@ -46,7 +46,7 @@ public class URLStreamTest {
     }
     
     private List<URL> urlListWithTry(String[] urls) {
-        return Stream.of(urls).map(s -> Try.of(() -> new URL(s)))
+        return Stream.of(urls).map(Try.of(URL::new))
                 .map(t -> t.onFailure(e -> System.out.println(e.getMessage()) ))
                 .flatMap(Try::stream)
                 .collect(Collectors.toList());

@@ -4,6 +4,7 @@ import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
+import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
@@ -261,6 +262,34 @@ public interface Try<T> extends AutoCloseable {
             runnable.run();
             return Void.TYPE;
         });
+    }
+
+    /**
+     * Higher order function to transform partial {@code T->R} function 
+     * to the total {@code T->Try<R>} function.
+     * <br>
+     * Simplifies using Try with Java's streams and optionals.
+     * Sample usage:
+     * <pre>{@code 
+     *  Stream.of("1", "2")           //Stream<String>
+     *  .map(Try.of(Integer::valueOf) //Stream<Try<Integer>>
+     *  .flatMap(Try::stream)         //Stream<Integer>
+     *  .toList()                     //List<Integer>
+     * }</pre>
+     * 
+     * @param <T> function parameter type
+     * @param <R> function result type
+     * @param func partial function {@code T->R}
+     * @return total function {@code T->Try<R>}
+     */
+    static <T, R> Function<T, Try<R>> of(CheckedFunction<T, R> func) {
+        return param -> { 
+            try {
+                return success(func.apply(param));
+            } catch (Exception e) {
+                return failure(e);
+            }
+        };
     }
     
     /**
