@@ -34,7 +34,7 @@ With `Try<T>`, sample above will look like this:
 ```java
     private List<URL> urlListWithTry(String[] urls) {
         return Stream.of(urls)
-            .map(s -> Try.of(() -> new URL(s)))
+            .map(Try.of(URL::new))
             .flatMap(Try::stream) //Failure gives empty stream
             .collect(Collectors.toList());
     }
