@@ -1,11 +1,13 @@
-package com.github.skopylov58.retry;
+package com.github.skopylov58.retry.samples;
 
 import static org.junit.Assert.assertEquals;
 
+import java.time.Duration;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeUnit;
 
 import org.junit.Test;
+
+import com.github.skopylov58.retry.Retry;
 
 /**
  * Example to compare Retry against traditional approach.
@@ -32,8 +34,7 @@ public class RetryTraditionalTest {
     public Integer retryWithRetry() throws InterruptedException, ExecutionException {
         IntProvider prov = new IntProvider();
         return Retry.of(() -> prov.getInt())
-        .maxTries(MAX_TRIES)
-        .delay(RETRY_DELAY, TimeUnit.MILLISECONDS)
+        .withHandler(Retry.Handler.simple(MAX_TRIES, Duration.ofMillis(RETRY_DELAY)))
         .retry()
         .get();
     }

@@ -1,7 +1,8 @@
-package com.github.skopylov58.retry;
+package com.github.skopylov58.retry.samples;
 
 import static org.junit.Assert.assertFalse;
 
+import java.time.Duration;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Stream;
@@ -9,6 +10,7 @@ import java.util.stream.Stream;
 import org.junit.Test;
 
 import com.github.skopylov58.functional.Try;
+import com.github.skopylov58.retry.Retry;
 
 /**
  * Example to try and retry exceptional runnables.
@@ -55,10 +57,12 @@ public class SendMailTest {
     }
     
     public boolean sendWithRetry(String [] smtpServers, String msg) {
+        
+        var handler = Retry.Handler.simple(10, Duration.ofMillis(10))
+        .also((i, th) -> this.onError(i, 10, th));
         CompletableFuture<Void> future = 
                 Retry.of(() -> sendFirstAvailable(smtpServers, msg))
-                .maxTries(10).delay(10, TimeUnit.MILLISECONDS)
-                .withErrorHandler(this::onError)
+                .withHandler(handler)
                 .retry();
         return Try.of(() -> future.get()).isSuccess();
     }

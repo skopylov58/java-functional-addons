@@ -1,10 +1,14 @@
 package com.github.skopylov58.retry;
 
-import java.util.Objects;
+import java.time.Duration;
+import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.TimeUnit;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.function.Supplier;
 
 
@@ -12,17 +16,15 @@ import java.util.function.Supplier;
  * Interface to perform asynchronous retry operations on supplier
  * or runnable that may throw an exception.
  * <p>
- * Retry.of(...) factory methods create {@link Builder} from
- * {@link Supplier} or {@link Runnable}
+ * Retry.of(...) factory methods create {@link Worker} from
+ * {@link CheckedSupplier} or {@link CheckedRunnable}
  * <p>
  * Sample usage
  * 
  * <pre>
  *      CompletableFuture&lt;Connection&gt; futureConnection = 
  *      Retry.of(() -&gt; DriverManager.getConnection("jdbc:mysql:a:b"))
- *      .maxTries(100)
- *      .delay(1, TimeUnit.SECONDS)
- *      .withErrorHandler(...)
+ *      .withHandler(...)
  *      .withExecutor(...)
  *      .retry();
  * </pre>
@@ -32,22 +34,101 @@ import java.util.function.Supplier;
  *
  */
 public interface Retry {
-
+    
     /**
-     * Handles errors happening during retry process.
-     *
+     * Handles errors and manages retry process flow.
      */
     @FunctionalInterface
-    /** Retry error handler. */
-    interface ErrorHandler {
+    /** Retry handler. */
+    interface Handler {
         /**
-         * Handles errors during retry process.
+         * Handles retries during retry process.
          * 
-         * @param currentTry current try
-         * @param maxTries   maximum number of tries
-         * @param exception  exception occurred during current try
+         * @param currentTry current try starting with 0
+         * @param exception  exception occurred during this current try
+         * @return optional duration to wait until next retry, optional empty signals to stop retrying.
          */
-        void handle(long currentTry, long maxTries, Throwable exception);
+        Optional<Duration> handle(long currentTry, Throwable exception);
+        
+        /**
+         * Simple retry handler which retries fixed number of times with fixed time interval.
+         * @param maxTries maximum number of tries
+         * @param tryInterval interval in between tries.
+         * @return simple handler
+         */
+        public static Handler simple(final long maxTries, final Duration tryInterval) {
+            return (i, th) -> {
+                return (i < maxTries) ? Optional.of(tryInterval) : Optional.empty();
+            };
+        }
+
+        /**
+         * Retry handler which will retry forever with fixed time interval.
+         * @param tryInterval interval between tries
+         * @return handler
+         */
+        public static Handler forever(final Duration tryInterval) {
+            return withFixedInterval(tryInterval);
+        }
+
+        public static Handler withInterval(Function<Long, Duration> func) {
+            return (i, th) ->  Optional.ofNullable(func.apply(i));
+        }
+
+        public static Handler withFixedInterval(Duration dur) {
+            return (i, th) ->  Optional.of(dur);
+        }
+        
+        /**
+         * Combinator, adds bi-consumer for the handler. May be useful for separating
+         * error logging functionality. 
+         * @param bi bi-consumer
+         * @return
+         */
+        default Handler also(BiConsumer<Long, Throwable> bi) {
+            return (i, th) -> {
+                bi.accept(i, th);
+                return handle(i, th);
+            };
+        }
+
+        default Handler withCounter(Predicate<Long> p) {
+            return (i, th) -> {
+                if (p.test(i)) {
+                    return handle(i, th);
+                } else {
+                    return Optional.empty();
+                }
+            };
+        }
+
+        default Handler withException(Predicate<Throwable> p) {
+            return (i, th) -> {
+                if (p.test(th)) {
+                    return handle(i, th);
+                } else {
+                    return Optional.empty();
+                }
+            };
+        }
+    }
+    
+    /**
+     * Exponential backoff function. 
+     * @param i try number starting with 0
+     * @param initial initial retry interval
+     * @param max maximum retry interval
+     * @param multFactor the multiplicative factor or "base", 2 for binary exponential backoff
+     * @return retry interval
+     */
+    static Duration exponentialBackoff(long i, Duration initial, Duration max, int multFactor) {
+        double factor = Math.pow(multFactor, i);
+        Duration multipliedBy = initial.multipliedBy((long)factor);
+        if (multipliedBy.compareTo(max) > 0) {
+            return max;
+        } else {
+            return multipliedBy;
+        }
     }
 
     /** Supplier that may throw an exception. */
@@ -63,15 +144,14 @@ public interface Retry {
     }
 
     /**
-     * Factory method to creates {@link Builder} for the exceptional supplier.
+     * Factory method to creates {@link Worker} for the exceptional supplier.
      * 
      * @param <T>      supplier's result type
      * @param supplier exceptional supplier
-     * @return {@link Builder}
+     * @return {@link Worker}
      */
-    static <T> Builder<T> of(CheckedSupplier<T> supplier) {
-        // return new Builder<>(TryUtils.toSupplier(supplier));
-        return new Builder<>(() -> {
+    static <T> Worker<T> of(CheckedSupplier<T> supplier) {
+        return new Worker<>(() -> {
             try {
                 return supplier.get();
             } catch (RuntimeException re) {
@@ -83,13 +163,13 @@ public interface Retry {
     }
 
     /**
-     * Factory method to creates {@link Builder} for exceptional runnable.
+     * Factory method to creates {@link Worker} for exceptional runnable.
      * 
      * @param runnable exceptional runnable
-     * @return {@link Builder}
+     * @return {@link Worker}
      */
-    static Builder<Void> of(CheckedRunnable runnable) {
-        return new Builder<>(() -> {
+    static Worker<Void> of(CheckedRunnable runnable) {
+        return new Worker<>(() -> {
             try{
                 runnable.run();
                 return null;
@@ -102,151 +182,43 @@ public interface Retry {
     }
 
     /**
-     * Retry options in terms of maximum numbers of tries, delay interval and time
-     * units.
-     */
-    class Option {
-        final long maxTries;
-        final long delay;
-        final TimeUnit timeUnit;
-
-        Option(long maxTries, long delay, TimeUnit timeUnit) {
-            this.maxTries = maxTries;
-            this.delay = delay;
-            this.timeUnit = timeUnit;
-        }
-    }
-
-    /**
-     * Retry builder to configure retry process with maxTries, delay, error handler,
-     * etc.
-     *
-     */
-    class Builder<T> {
-        private static final int DEFAULT_MAX_TRIES = 10;
-        private static final int DEFAULT_DELAY = 1;
-        private static final TimeUnit DEFAULT_TIME_UNIT = TimeUnit.SECONDS;
-
-        private final Supplier<T> supplier;
-        private long maxTries = DEFAULT_MAX_TRIES;
-        private long delay = DEFAULT_DELAY;
-        private TimeUnit timeUnit = DEFAULT_TIME_UNIT;
-        private ErrorHandler errorHandler;
-        private Executor executor;
-
-        Builder(Supplier<T> supplier) {
-            this.supplier = supplier;
-        }
-
-        /**
-         * Sets max number of tries. Default - 10.
-         * <p>
-         * Zero or negative value means infinite number of tries.
-         * Use {@link #forever()} for this purpose.
-         * 
-         * @param maxTries max number of tries
-         * @return {@link Builder}
-         */
-        public Builder<T> maxTries(long maxTries) {
-            this.maxTries = maxTries;
-            return this;
-        }
-
-        /**
-         * Sets infinite number of tries.
-         * 
-         * @return {@link Builder}
-         */
-        public Builder<T> forever() {
-            this.maxTries = 0;
-            return this;
-        }
-
-        /**
-         * Sets retry delay.
-         * 
-         * @param delay    retry delay. Default - 1
-         * @param timeUnit delay time unit. Default - seconds
-         * @return {@link Builder}
-         */
-        public Builder<T> delay(long delay, TimeUnit timeUnit) {
-            this.delay = delay;
-            this.timeUnit = timeUnit;
-            return this;
-        }
-
-        /**
-         * Sets error handler. Default - no error handler.
-         * 
-         * @param errorHandler
-         * @return {@link Builder} builder
-         */
-        public Builder<T> withErrorHandler(ErrorHandler errorHandler) {
-            this.errorHandler = errorHandler;
-            return this;
-        }
-
-        /**
-         * Sets executor for retry process.
-         * 
-         * @param executor executor. Default - {@link ForkJoinPool#commonPool()}
-         * @return builder
-         */
-        public Builder<T> withExecutor(Executor executor) {
-            this.executor = executor;
-            return this;
-        }
-
-        /**
-         * Non blocking final builder operation.
-         * 
-         * @return immediately returns {@link CompletableFuture}
-         */
-        public CompletableFuture<T> retry() {
-            Option opt = new Option(maxTries, delay, timeUnit);
-            return new Worker<T>(supplier, opt, errorHandler, executor).retry();
-        }
-    }
-
-    /**
-     * Class that actually performs asynchronous retries.
+     * Retry worker, class that actually performs asynchronous retries.
      *
      * @param <T> result type
      */
     class Worker<T> {
         private long currentTry;
-
-        private final Option opts;
         private final Supplier<T> supplier;
-        private final ErrorHandler errorHandler;
-        private final Executor executor;
+        private Handler errorHandler = Handler.simple(10, Duration.ofSeconds(1));
+        private Executor executor = ForkJoinPool.commonPool();
         private final CompletableFuture<T> result = new CompletableFuture<>();
 
         /**
          * Constructor.
          * 
          * @param supplier
-         * @param opts
-         * @param errorHandler
          */
-        private Worker(Supplier<T> supplier, Option opts, ErrorHandler errorHandler, Executor executor) {
+        private Worker(Supplier<T> supplier) {
             this.supplier = supplier;
-            this.opts = opts;
-            this.errorHandler = errorHandler;
-            this.executor = executor;
         }
 
-        private CompletableFuture<T> retry() {
+        public Worker<T> withHandler(Handler errorHandler) {
+            this.errorHandler = errorHandler;
+            return this;
+        }
+
+        public Worker<T> withExecutor(Executor executor) {
+            this.executor = executor;
+            return this;
+        }
+        
+        public CompletableFuture<T> retry() {
             tryOnce();
             return result;
         }
 
         private void tryOnce() {
-            if (executor == null) {
-                CompletableFuture.supplyAsync(supplier).whenComplete(this::whenComplete);
-            } else {
-                CompletableFuture.supplyAsync(supplier, executor).whenComplete(this::whenComplete);
-            }
+            CompletableFuture.supplyAsync(supplier, executor).whenComplete(this::whenComplete);
         }
 
         private void whenComplete(T res, Throwable t) {
@@ -261,21 +233,19 @@ public interface Retry {
         }
 
         private void handleError(Throwable t) {
-            Objects.requireNonNull(t);
-            ++currentTry;
-            if (errorHandler != null) {
-                try {
-                    errorHandler.handle(currentTry, opts.maxTries, t);
-                } catch (Throwable th) {
-                    // ignore
+            try {
+                Optional<Duration> waitDur = errorHandler.handle(currentTry++, t);
+                if (waitDur.isEmpty()) {
+                    result.completeExceptionally(t);
+                } else {
+                    CompletableFuture
+                    .delayedExecutor(waitDur.get().toMillis(), TimeUnit.MILLISECONDS)
+                    .execute(this::tryOnce);
                 }
-            }
-            if (currentTry < opts.maxTries || opts.maxTries <= 0) {
-                CompletableFuture.delayedExecutor(opts.delay, opts.timeUnit)
-                        .execute(this::tryOnce);
-            } else {
-                result.completeExceptionally(t);
+            } catch (Throwable th) {
+                result.completeExceptionally(th);
             }
         }
     }
+    
 }

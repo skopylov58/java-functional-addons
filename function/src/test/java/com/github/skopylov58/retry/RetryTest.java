@@ -10,6 +10,7 @@ import static org.junit.Assert.fail;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.time.Duration;
 import java.util.concurrent.CancellationException;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executors;
@@ -25,31 +26,32 @@ public class RetryTest {
         CompletableFuture<Integer> future = Retry.of(() -> 1).retry();
         assertEquals(1, future.get().intValue());
         
-        future = Retry.of(() -> 1).maxTries(10).retry();
+        future = Retry.of(() -> 1).retry();
         assertEquals(1, future.get().intValue());
     }
 
     @Test
     public void testSqlConnection() throws Exception {
         String url = "foo";
-        CountingErrorHandler h = new CountingErrorHandler();
         CompletableFuture<Connection> future = Retry.of(() -> getConnection(url))
-                .maxTries(5)
-                .delay(100, TimeUnit.MILLISECONDS)
-                .withErrorHandler(h)
+                .withHandler(Retry.Handler.simple(5, Duration.ofMillis(10)))
                 .retry();
 
         future.whenComplete((c, t) -> {assertNull(c); assertNotNull(t);});
+        
+        Thread.sleep(200);
     }
     
     @Test
-    public void testForever() throws Exception {
+    public void testCancel() throws Exception {
+        
+        var handler = Retry.Handler.withFixedInterval(Duration.ofMillis(50))
+        .also((i, th)-> System.out.println(th));
+        
         CompletableFuture<Connection> future = Retry.of(() -> getConnection("foo"))
-                .forever()
-                .delay(500, TimeUnit.MILLISECONDS)
-                .withErrorHandler((i, max, t) -> System.out.println(t.getMessage()))
+                .withHandler(handler)
                 .retry();
-        Thread.sleep(3000);
+        Thread.sleep(200);
         assertFalse(future.isDone());
         future.cancel(true);
         assertTrue(future.isCancelled());
@@ -59,59 +61,32 @@ public class RetryTest {
         } catch (CancellationException e) {
             //ok
         }
-        //Thread.sleep(10000000);
     }
 
     @Test
-    public void testForever2() throws Exception {
+    public void testForever() throws Exception {
+        var handler = Retry.Handler.withFixedInterval(Duration.ofMillis(50))
+        .also((i, th)-> System.out.println(th));
+
         CompletableFuture<Connection> future = Retry.of(() -> getConnection("foo"))
-                .forever()
-                .delay(500, TimeUnit.MILLISECONDS)
-                .withErrorHandler((i, max, t) -> System.out.println(t.getMessage()))
+                .withHandler(handler)
                 .retry();
         try {
-            future.get(2, TimeUnit.SECONDS);
+            future.get(1, TimeUnit.SECONDS);
         } catch(TimeoutException te) {
             //ok
         }
-        
-        //Thread.sleep(10000000);
     }
 
-    
-    
     @Test
     public void testExecutor() throws Exception {
         CompletableFuture<Connection> future = 
                 Retry.of(() -> getConnection("foo"))
-                .maxTries(10)
-                .delay(10, TimeUnit.MILLISECONDS)
                 .withExecutor(Executors.newFixedThreadPool(1))
                 .retry();
     }
     
-    
-    Connection getConnection(String url) {
-        try {
-            return DriverManager.getConnection(url);
-        } catch(SQLException e) {
-            throw new IllegalArgumentException(e);
-        }
+    Connection getConnection(String url) throws SQLException {
+        return DriverManager.getConnection(url);
     }
-    
-    static class CountingErrorHandler implements Retry.ErrorHandler {
-        private long counter = 0;
-        long getCounter() {
-            return counter;
-        }
-        @Override
-        public void handle(long currentTry, long maxTries, Throwable exception) {
-            counter++;
-            System.out.println("Try # " + currentTry + "/" + maxTries + " " + exception.getCause());
-        }
-    }
-    
-
-    
-    
 }

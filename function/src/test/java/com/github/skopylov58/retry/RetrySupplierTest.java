@@ -3,6 +3,7 @@ package com.github.skopylov58.retry;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
+import java.time.Duration;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
@@ -17,8 +18,7 @@ public class RetrySupplierTest {
         //Not enough num of tries
         FailingOp op = new FailingOp(5);
         CompletableFuture<Long> future = Retry.of(() -> op.get())
-        .maxTries(4)
-        .delay(100, TimeUnit.MILLISECONDS)
+        .withHandler(Retry.Handler.simple(4, Duration.ofMillis(100)))
         .retry();
         
         try {
@@ -33,30 +33,36 @@ public class RetrySupplierTest {
     public void testSuccess() throws Exception {
         FailingOp op = new FailingOp(5);
         CompletableFuture<Long> future = Retry.of(() -> op.get())
-        .maxTries(6)
-        .delay(100, TimeUnit.MILLISECONDS)
+        .withHandler(Retry.Handler.simple(6, Duration.ofMillis(100)))
         .retry();
         
         long res = future.get();
-        assertEquals(5, res);
+        assertEquals(6, res);
     }
 
 
     @Test
-    public void testSuccessWithBadErrorHandler() throws Exception {
-        //Make sure bad error handler will not spoil result
-        Retry.ErrorHandler throwingHandler = (i,max,t) -> {throw new IllegalStateException();};
+    public void testSuccessWithBadHandler() throws Exception {
+        Retry.Handler throwingHandler = (i,t) -> {throw new IllegalStateException();};
         FailingOp op = new FailingOp(5);
         CompletableFuture<Long> future = Retry.of(() -> op.get())
-        .maxTries(6)
-        .delay(100, TimeUnit.MILLISECONDS)
-        .withErrorHandler(throwingHandler)
+        .withHandler(throwingHandler)
         .retry();
         
-        long res = future.get();
-        assertEquals(5, res);
+        try {
+            long res = future.get();
+            fail();
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
     }
 
+    void foo() {
+        
+        var h = Retry.Handler.simple(10, Duration.ofMillis(100))
+                .also((i, th) -> {th.printStackTrace();});
+        
+    }
     
     static class FailingOp implements Supplier<Long> {
         
@@ -69,8 +75,7 @@ public class RetrySupplierTest {
         
         @Override
         public Long get() {
-            currentTry++;
-            if (currentTry < maxTries) {
+            if (currentTry++ < maxTries) {
                 throw new IllegalStateException();
             }
             return currentTry;

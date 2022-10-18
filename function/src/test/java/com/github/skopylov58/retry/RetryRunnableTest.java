@@ -3,9 +3,9 @@ package com.github.skopylov58.retry;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
+import java.time.Duration;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeUnit;
 
 import org.junit.Test;
 
@@ -18,8 +18,7 @@ public class RetryRunnableTest {
         //Number of tries is not enough
         FailingRunnable r = new FailingRunnable(5);
         CompletableFuture<Void> future = Retry.of(() -> r.run())
-                .maxTries(4)
-                .delay(100, TimeUnit.MILLISECONDS)
+                .withHandler(Retry.Handler.simple(4, Duration.ofMillis(100)))
                 .retry();
 
         try {
@@ -34,12 +33,11 @@ public class RetryRunnableTest {
     public void testSuccess() throws Exception {
         FailingRunnable r = new FailingRunnable(5);
         CompletableFuture<Void> future = Retry.of(() -> r.run())
-                .maxTries(5)
-                .delay(100, TimeUnit.MILLISECONDS)
+                .withHandler(Retry.Handler.simple(6, Duration.ofMillis(100)))
                 .retry();
 
         future.get();
-        assertEquals(5, r.getCounter());
+        assertEquals(6, r.getCounter());
     }
 
     
@@ -54,8 +52,7 @@ public class RetryRunnableTest {
         
         @Override
         public void run() {
-            currentTry++;
-            if (currentTry < maxTries) {
+            if (currentTry++ < maxTries) {
                 throw new IllegalStateException();
             }
             System.out.println("success with " + currentTry);

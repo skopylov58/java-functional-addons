@@ -172,10 +172,9 @@ public class JDBCConnectionPool {
     }
 
     private void aquireDbConnection(String dbUrl) {
+        var handler = Retry.Handler.simple(poolRetryOptions.numOfRetries, Duration.of(poolRetryOptions.delay, poolRetryOptions.timeUnit.toChronoUnit()));
         Retry.of(() -> DriverManager.getConnection(dbUrl))
-        .maxTries(poolRetryOptions.numOfRetries)
-        .delay(poolRetryOptions.delay, poolRetryOptions.timeUnit)
-        .withErrorHandler((i, j, th) -> System.out.println(th))
+        .withHandler(handler)
         .retry()
         .thenAccept(c -> pool.add(new PooledConnection(c)));
     }

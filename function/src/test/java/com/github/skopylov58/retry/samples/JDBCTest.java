@@ -1,4 +1,4 @@
-package com.github.skopylov58.retry;
+package com.github.skopylov58.retry.samples;
 
 import static org.junit.Assert.assertEquals;
 
@@ -11,11 +11,14 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
+import java.util.function.Function;
 import java.util.stream.Stream;
 
 import org.junit.Test;
 
 import com.github.skopylov58.functional.Try;
+import com.github.skopylov58.retry.Retry;
+import com.github.skopylov58.retry.Retry;
 
 /**
  * Example to execute JDBC statements with Try
@@ -84,8 +87,7 @@ public class JDBCTest {
    public Connection getConnection(String [] jdbcUrls) throws SQLException {
        return Stream.of(jdbcUrls)
        .map(url -> Try.of(() -> DriverManager.getConnection(url, USER, PASWD)))
-       //.peek(Try::logException)
-       .flatMap(t -> t.stream())
+       .flatMap(Try::stream)
        .findFirst()
        .get();
    }
