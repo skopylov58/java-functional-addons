@@ -170,7 +170,7 @@ John 40
 ```
 
 You may create your own interceptor by implementing 
-[com.skopylov.jdbc.Interceptor](jdbc/src/main/java/com/skopylov/jdbc/Interceptor.java) interface.
+[jdbc.Interceptor](jdbc/src/main/java/com/github/skopylov58/jdbc/Interceptor.java) interface.
 To bring your interceptor into action, please:
 
 - put your's interceptor into application class-path 
