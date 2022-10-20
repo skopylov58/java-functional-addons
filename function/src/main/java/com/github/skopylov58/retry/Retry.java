@@ -7,6 +7,7 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.TimeUnit;
 import java.util.function.BiConsumer;
+import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
@@ -24,7 +25,7 @@ import java.util.function.Supplier;
  * <pre>
  *      CompletableFuture&lt;Connection&gt; futureConnection = 
  *      Retry.of(() -&gt; DriverManager.getConnection("jdbc:mysql:a:b"))
- *      .withHandler(...)
+ *      .withBackoff(...)
  *      .withExecutor(...)
  *      .retry();
  * </pre>
@@ -36,94 +37,20 @@ import java.util.function.Supplier;
 public interface Retry {
     
     /**
-     * Handles errors and manages retry process flow.
-     */
-    @FunctionalInterface
-    /** Retry handler. */
-    interface Handler {
-        /**
-         * Handles retries during retry process.
-         * 
-         * @param currentTry current try starting with 0
-         * @param exception  exception occurred during this current try
-         * @return optional duration to wait until next retry, optional empty signals to stop retrying.
-         */
-        Optional<Duration> handle(long currentTry, Throwable exception);
-        
-        /**
-         * Simple retry handler which retries fixed number of times with fixed time interval.
-         * @param maxTries maximum number of tries
-         * @param tryInterval interval in between tries.
-         * @return simple handler
-         */
-        public static Handler simple(final long maxTries, final Duration tryInterval) {
-            return (i, th) -> {
-                return (i < maxTries) ? Optional.of(tryInterval) : Optional.empty();
-            };
-        }
-
-        /**
-         * Retry handler which will retry forever with fixed time interval.
-         * @param tryInterval interval between tries
-         * @return handler
-         */
-        public static Handler forever(final Duration tryInterval) {
-            return withFixedInterval(tryInterval);
-        }
-
-        public static Handler withInterval(Function<Long, Duration> func) {
-            return (i, th) ->  Optional.ofNullable(func.apply(i));
-        }
-
-        public static Handler withFixedInterval(Duration dur) {
-            return (i, th) ->  Optional.of(dur);
-        }
-        
-        /**
-         * Combinator, adds bi-consumer for the handler. May be useful for separating
-         * error logging functionality. 
-         * @param bi bi-consumer
-         * @return
-         */
-        default Handler also(BiConsumer<Long, Throwable> bi) {
-            return (i, th) -> {
-                bi.accept(i, th);
-                return handle(i, th);
-            };
-        }
-
-        default Handler withCounter(Predicate<Long> p) {
-            return (i, th) -> {
-                if (p.test(i)) {
-                    return handle(i, th);
-                } else {
-                    return Optional.empty();
-                }
-            };
-        }
-
-        default Handler withException(Predicate<Throwable> p) {
-            return (i, th) -> {
-                if (p.test(th)) {
-                    return handle(i, th);
-                } else {
-                    return Optional.empty();
-                }
-            };
-        }
-    }
-    
-    /**
      * Exponential backoff function. 
+     * <p>
+     * delay = initial * multFactor<sup>i</sup>
+     * 
+     * 
      * @param i try number starting with 0
      * @param initial initial retry interval
      * @param max maximum retry interval
      * @param multFactor the multiplicative factor or "base", 2 for binary exponential backoff
-     * @return retry interval
+     * @return retry interval = initial * multFactor<sup>i</sup>
      */
-    static Duration exponentialBackoff(long i, Duration initial, Duration max, int multFactor) {
+    static Duration exponentialBackoff(long i, Duration initial, Duration max, double multFactor) {
         double factor = Math.pow(multFactor, i);
-        Duration multipliedBy = initial.multipliedBy((long)factor);
+        Duration multipliedBy = Duration.ofMillis((long)(initial.toMillis()*factor));
         if (multipliedBy.compareTo(max) > 0) {
             return max;
         } else {
@@ -181,6 +108,31 @@ public interface Retry {
         });
     }
 
+    static BiFunction<Long, Throwable, Duration> maxRetriesWithFixedDelay(long maxRetries, Duration delay) {
+        return (i, th) -> i < maxRetries ? delay : null;
+    }
+
+    static BiFunction<Long, Throwable, Duration> maxRetriesWithExponentialDelay(long maxRetries, Duration min, Duration max, double factor) {
+        return (i, th) -> i < maxRetries ? exponentialBackoff(i, min, max, factor) : null;
+    }
+
+    static BiFunction<Long, Throwable, Duration> maxRetriesWithBinaryExponentialDelay(long maxRetries, Duration min, Duration max) {
+        return (i, th) -> i < maxRetries ? exponentialBackoff(i, min, max, 2) : null;
+    }
+    
+    static BiFunction<Long, Throwable, Duration> foreverWithFixedDelay(Duration delay) {
+        return (i, th) -> delay;
+    }
+
+    static BiFunction<Long, Throwable, Duration> foreverWithExponentialDelay(Duration min, Duration max, double factor) {
+        return (i, th) -> exponentialBackoff(i, min, max, factor);
+    }
+
+    static BiFunction<Long, Throwable, Duration> foreverWithBinaryExponentialDelay(Duration min, Duration max) {
+        return (i, th) -> exponentialBackoff(i, min, max, 2);
+    }
+
+    
     /**
      * Retry worker, class that actually performs asynchronous retries.
      *
@@ -189,7 +141,7 @@ public interface Retry {
     class Worker<T> {
         private long currentTry;
         private final Supplier<T> supplier;
-        private Handler errorHandler = Handler.simple(10, Duration.ofSeconds(1));
+        private BiFunction<Long, Throwable, Duration> backoff = maxRetriesWithFixedDelay(10, Duration.ofMillis(100));
         private Executor executor = ForkJoinPool.commonPool();
         private final CompletableFuture<T> result = new CompletableFuture<>();
 
@@ -202,11 +154,18 @@ public interface Retry {
             this.supplier = supplier;
         }
 
-        public Worker<T> withHandler(Handler errorHandler) {
-            this.errorHandler = errorHandler;
+        /**
+         * Specify retry backoff strategy. 
+         *  
+         * @param backoffFunction bi-function that maps current try number (starting with 0)
+         * and caught exception to the duration to wait until next try.
+         * @return this to allow method chaining
+         */
+        public Worker<T> withBackoff(BiFunction<Long, Throwable, Duration> backoffFunction) {
+            this.backoff = backoffFunction;
             return this;
         }
-
+        
         public Worker<T> withExecutor(Executor executor) {
             this.executor = executor;
             return this;
@@ -234,12 +193,12 @@ public interface Retry {
 
         private void handleError(Throwable t) {
             try {
-                Optional<Duration> waitDur = errorHandler.handle(currentTry++, t);
-                if (waitDur.isEmpty()) {
+                Duration waitDur = backoff.apply(currentTry++, t);
+                if (waitDur == null) {
                     result.completeExceptionally(t);
                 } else {
                     CompletableFuture
-                    .delayedExecutor(waitDur.get().toMillis(), TimeUnit.MILLISECONDS)
+                    .delayedExecutor(waitDur.toMillis(), TimeUnit.MILLISECONDS)
                     .execute(this::tryOnce);
                 }
             } catch (Throwable th) {

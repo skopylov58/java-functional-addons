@@ -18,9 +18,9 @@ public class RetryRunnableTest {
         //Number of tries is not enough
         FailingRunnable r = new FailingRunnable(5);
         CompletableFuture<Void> future = Retry.of(() -> r.run())
-                .withHandler(Retry.Handler.simple(4, Duration.ofMillis(100)))
+                .withBackoff(Retry.maxRetriesWithFixedDelay(4, Duration.ofMillis(100)))
                 .retry();
-
+        
         try {
             future.get();
             fail();
@@ -33,7 +33,7 @@ public class RetryRunnableTest {
     public void testSuccess() throws Exception {
         FailingRunnable r = new FailingRunnable(5);
         CompletableFuture<Void> future = Retry.of(() -> r.run())
-                .withHandler(Retry.Handler.simple(6, Duration.ofMillis(100)))
+                .withBackoff(Retry.maxRetriesWithFixedDelay(6, Duration.ofMillis(100)))
                 .retry();
 
         future.get();

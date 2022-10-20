@@ -1,11 +1,6 @@
 package com.github.skopylov58.retry;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.*;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -16,6 +11,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
+
 
 import org.junit.Test;
 
@@ -34,7 +30,7 @@ public class RetryTest {
     public void testSqlConnection() throws Exception {
         String url = "foo";
         CompletableFuture<Connection> future = Retry.of(() -> getConnection(url))
-                .withHandler(Retry.Handler.simple(5, Duration.ofMillis(10)))
+                .withBackoff(Retry.maxRetriesWithFixedDelay(5, Duration.ofMillis(10)))
                 .retry();
 
         future.whenComplete((c, t) -> {assertNull(c); assertNotNull(t);});
@@ -45,11 +41,10 @@ public class RetryTest {
     @Test
     public void testCancel() throws Exception {
         
-        var handler = Retry.Handler.withFixedInterval(Duration.ofMillis(50))
-        .also((i, th)-> System.out.println(th));
+        var handler = Retry.foreverWithFixedDelay(Duration.ofMillis(50));
         
         CompletableFuture<Connection> future = Retry.of(() -> getConnection("foo"))
-                .withHandler(handler)
+                .withBackoff(handler)
                 .retry();
         Thread.sleep(200);
         assertFalse(future.isDone());
@@ -65,11 +60,10 @@ public class RetryTest {
 
     @Test
     public void testForever() throws Exception {
-        var handler = Retry.Handler.withFixedInterval(Duration.ofMillis(50))
-        .also((i, th)-> System.out.println(th));
+        var handler = Retry.foreverWithFixedDelay(Duration.ofMillis(50));
 
         CompletableFuture<Connection> future = Retry.of(() -> getConnection("foo"))
-                .withHandler(handler)
+                .withBackoff(handler)
                 .retry();
         try {
             future.get(1, TimeUnit.SECONDS);
@@ -89,4 +83,16 @@ public class RetryTest {
     Connection getConnection(String url) throws SQLException {
         return DriverManager.getConnection(url);
     }
+    
+    @Test
+    public void testWith() throws Exception {
+        
+        var res = Retry.of(() -> 1)
+        .withBackoff(Retry.maxRetriesWithBinaryExponentialDelay(10, Duration.ofMillis(50), Duration.ofSeconds(1)))
+        .retry();
+        
+    }
+    
+    
+    
 }

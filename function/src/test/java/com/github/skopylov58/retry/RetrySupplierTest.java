@@ -7,6 +7,7 @@ import java.time.Duration;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
+import java.util.function.BiFunction;
 import java.util.function.Supplier;
 
 import org.junit.Test;
@@ -18,7 +19,7 @@ public class RetrySupplierTest {
         //Not enough num of tries
         FailingOp op = new FailingOp(5);
         CompletableFuture<Long> future = Retry.of(() -> op.get())
-        .withHandler(Retry.Handler.simple(4, Duration.ofMillis(100)))
+        .withBackoff(Retry.maxRetriesWithFixedDelay(4, Duration.ofMillis(100)))
         .retry();
         
         try {
@@ -33,7 +34,7 @@ public class RetrySupplierTest {
     public void testSuccess() throws Exception {
         FailingOp op = new FailingOp(5);
         CompletableFuture<Long> future = Retry.of(() -> op.get())
-        .withHandler(Retry.Handler.simple(6, Duration.ofMillis(100)))
+        .withBackoff(Retry.maxRetriesWithFixedDelay(6, Duration.ofMillis(100)))
         .retry();
         
         long res = future.get();
@@ -43,10 +44,10 @@ public class RetrySupplierTest {
 
     @Test
     public void testSuccessWithBadHandler() throws Exception {
-        Retry.Handler throwingHandler = (i,t) -> {throw new IllegalStateException();};
+        BiFunction<Long, Throwable, Duration> throwingHandler = (i,t) -> {throw new IllegalStateException();};
         FailingOp op = new FailingOp(5);
         CompletableFuture<Long> future = Retry.of(() -> op.get())
-        .withHandler(throwingHandler)
+        .withBackoff(throwingHandler)
         .retry();
         
         try {
@@ -57,13 +58,6 @@ public class RetrySupplierTest {
         }
     }
 
-    void foo() {
-        
-        var h = Retry.Handler.simple(10, Duration.ofMillis(100))
-                .also((i, th) -> {th.printStackTrace();});
-        
-    }
-    
     static class FailingOp implements Supplier<Long> {
         
         private final long maxTries;
