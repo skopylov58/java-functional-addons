@@ -39,7 +39,7 @@ public interface Retry {
     /**
      * Exponential backoff function. 
      * <p>
-     * delay = initial * multFactor<sup>i</sup>
+     * delay<sub>i</sub> = initial * multFactor<sup>i</sup>
      * 
      * 
      * @param i try number starting with 0
@@ -49,12 +49,22 @@ public interface Retry {
      * @return retry interval = initial * multFactor<sup>i</sup>
      */
     static Duration exponentialBackoff(long i, Duration initial, Duration max, double multFactor) {
+        if (multFactor <= 1d) {
+            throw new IllegalArgumentException("Expecting multFactor greater 1");
+        }
         double factor = Math.pow(multFactor, i);
-        Duration multipliedBy = Duration.ofMillis((long)(initial.toMillis()*factor));
-        if (multipliedBy.compareTo(max) > 0) {
+        if (Double.isNaN(factor) || Double.isInfinite(factor)) {
+            return max;
+        }
+        double resDouble = factor * initial.toMillis();
+        if (Double.isNaN(resDouble) || Double.isInfinite(resDouble)) {
+            return max;
+        }
+        Duration res = Duration.ofMillis((long) resDouble);
+        if (res.compareTo(max) > 0) {
             return max;
         } else {
-            return multipliedBy;
+            return res;
         }
     }
 

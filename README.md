@@ -109,10 +109,10 @@ Socket will be closed after last curly bracket.
 
 ## `Retry<T>` - asynchronous functional retry procedure
 
-Retry is ancient strategy of failure recovering. We using Retry a lot when connecting to databases, sending e-mails, etc., etc.
+Retry is ancient strategy of failure recovering. We using Retry a lot when connecting to databases, doing HTTP requests, sending e-mails, etc., etc.
 Naive retry implementations typically do retries in the loop and sleeping some time when exceptions occur. The main disadvantage ot this approach is that `Thread.sleep(...)` is blocking synchronous operation that freezes working thread.
 
-`Retry<T>` is single compact Java class utility without external dependencies to perform asynchronous retry procedure on given `Supplier<T>` or `Runnable` using CompletableFutures.
+`Retry<T>` is compact single Java class utility without external dependencies to perform asynchronous retry procedure on given `Supplier<T>` or `Runnable` using CompletableFutures.
 
 Minimalistic sample usage with default retry settings is as following:
 
@@ -121,7 +121,7 @@ CompletableFuture<Connection> futureConnection =
 Retry.of(() -> DriverManager.getConnection("jdbc:mysql:a:b"))
 .retry();
 ```
-This code will retry `getConnection(...)` 10 times with fixed delay 100 milliseconds using `ForkJoinPool.commonPool()`.
+This code will retry `getConnection(...)` 10 times with fixed delay 100 milliseconds using `ForkJoinPool.commonPool()`. You can specify any other executor for your retry process by using `Retry#withExecutor(...)` method.
 
 Retry behavior is controlled by user supplied backoff function.
 In terms of functional programming, backoff function is a `BiFunction<Long,Throwable,Duration>` which maps current try number (starting with 0) and caught exception to the duration to wait until next try will happen. If backoff function returns null, that is signal to stop retrying process.
@@ -153,7 +153,7 @@ Retry.of(() -> DriverManager.getConnection("jdbc:mysql:a:b"))
 .retry();
 ```
 
-The fact, that backoff function takes current try number as parameter, will give us an ability to implement popular exponential backoff retry strategies. The formula for exponential backoff is the following:
+The fact, that backoff function takes current try number as parameter, give us an ability to implement popular exponential backoff retry strategies. The formula for exponential backoff is the following:
 
 delay<sub>i</sub> = min * base<sup>i</sup> 
 
@@ -188,16 +188,16 @@ You can easily implement any desired backoff strategy. Anyway, `Retry<T>` offers
     }
 ```
 
-The sample with binary exponential backoff, initial delay 50 milliseconds, maximum 1 second.
+The sample with binary exponential backoff, initial delay 10 milliseconds, maximum 1 second.
 
 ```java
 CompletableFuture<Connection> futureConnection = 
 Retry.of(() -> DriverManager.getConnection("jdbc:mysql:a:b"))
-.withBackoff(Retry.maxRetriesWithBinaryExponentialDelay(10, Duration.ofMillis(50), Duration.ofSeconds(1)))
+.withBackoff(Retry.maxRetriesWithBinaryExponentialDelay(16, Duration.ofMillis(10), Duration.ofSeconds(1)))
 .retry();
 ```
 
-[<img src="pics/exponential-backoff.png">]
+<img src="pics/exponential-backoff.png">
 
 ## JDBC proxy driver (JDBCMiddleman)
 

@@ -2,6 +2,7 @@ package com.github.skopylov58.retry;
 
 import static org.junit.Assert.*;
 
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -85,12 +86,12 @@ public class RetryTest {
     }
     
     @Test
-    public void testWith() throws Exception {
-        
-        var res = Retry.of(() -> 1)
-        .withBackoff(Retry.maxRetriesWithBinaryExponentialDelay(10, Duration.ofMillis(50), Duration.ofSeconds(1)))
-        .retry();
-        
+    public void testExponent() throws Exception {
+        for (int i = 0; i< 100; i++) {
+            Duration d15 = Retry.exponentialBackoff(i, Duration.ofMillis(10), Duration.ofMillis(1000), 1.5);
+            Duration d2 = Retry.exponentialBackoff(i, Duration.ofMillis(10), Duration.ofMillis(1000), 2);
+            System.out.println(i + "\t" + d15.toMillis() + "\t " + d2.toMillis() );
+        }
     }
     
     

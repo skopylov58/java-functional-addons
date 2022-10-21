@@ -4,6 +4,8 @@ import static com.github.skopylov58.functional.TryUtils.toEither;
 import static com.github.skopylov58.functional.TryUtils.toOptional;
 import static com.github.skopylov58.functional.TryUtils.toResult;
 import static com.github.skopylov58.functional.TryUtils.toResultJava8;
+import static java.util.function.Predicate.not;
+import static com.github.skopylov58.functional.TryUtils.toFuture;
 import static org.junit.Assert.assertTrue;
 
 import java.net.MalformedURLException;
@@ -11,6 +13,7 @@ import java.net.URL;
 import java.text.NumberFormat;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
@@ -104,7 +107,7 @@ public class TryUtilsTest {
             System.out.println(r.exception());
         }
     }
-    
+
     List<Number> intListWithResult(String [] numbers) {
         NumberFormat format = NumberFormat.getInstance();
         return Stream.of(numbers)      //Stream<String>
@@ -114,7 +117,15 @@ public class TryUtilsTest {
         .toList();                     //List<Number>
     }
 
-    
+    List<Number> intListWithFuture(String [] numbers) {
+        NumberFormat format = NumberFormat.getInstance();
+        return Stream.of(numbers)      //Stream<String>
+        .map(toFuture(format::parse))  //Stream<CompletableFuture<Number>>, ParseException may happen
+        .filter(not(CompletableFuture::isCompletedExceptionally))
+        .map(CompletableFuture::join)
+        .toList();                     //List<Number>
+    }
+
 //    @Test
 //    public void testSocket() throws Exception {
 //        Optional.of("host")

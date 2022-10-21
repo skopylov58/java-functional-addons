@@ -1,6 +1,7 @@
 package com.github.skopylov58.functional;
 
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
@@ -123,6 +124,16 @@ public interface TryUtils {
         };
     }
 
+    static <T, R> Function<T, CompletableFuture<R>> toFuture(CheckedFunction<T, R> func) {
+        return param -> {
+            try {
+                return CompletableFuture.completedFuture(func.apply(param));
+            } catch (Exception e) {
+                return CompletableFuture.failedFuture(e);
+            }
+        };
+    }
+    
     public static <E extends Throwable> void sneakyThrow(Throwable e) throws E {
         throw (E) e;
     }
