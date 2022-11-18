@@ -24,6 +24,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.Properties;
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
@@ -99,7 +100,7 @@ public class JDBCConnectionPool {
         
         if (checkOrphans) {
             StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
-            orphaned.put(result, new Tuple<Instant, StackTraceElement[]>(Instant.now(),stackTrace));
+            orphaned.put(result, new Tuple<>(Instant.now(),stackTrace));
         }
         return result;
     }
@@ -145,6 +146,10 @@ public class JDBCConnectionPool {
         throw new SQLException(NO_AVAILABLE_CONNECTIONS);
     }
 
+    public CompletableFuture<Connection> getConnectionAsync() {
+        return Retry.of(this::getConnectionFromPool).retry();
+    }
+    
     void checkOrphan() {
         orphaned.forEachValue(0, p -> {
             Duration d = Duration.between(p.first, Instant.now());
@@ -173,10 +178,9 @@ public class JDBCConnectionPool {
 
     private void aquireDbConnection(String dbUrl) {
         Duration dur = Duration.of(poolRetryOptions.delay, poolRetryOptions.timeUnit.toChronoUnit());
-        var handler = Retry.maxRetriesWithFixedDelay(poolRetryOptions.numOfRetries, dur);
         Retry.of(() -> DriverManager.getConnection(dbUrl))
-        .withBackoff(handler)
-        .retry()
+        .withFixedDelay(dur)
+        .retry(poolRetryOptions.numOfRetries)
         .thenAccept(c -> pool.add(new PooledConnection(c)));
     }
 

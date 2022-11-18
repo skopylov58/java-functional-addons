@@ -1,10 +1,14 @@
 package com.github.skopylov58.functional;
 
+import java.time.Duration;
+import java.time.Instant;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
+
+import com.github.skopylov58.functional.Try.CheckedRunnable;
 
 /**
  * Collection of higher-order functions to handle exceptions in functional style.
@@ -148,5 +152,29 @@ public interface TryUtils {
             }
         };
     }
-
+    
+    static <T> Optional<T> retry(long maxTries, Duration delay, CheckedSupplier<T> supp) {
+        for (int i = 0; i < maxTries; i++) {
+            try {
+                return Optional.of(supp.get());
+            } catch (Exception e) {
+                if (i < maxTries - 1) { //not last attempt
+                    try {
+                        Thread.sleep(delay.toMillis());
+                    } catch (InterruptedException ie) {
+                        Thread.currentThread().interrupt();
+                        break;
+                    }
+                }
+            }
+        }
+        return Optional.empty(); 
+    }
+    
+    static Duration measure(Runnable runnable) {
+        Instant start = Instant.now();
+        runnable.run();
+        Instant end = Instant.now();
+        return Duration.between(start, end);
+    }
 }

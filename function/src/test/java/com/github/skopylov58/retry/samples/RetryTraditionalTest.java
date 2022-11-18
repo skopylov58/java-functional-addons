@@ -34,8 +34,8 @@ public class RetryTraditionalTest {
     public Integer retryWithRetry() throws InterruptedException, ExecutionException {
         IntProvider prov = new IntProvider();
         return Retry.of(() -> prov.getInt())
-        .withBackoff(Retry.maxRetriesWithFixedDelay(MAX_TRIES, Duration.ofMillis(RETRY_DELAY)))
-        .retry()
+        .withFixedDelay(Duration.ofMillis(RETRY_DELAY))
+        .retry(MAX_TRIES)
         .get();
     }
 

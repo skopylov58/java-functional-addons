@@ -57,12 +57,10 @@ public class SendMailTest {
     }
     
     public boolean sendWithRetry(String [] smtpServers, String msg) {
-        
-        var handler = Retry.maxRetriesWithFixedDelay(10, Duration.ofMillis(10));
-        CompletableFuture<Void> future = 
-                Retry.of(() -> sendFirstAvailable(smtpServers, msg))
-                .withBackoff(handler)
-                .retry();
+        var future = 
+                Retry.of(() -> {sendFirstAvailable(smtpServers, msg); return null;})
+                .withFixedDelay(Duration.ofMillis(10))
+                .retry(10);
         return Try.of(() -> future.get()).isSuccess();
     }
     

@@ -5,6 +5,8 @@ import static org.junit.Assert.fail;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.TimeUnit;
 
 import org.junit.Test;
 
@@ -47,6 +49,23 @@ public class JdbcConnectionPoolTest {
         pool.stop();
     }
 
+    
+    void insert(Connection c) {
+        try (c) {
+            
+        } catch (SQLException sqle) {
+            
+        }
+    }
+    
+    
+    void usage() {
+        CompletableFuture<Connection> f = null;
+        f.orTimeout(1, TimeUnit.SECONDS)
+        .thenAccept(this::insert)
+        .whenComplete((v, t) -> System.out.println(t));
+    }
+    
     
     
 }

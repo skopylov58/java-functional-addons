@@ -19,8 +19,8 @@ public class RetrySupplierTest {
         //Not enough num of tries
         FailingOp op = new FailingOp(5);
         CompletableFuture<Long> future = Retry.of(() -> op.get())
-        .withBackoff(Retry.maxRetriesWithFixedDelay(4, Duration.ofMillis(100)))
-        .retry();
+        .withFixedDelay(Duration.ofMillis(100))
+        .retry(4);
         
         try {
             Long res = future.get();
@@ -34,8 +34,8 @@ public class RetrySupplierTest {
     public void testSuccess() throws Exception {
         FailingOp op = new FailingOp(5);
         CompletableFuture<Long> future = Retry.of(() -> op.get())
-        .withBackoff(Retry.maxRetriesWithFixedDelay(6, Duration.ofMillis(100)))
-        .retry();
+        .withFixedDelay(Duration.ofMillis(100))
+        .retry(6);
         
         long res = future.get();
         assertEquals(6, res);
@@ -44,10 +44,9 @@ public class RetrySupplierTest {
 
     @Test
     public void testSuccessWithBadHandler() throws Exception {
-        BiFunction<Long, Throwable, Duration> throwingHandler = (i,t) -> {throw new IllegalStateException();};
         FailingOp op = new FailingOp(5);
         CompletableFuture<Long> future = Retry.of(() -> op.get())
-        .withBackoff(throwingHandler)
+        .withBackoff(i -> {throw new IllegalStateException();})
         .retry();
         
         try {
