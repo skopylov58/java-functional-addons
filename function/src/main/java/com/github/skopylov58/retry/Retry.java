@@ -89,38 +89,78 @@ public interface Retry {
             this.supplier = supplier;
         }
 
+        /**
+         * Specifies executor to perform retries.
+         * <p>Default - ForkJoinPool.commonPool()
+         * @param executor executor to use for retry.
+         * @return this Worker
+         */
         public Worker<T> withExecutor(Executor executor) {
             this.executor = executor;
             return this;
         }
         
+        /**
+         * Specifies backoff retry strategy with fixed delay.
+         * <p>Default - 1 second.
+         * @param delay delay between tries. 
+         * @return this Worker
+         */
         public Worker<T> withFixedDelay(Duration delay) {
             backoff = i -> delay;
             return this;
         }
 
+        /**
+         * With backoff function you can implement different retry delay strategies
+         * - linear, exponential, fibonacci, etc.
+         * <p>Default - fixed delay 1 second.
+         * @param backoff function that maps current try number (starting with 0) to delay
+         * @return this Worker
+         */
         public Worker<T> withBackoff(Function<Long, Duration> backoff) {
             this.backoff = backoff;
             return this;
         }
 
+        /**
+         * Error listener.
+         * <p>Default - no error listener.
+         * @param onError bi consumer with try number and error
+         * @return this Worker
+         */
         public Worker<T> onError(BiConsumer<Long, Throwable> onError) {
             this.onError = onError;
             return this;
         }
 
-        public Worker<T> retryOnException(Predicate<Throwable> onException) {
-            this.onThrowable = onException;
+        /**
+         * Specifies which exception(s) to retry. If predicate return true then worker will retry 
+         * this exception, otherwise complete future exceptionally.
+         * <p>Default - retry on any Exception.
+         * @param pred predicate to test.
+         * @return this Worker
+         */
+        public Worker<T> retryOnException(Predicate<Throwable> pred) {
+            this.onThrowable = pred;
             return this;
         }
 
+        /**
+         * Allows retry on some specific return values, like "Service not available", null values,  etc.
+         * <p>Default - no retry on any return value.
+         * 
+         * @param pred predicate to test return values. if predicate returns true then
+         * worker will retry operation.
+         * @return this Worker
+         */
         public Worker<T> retryOnValue(Predicate<T> pred) {
             this.retryOnValue  = pred;
             return this;
         }
 
         /**
-         * Retry forever.
+         * Starts retry forever operation.
          * @return CompletableFuture
          */
         public CompletableFuture<T> retry() {
