@@ -97,15 +97,4 @@ public class JDBCTest {
    public CompletableFuture<Connection> getConnectionWithRetry(String [] jdbcUrls) {
        return Retry.of(() -> getConnection(jdbcUrls)).retry();
    }
-
-   Duration linearBackoff(Long i) {
-        IOException.class.isInstance(i)
-
-
-
-        return i < 10 ? Duration.ofMillis(100 * (i+1)) : Duration.ofSeconds(1);
-   }
-
-
-   
 }
