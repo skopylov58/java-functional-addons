@@ -2,11 +2,13 @@ package com.github.skopylov58.retry.samples;
 
 import static org.junit.Assert.assertEquals;
 
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.Duration;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -95,5 +97,15 @@ public class JDBCTest {
    public CompletableFuture<Connection> getConnectionWithRetry(String [] jdbcUrls) {
        return Retry.of(() -> getConnection(jdbcUrls)).retry();
    }
+
+   Duration linearBackoff(Long i) {
+        IOException.class.isInstance(i)
+
+
+
+        return i < 10 ? Duration.ofMillis(100 * (i+1)) : Duration.ofSeconds(1);
+   }
+
+
    
 }
