@@ -107,12 +107,12 @@ This code with `Try<T>` will look as following:
 
 Socket will be closed after last curly bracket.
 
-## `Retry<T>` - asynchronous functional retry procedure
+## `Retry<T>` - non-blocking asynchronous functional retry procedure
 
 Retry is ancient strategy of failure recovering. We using Retry a lot when connecting to databases, doing HTTP requests, sending e-mails, etc., etc.
 Naive retry implementations typically do retries in the loop and sleeping some time when exceptions occur. The main disadvantage ot this approach is that `Thread.sleep(...)` is blocking synchronous operation that freezes working thread. Even you move such retry code to the some thread pool executor, it will just move problem to another place.
 
-`Retry<T>` is compact single Java class utility without external dependencies to perform asynchronous retry procedure on given `Supplier<T>` or `Runnable` using CompletableFutures.
+`Retry<T>` is compact single Java class utility without external dependencies to perform non-blocking asynchronous retry procedure on given `Supplier<T>` using CompletableFutures.
 
 Minimalistic sample usage with default retry settings is as following:
 
@@ -131,17 +131,6 @@ Retry.of(() -> DriverManager.getConnection("jdbc:mysql:a:b"))
 ```
 This code will retry `getConnection(...)` 5 times with fixed delay of 200 millisecond. 
 
-Retry behavior may be controlled by user supplied backoff function.
-In terms of functional programming, backoff function is a `Function<Long,Duration>` which maps current try number (starting with 0)  to the duration to wait until next try will happen.
-
-```java
-CompletableFuture<Connection> futureConnection = 
-Retry.of(() -> DriverManager.getConnection("jdbc:mysql:a:b"))
-.withBackoff(i < 10 ? Duration.ofMillis(100 * (i+1)) : Duration.ofSeconds(1))
-.retry();
-```
-This code will retry first 10 attempts with linear delay starting from 100 milliseconds and then retry with 1 second delay.
-
 You can retry only on specific exceptions, let`s say IOException
 ```java
 CompletableFuture<Connection> futureConnection = 
@@ -150,24 +139,35 @@ Retry.of(() -> DriverManager.getConnection("jdbc:mysql:a:b"))
 .retry();
 ```
 
-backoff give us an ability to implement popular exponential backoff retry strategies. The formula for exponential backoff is the following:
-
-delay<sub>i</sub> = min * base<sup>i</sup> 
-
-where i=0,1,2,3...is current try number, min - initial delay.
-Case when `base = 2` is known as binary exponential backoff which will increase delay twice on each retry.
-
-You can easily implement any desired backoff strategy. Anyway, `Retry<T>` offers out of box six higher-order functions to create common used backoff functions.
-
-The sample with binary exponential backoff, initial delay 10 milliseconds, maximum 1 second.
-
+You can retry only on specific returned values, say "Service not available" or null values.
 ```java
 CompletableFuture<Connection> futureConnection = 
 Retry.of(() -> DriverManager.getConnection("jdbc:mysql:a:b"))
-.withBackoff(Retry.maxRetriesWithBinaryExponentialDelay(16, Duration.ofMillis(10), Duration.ofSeconds(1)))
+.retryOnValue(Objects::isNull)
 .retry();
 ```
-<img src="pics/exponential-backoff.png">
+Retry behavior may be controlled by user supplied backoff function.
+In terms of functional programming, backoff function is a `Function<Long,Duration>` which maps current try number (starting with 0)  to the duration to wait until next try will happen.
+
+You can easily implement any desired backoff strategy. Lets say you want Fibonacci backoff, it is simple
+
+```java
+    int [] fibonacci = {1,1,2,3,5,8,13,21,34};
+    Duration fibonacciBackoff(int i, Duration min, Duration max) {
+        if (i >= fibonacci.length) {
+            return max;
+        } else {
+            var d = min.multipliedBy(fibonacci[i]);
+            return d.compareTo(max) > 0 ? max : d;
+        }
+    }
+
+    ...
+    CompletableFuture<Connection> futureConnection = 
+    Retry.of(() -> DriverManager.getConnection("jdbc:mysql:a:b"))
+    .withBackoff(i -> fibonacciBackoff(i, Duration.ofMillis(10), Duration.ofSeconds(1))
+    .retry();
+```
 
 ## JDBC proxy driver (JDBCMiddleman)
 
