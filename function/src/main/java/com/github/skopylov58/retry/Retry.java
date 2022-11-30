@@ -13,7 +13,7 @@ import java.util.function.Supplier;
 
 /**
  * Interface to perform asynchronous retry operations on supplier
- * or runnable that may throw an exception.
+ * that may throw an exception.
  * <p>
  * Retry.of(...) factory methods create {@link Worker} from
  * {@link CheckedSupplier}.

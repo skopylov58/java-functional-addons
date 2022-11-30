@@ -153,22 +153,22 @@ public interface TryUtils {
         };
     }
     
-    static <T> Optional<T> retry(long maxTries, Duration delay, CheckedSupplier<T> supp) {
+    static <T> T retry(long maxTries, Duration delay, CheckedSupplier<T> supp) {
         for (int i = 0; i < maxTries; i++) {
             try {
-                return Optional.of(supp.get());
+                return supp.get();
             } catch (Exception e) {
                 if (i < maxTries - 1) { //not last attempt
                     try {
                         Thread.sleep(delay.toMillis());
                     } catch (InterruptedException ie) {
-                        Thread.currentThread().interrupt();
+                        Thread.currentThread().interrupt(); //Propagate interruption 
                         break;
                     }
                 }
             }
         }
-        return Optional.empty(); 
+        throw new RuntimeException("Retry failed after %d retries".formatted(maxTries)); 
     }
     
     static Duration measure(Runnable runnable) {
