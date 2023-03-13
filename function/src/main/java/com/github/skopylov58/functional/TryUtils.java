@@ -153,24 +153,6 @@ public interface TryUtils {
         };
     }
     
-    static <T> T retry(long maxTries, Duration delay, CheckedSupplier<T> supp) {
-        for (int i = 0; i < maxTries; i++) {
-            try {
-                return supp.get();
-            } catch (Exception e) {
-                if (i < maxTries - 1) { //not last attempt
-                    try {
-                        Thread.sleep(delay.toMillis());
-                    } catch (InterruptedException ie) {
-                        Thread.currentThread().interrupt(); //Propagate interruption 
-                        break;
-                    }
-                }
-            }
-        }
-        throw new RuntimeException("Retry failed after %d retries".formatted(maxTries)); 
-    }
-    
     static Duration measure(Runnable runnable) {
         Instant start = Instant.now();
         runnable.run();

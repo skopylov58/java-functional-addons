@@ -74,6 +74,3 @@ project(':function') {
     }
 }
 
-project(':jdbc').dependencies {
-  implementation project(':function')
-}
