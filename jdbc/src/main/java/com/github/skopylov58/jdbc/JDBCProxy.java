@@ -10,8 +10,6 @@ import java.sql.Statement;
 import java.time.Duration;
 import java.time.Instant;
 
-import com.github.skopylov58.functional.Try;
-
 public class JDBCProxy implements InvocationHandler {
 
     private final Object target;
@@ -27,10 +25,11 @@ public class JDBCProxy implements InvocationHandler {
         Instant end = null;
         try {
             
-            Object [] newArgs = Try.of(() -> MiddleManJDBCDriver.interceptor.beforeCall(target, method, args))
-            .optional()
-            .orElse(args);
-                
+            Object [] newArgs = MiddleManJDBCDriver.interceptor.beforeCall(target, method, args);
+            if (newArgs == null) {
+                newArgs = args;
+            }
+
             //invoke
             start = Instant.now();
             Object result = method.invoke(target, newArgs);
@@ -38,7 +37,7 @@ public class JDBCProxy implements InvocationHandler {
 
             //after invoke
             Duration dur = Duration.between(start, end);
-            Try.of(()->  MiddleManJDBCDriver.interceptor.onSuccess(result, dur, thr.getId(), thr.getName()));
+            MiddleManJDBCDriver.interceptor.onSuccess(result, dur, thr.getId(), thr.getName());
             
             if (result instanceof CallableStatement) {
                 return makeProxy(CallableStatement.class, result);
@@ -54,7 +53,7 @@ public class JDBCProxy implements InvocationHandler {
         } catch (Throwable th) {
             end = Instant.now();
             Duration dur = Duration.between(start, end);
-            Try.of(()->  MiddleManJDBCDriver.interceptor.onFailure(th, dur, thr.getId(), thr.getName()));
+            MiddleManJDBCDriver.interceptor.onFailure(th, dur, thr.getId(), thr.getName());
             throw th;
         }
     }

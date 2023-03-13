@@ -7,11 +7,8 @@ import java.sql.DriverManager;
 import java.sql.DriverPropertyInfo;
 import java.sql.SQLException;
 import java.sql.SQLFeatureNotSupportedException;
-import java.util.Objects;
 import java.util.Properties;
 import java.util.logging.Logger;
-
-import com.github.skopylov58.functional.Try;
 
 public class MiddleManJDBCDriver implements Driver {
     
@@ -19,20 +16,21 @@ public class MiddleManJDBCDriver implements Driver {
     static Interceptor interceptor;
 
     static {
-        Try.of(() -> DriverManager.registerDriver(new MiddleManJDBCDriver())).orElseThrow();
-        interceptor = loadInterceptor(System.getProperty("jdbc.interceptor"));
+        try {
+            DriverManager.registerDriver(new MiddleManJDBCDriver());
+        } catch (SQLException e) {
+            throw new RuntimeException("Errorr loading MiddleManJDBCDriver", e);
+        }
+        interceptor = loadInterceptor(System.getProperty("jdbc.interceptor", SimpleLoggingInterceptor.class.getName()));
     }
 
     static Interceptor loadInterceptor(String className) {
-        return Try.of(() -> className)
-        .filter(Objects::nonNull)
-        .map(s -> Thread.currentThread().getContextClassLoader().loadClass(s))
-        .map(c -> (Interceptor)c.getConstructor().newInstance())
-//        .filter(Interceptor.class::isInstance, 
-//                c -> System.out.println(c.getClass().getName() + " should be Interceptor"))
-        //.cast(Interceptor.class)
-        .optional()
-        .orElse(new SimpleLoggingInterceptor());
+        try {
+            Class<?> c = Thread.currentThread().getContextClassLoader().loadClass(className);
+            return (Interceptor) c.getConstructor().newInstance();
+        } catch (Exception e) {
+            throw new RuntimeException("Error loading jdbc.interceptor - " + className, e);
+        }
     }
     
     @Override
@@ -44,8 +42,11 @@ public class MiddleManJDBCDriver implements Driver {
         
         Connection connection = DriverManager.getConnection(url.replace(JDBC_MIDDLEMAN, ""), info);
 
-        Thread curThread = Thread.currentThread();
-        Try.of(() -> interceptor.newConnection(connection, curThread.getId(), curThread.getName()));
+        try {
+            interceptor.newConnection(connection, Thread.currentThread().getId(), Thread.currentThread().getName());
+        } catch (Exception e) {
+            throw new SQLException("Error intercepting new connection", e);
+        }
         
         Object connProxy = Proxy.newProxyInstance(
                 Thread.currentThread().getContextClassLoader(),
