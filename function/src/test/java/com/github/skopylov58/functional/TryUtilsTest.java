@@ -10,15 +10,18 @@ import static org.junit.Assert.assertTrue;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLConnection;
 import java.text.NumberFormat;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
+import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
 import org.junit.Test;
 
+import com.github.skopylov58.functional.TryUtils.CheckedFunction;
 import com.github.skopylov58.functional.TryUtils.Result;
 
 public class TryUtilsTest {
@@ -124,6 +127,24 @@ public class TryUtilsTest {
         .filter(not(CompletableFuture::isCompletedExceptionally))
         .map(CompletableFuture::join)
         .toList();                     //List<Number>
+    }
+    
+    
+    void foo() {
+        Function<String,CompletableFuture<URL>> futureFunc = TryUtils.toFuture(URL::new);
+        CompletableFuture<URL> url = futureFunc.apply("bar");
+        
+        url.thenCompose(TryUtils.toFuture(URL::openConnection))
+        .thenCompose(TryUtils.toFuture(URLConnection::getOutputStream));
+        
+
+        
+        CompletableFuture<Integer> f = CompletableFuture.completedFuture(1);
+        f.thenApply(i -> "");
+        
+        
+        
+        
     }
 
 //    @Test
