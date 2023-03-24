@@ -1,76 +1,21 @@
-buildscript {
-    repositories { 
-      mavenCentral() 
-      mavenLocal()
-    }
-
-    dependencies {
-        classpath 'com.netflix.nebula:gradle-aggregate-javadocs-plugin:2.2.+'
-    }
-}
-
-apply plugin: 'nebula-aggregate-javadocs'
-
-task publishJavadoc (type: Copy) {
-  dependsOn 'aggregateJavadocs'
-  from 'build/docs/javadoc'
-  into 'docs'
-}
-
-subprojects {
   apply plugin: 'java-library'
   apply plugin: 'eclipse'
   apply plugin: 'jacoco'
+
+  repositories { 
+    mavenCentral() 
+    mavenLocal()
+  }
+
+
   java {
     sourceCompatibility = "17"
     targetCompatibility = "17"
   }
-  java {
-    withJavadocJar()
-    withSourcesJar()
-  }
-}
 
 
-subprojects {
   dependencies {
     testImplementation 'junit:junit:4.12'
-    testImplementation group: 'com.h2database', name: 'h2', version: '2.1.210'
   }
 
-  repositories {
-    mavenCentral()
-    mavenLocal()
-  }
-
-  task copyDocs(type: Copy) {
-    from 'build/docs/javadoc'
-    into 'javadoc'
-  }
-
-}
-
-project(':function') {
-    apply plugin: "maven-publish"
-    publishing {
-        repositories {
-            maven {
-                name = "GitHubPackages"
-                url = uri("https://maven.pkg.github.com/skopylov58/java-functional-addons")
-                credentials {
-                    username = 'skopylov58' //project.findProperty("gpr.user") ?: System.getenv("USERNAME")
-                    password = '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' //project.findProperty("gpr.key") ?: System.getenv("TOKEN")
-                }
-            }
-        }
-        publications {
-            gpr(MavenPublication) {
-              groupId = 'com.github.skopylov58'
-              artifactId = 'functional-addons'
-              version = '0.1'
-              from(components.java)
-            }
-        }
-    }
-}
 
