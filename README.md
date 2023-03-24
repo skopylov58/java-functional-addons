@@ -107,3 +107,6 @@ This code with `Try<T>` will look as following:
 
 Socket will be closed after last curly bracket.
 
+[See also articles on habr.com](https://habr.com/ru/post/676852/)
+[One more](https://habr.com/ru/post/687954/)
+
