@@ -5,8 +5,6 @@
 [![Habr.com publication](https://badgen.net/badge/habr.com/publication/green)](https://habr.com/ru/post/676852/)
 [![Habr.com publication](https://badgen.net/badge/habr.com/publication/green)](https://habr.com/ru/post/687954/)
 
-[JavaDocs](https://skopylov58.github.io/java-functional-addons/)
-
 ## `Try<T>` - functional exception handling
 
 ### Rational behind `Try<T>`
