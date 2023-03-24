@@ -1,6 +1,7 @@
 # java-functional-addons
 
 ![example workflow](https://github.com/skopylov58/java-functional-addons/actions/workflows/gradle.yml/badge.svg)
+[![Javadoc](https://img.shields.io/badge/JavaDoc-Online-green)](https://skopylov58.github.io/java-functional-addons/) 
 [![Habr.com publication](https://badgen.net/badge/habr.com/publication/green)](https://habr.com/ru/post/676852/)
 [![Habr.com publication](https://badgen.net/badge/habr.com/publication/green)](https://habr.com/ru/post/687954/)
 
