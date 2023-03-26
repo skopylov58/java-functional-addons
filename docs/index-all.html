@@ -48,11 +48,19 @@ loadScripts(document, 'script');</script>
 <div class="header">
 <h1>Index</h1>
 </div>
-<a href="#I:A">A</a>&nbsp;<a href="#I:C">C</a>&nbsp;<a href="#I:E">E</a>&nbsp;<a href="#I:F">F</a>&nbsp;<a href="#I:G">G</a>&nbsp;<a href="#I:H">H</a>&nbsp;<a href="#I:I">I</a>&nbsp;<a href="#I:L">L</a>&nbsp;<a href="#I:M">M</a>&nbsp;<a href="#I:O">O</a>&nbsp;<a href="#I:P">P</a>&nbsp;<a href="#I:R">R</a>&nbsp;<a href="#I:S">S</a>&nbsp;<a href="#I:T">T</a>&nbsp;<br><a href="allclasses-index.html">All&nbsp;Classes&nbsp;and&nbsp;Interfaces</a><span class="vertical-separator">|</span><a href="allpackages-index.html">All&nbsp;Packages</a>
+<a href="#I:A">A</a>&nbsp;<a href="#I:B">B</a>&nbsp;<a href="#I:C">C</a>&nbsp;<a href="#I:E">E</a>&nbsp;<a href="#I:F">F</a>&nbsp;<a href="#I:G">G</a>&nbsp;<a href="#I:H">H</a>&nbsp;<a href="#I:I">I</a>&nbsp;<a href="#I:L">L</a>&nbsp;<a href="#I:M">M</a>&nbsp;<a href="#I:O">O</a>&nbsp;<a href="#I:P">P</a>&nbsp;<a href="#I:R">R</a>&nbsp;<a href="#I:S">S</a>&nbsp;<a href="#I:T">T</a>&nbsp;<a href="#I:V">V</a>&nbsp;<br><a href="allclasses-index.html">All&nbsp;Classes&nbsp;and&nbsp;Interfaces</a><span class="vertical-separator">|</span><a href="allpackages-index.html">All&nbsp;Packages</a>
 <h2 class="title" id="I:A">A</h2>
 <dl class="index">
 <dt><a href="com/github/skopylov58/functional/Try.CheckedConsumer.html#accept(T)" class="member-name-link">accept(T)</a> - Method in interface com.github.skopylov58.functional.<a href="com/github/skopylov58/functional/Try.CheckedConsumer.html" title="interface in com.github.skopylov58.functional">Try.CheckedConsumer</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="com/github/skopylov58/functional/Validation.Builder.html#addValidation(java.util.function.Predicate,E)" class="member-name-link">addValidation(Predicate&lt;T&gt;, E)</a> - Method in class com.github.skopylov58.functional.<a href="com/github/skopylov58/functional/Validation.Builder.html" title="class in com.github.skopylov58.functional">Validation.Builder</a></dt>
+<dd>
+<div class="block">Adds new validation to the validator.</div>
+</dd>
+<dt><a href="com/github/skopylov58/functional/Validation.Builder.html#addValidation(java.util.function.Predicate,java.util.function.Function)" class="member-name-link">addValidation(Predicate&lt;T&gt;, Function&lt;T, E&gt;)</a> - Method in class com.github.skopylov58.functional.<a href="com/github/skopylov58/functional/Validation.Builder.html" title="class in com.github.skopylov58.functional">Validation.Builder</a></dt>
+<dd>
+<div class="block">Adds new validation to the validator.</div>
+</dd>
 <dt><a href="com/github/skopylov58/functional/Try.html#andFinally(com.github.skopylov58.functional.Try.CheckedRunnable)" class="member-name-link">andFinally(Try.CheckedRunnable)</a> - Method in interface com.github.skopylov58.functional.<a href="com/github/skopylov58/functional/Try.html" title="interface in com.github.skopylov58.functional">Try</a></dt>
 <dd>
 <div class="block">Behaves like finally block in Java's try/catch/finally.</div>
@@ -60,6 +68,15 @@ loadScripts(document, 'script');</script>
 <dt><a href="com/github/skopylov58/functional/Try.CheckedFunction.html#apply(T)" class="member-name-link">apply(T)</a> - Method in interface com.github.skopylov58.functional.<a href="com/github/skopylov58/functional/Try.CheckedFunction.html" title="interface in com.github.skopylov58.functional">Try.CheckedFunction</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="com/github/skopylov58/functional/TryUtils.CheckedFunction.html#apply(T)" class="member-name-link">apply(T)</a> - Method in interface com.github.skopylov58.functional.<a href="com/github/skopylov58/functional/TryUtils.CheckedFunction.html" title="interface in com.github.skopylov58.functional">TryUtils.CheckedFunction</a></dt>
+<dd>&nbsp;</dd>
+</dl>
+<h2 class="title" id="I:B">B</h2>
+<dl class="index">
+<dt><a href="com/github/skopylov58/functional/Validation.Builder.html#build()" class="member-name-link">build()</a> - Method in class com.github.skopylov58.functional.<a href="com/github/skopylov58/functional/Validation.Builder.html" title="class in com.github.skopylov58.functional">Validation.Builder</a></dt>
+<dd>
+<div class="block">Builds validator.</div>
+</dd>
+<dt><a href="com/github/skopylov58/functional/Validation.Builder.html#%3Cinit%3E()" class="member-name-link">Builder()</a> - Constructor for class com.github.skopylov58.functional.<a href="com/github/skopylov58/functional/Validation.Builder.html" title="class in com.github.skopylov58.functional">Validation.Builder</a></dt>
 <dd>&nbsp;</dd>
 </dl>
 <h2 class="title" id="I:C">C</h2>
@@ -74,8 +91,8 @@ loadScripts(document, 'script');</script>
 <dd>&nbsp;</dd>
 <dt><a href="com/github/skopylov58/functional/package-summary.html">com.github.skopylov58.functional</a> - package com.github.skopylov58.functional</dt>
 <dd>
-<div class="block">This package provides interfaces for functional exception handling <code>Try&lt;T&gt;</code>
- and <code>Either&lt;R, L&gt;</code>.</div>
+<div class="block">This package provides interfaces for functional exception handling <code>Try&lt;T&gt;</code>,
+ <code>Either&lt;R, L&gt;</code>, <code>Validation&lt;T, E&gt;</code> and some useful high order functions.</div>
 </dd>
 </dl>
 <h2 class="title" id="I:E">E</h2>
@@ -463,7 +480,22 @@ loadScripts(document, 'script');</script>
 <dt><a href="com/github/skopylov58/functional/Tuple3.html#%3Cinit%3E(F,S,T)" class="member-name-link">Tuple3(F, S, T)</a> - Constructor for class com.github.skopylov58.functional.<a href="com/github/skopylov58/functional/Tuple3.html" title="class in com.github.skopylov58.functional">Tuple3</a></dt>
 <dd>&nbsp;</dd>
 </dl>
-<a href="#I:A">A</a>&nbsp;<a href="#I:C">C</a>&nbsp;<a href="#I:E">E</a>&nbsp;<a href="#I:F">F</a>&nbsp;<a href="#I:G">G</a>&nbsp;<a href="#I:H">H</a>&nbsp;<a href="#I:I">I</a>&nbsp;<a href="#I:L">L</a>&nbsp;<a href="#I:M">M</a>&nbsp;<a href="#I:O">O</a>&nbsp;<a href="#I:P">P</a>&nbsp;<a href="#I:R">R</a>&nbsp;<a href="#I:S">S</a>&nbsp;<a href="#I:T">T</a>&nbsp;<br><a href="allclasses-index.html">All&nbsp;Classes&nbsp;and&nbsp;Interfaces</a><span class="vertical-separator">|</span><a href="allpackages-index.html">All&nbsp;Packages</a></main>
+<h2 class="title" id="I:V">V</h2>
+<dl class="index">
+<dt><a href="com/github/skopylov58/functional/Validation.html#validate(T)" class="member-name-link">validate(T)</a> - Method in class com.github.skopylov58.functional.<a href="com/github/skopylov58/functional/Validation.html" title="class in com.github.skopylov58.functional">Validation</a></dt>
+<dd>&nbsp;</dd>
+<dt><a href="com/github/skopylov58/functional/Validation.html#validateToEither(T)" class="member-name-link">validateToEither(T)</a> - Method in class com.github.skopylov58.functional.<a href="com/github/skopylov58/functional/Validation.html" title="class in com.github.skopylov58.functional">Validation</a></dt>
+<dd>&nbsp;</dd>
+<dt><a href="com/github/skopylov58/functional/Validation.html" class="type-name-link" title="class in com.github.skopylov58.functional">Validation</a>&lt;<a href="com/github/skopylov58/functional/Validation.html" title="type parameter in Validation">T</a>,<wbr><a href="com/github/skopylov58/functional/Validation.html" title="type parameter in Validation">E</a>&gt; - Class in <a href="com/github/skopylov58/functional/package-summary.html">com.github.skopylov58.functional</a></dt>
+<dd>
+<div class="block">Simple functional validator, collects all validation errors.</div>
+</dd>
+<dt><a href="com/github/skopylov58/functional/Validation.Builder.html" class="type-name-link" title="class in com.github.skopylov58.functional">Validation.Builder</a>&lt;<a href="com/github/skopylov58/functional/Validation.Builder.html" title="type parameter in Validation.Builder">T</a>,<wbr><a href="com/github/skopylov58/functional/Validation.Builder.html" title="type parameter in Validation.Builder">E</a>&gt; - Class in <a href="com/github/skopylov58/functional/package-summary.html">com.github.skopylov58.functional</a></dt>
+<dd>
+<div class="block">Validator builder.</div>
+</dd>
+</dl>
+<a href="#I:A">A</a>&nbsp;<a href="#I:B">B</a>&nbsp;<a href="#I:C">C</a>&nbsp;<a href="#I:E">E</a>&nbsp;<a href="#I:F">F</a>&nbsp;<a href="#I:G">G</a>&nbsp;<a href="#I:H">H</a>&nbsp;<a href="#I:I">I</a>&nbsp;<a href="#I:L">L</a>&nbsp;<a href="#I:M">M</a>&nbsp;<a href="#I:O">O</a>&nbsp;<a href="#I:P">P</a>&nbsp;<a href="#I:R">R</a>&nbsp;<a href="#I:S">S</a>&nbsp;<a href="#I:T">T</a>&nbsp;<a href="#I:V">V</a>&nbsp;<br><a href="allclasses-index.html">All&nbsp;Classes&nbsp;and&nbsp;Interfaces</a><span class="vertical-separator">|</span><a href="allpackages-index.html">All&nbsp;Packages</a></main>
 </div>
 </div>
 </body>
