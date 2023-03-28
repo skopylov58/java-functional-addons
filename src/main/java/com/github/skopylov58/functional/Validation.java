@@ -1,12 +1,13 @@
 package com.github.skopylov58.functional;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
 /**
- * Simple functional validator, collects all validation errors. 
+ * Simple functional validator collecting all validation errors. 
  * 
  * @author skopylov@gmail.com
  *
@@ -15,29 +16,74 @@ import java.util.function.Predicate;
  */
 public class Validation<T, E> {
 
-    record PredicateValidator<T, E>(Predicate<T> predicate, Function<T, E> errorMapper) {}
+    sealed interface Validator permits PredicateValidator, NestedValidator {}
     
-    private final List<PredicateValidator<T,E>> predicateValidators;
+    private record PredicateValidator<T, E>(
+            Predicate<T> predicate,
+            Function<T, E> errorMapper) implements Validator {}
+    
+    record NestedValidator<T,R,E>(
+            Function<T,R> mapper,
+            Validation<R,E> validation) implements Validator {}
+    
 
-    private <R> Validation(List<PredicateValidator<T,E>> errorPredicates) {
-        this.predicateValidators = errorPredicates;
+    private final List<Validator> validators;
+
+    /**
+     * Private constructor
+     * @param errorPredicates validation predicates
+     */
+    private Validation(List<Validator> validators) {
+        this.validators = validators;
     }
-
+    
+    /**
+     * Validates data.
+     * @param t data to validate, null data will not be validated. 
+     * @return list of validation errors, empty list if there are not any errors.
+     */
+    @SuppressWarnings({ "preview", "unchecked" }) 
     public List<E> validate(T t) {
-        List<E> res = new ArrayList<>();
-        if (t != null) {
-            for (var validator : predicateValidators) {
-                if (validator.predicate.test(t)) {
-                    res.add(validator.errorMapper.apply(t));
-                }
+        if (t == null) {
+            return Collections.emptyList();
+        }
+        List<E> errors = new ArrayList<>();
+        for (Validator validator : validators) {
+            
+            if (validator instanceof PredicateValidator pv) {
+              boolean err = pv.predicate.test(t);
+              if (err) {
+                  errors.add((E) pv.errorMapper.apply(t));
+              }
+            } else if (validator instanceof NestedValidator nv) {
+              errors.addAll(nv.validation.validate(nv.mapper.apply(t)));
+            } else {
+                throw new IllegalStateException();
             }
         }
-        return res;
+        return errors;
     }
+    
+    
 
+    /**
+     * Validates data
+     * @param t data to validate
+     * @return Either
+     */
     public Either<T, List<E>> validateToEither(T t) {
         List<E> list = validate(t);
         return list.isEmpty() ? Either.right(t) : Either.left(list);
+    }
+    
+    /**
+     * Creates validation builder.
+     * @param <T> type to validate
+     * @param <E> validation error type
+     * @return validation builder
+     */
+    public static <T, E> Builder<T, E> builder() {
+        return new Builder<>();
     }
     
     /**
@@ -48,7 +94,9 @@ public class Validation<T, E> {
      */
     public static class Builder<T, E> {
         
-        private final List<PredicateValidator<T,E>> validators = new ArrayList<>();
+        private final List<Validator> validators = new ArrayList<>();
+        
+        private Builder() {}
         
         /**
          * Adds new validation to the validator.
@@ -72,6 +120,18 @@ public class Validation<T, E> {
             return this;
         }
 
+        /**
+         * Add new validation of the R type field.
+         * @param <R> mapper result type.
+         * @param mapper maps T to R
+         * @param validation validation for R
+         * @return
+         */
+        public <R> Builder<T, E> addValidation(Function<T, R> mapper, Validation<R, E> validation) {
+            validators.add(new NestedValidator(mapper, validation));
+            return this;
+        }
+        
         /**
          * Builds validator.
          * @return Validation
