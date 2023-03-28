@@ -53,6 +53,10 @@ loadScripts(document, 'script');</script>
 <dl class="index">
 <dt><a href="com/github/skopylov58/functional/Try.CheckedConsumer.html#accept(T)" class="member-name-link">accept(T)</a> - Method in interface com.github.skopylov58.functional.<a href="com/github/skopylov58/functional/Try.CheckedConsumer.html" title="interface in com.github.skopylov58.functional">Try.CheckedConsumer</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="com/github/skopylov58/functional/Validation.Builder.html#addValidation(java.util.function.Function,com.github.skopylov58.functional.Validation)" class="member-name-link">addValidation(Function&lt;T, R&gt;, Validation&lt;R, E&gt;)</a> - Method in class com.github.skopylov58.functional.<a href="com/github/skopylov58/functional/Validation.Builder.html" title="class in com.github.skopylov58.functional">Validation.Builder</a></dt>
+<dd>
+<div class="block">Add new validation of the R type field.</div>
+</dd>
 <dt><a href="com/github/skopylov58/functional/Validation.Builder.html#addValidation(java.util.function.Predicate,E)" class="member-name-link">addValidation(Predicate&lt;T&gt;, E)</a> - Method in class com.github.skopylov58.functional.<a href="com/github/skopylov58/functional/Validation.Builder.html" title="class in com.github.skopylov58.functional">Validation.Builder</a></dt>
 <dd>
 <div class="block">Adds new validation to the validator.</div>
@@ -76,8 +80,10 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">Builds validator.</div>
 </dd>
-<dt><a href="com/github/skopylov58/functional/Validation.Builder.html#%3Cinit%3E()" class="member-name-link">Builder()</a> - Constructor for class com.github.skopylov58.functional.<a href="com/github/skopylov58/functional/Validation.Builder.html" title="class in com.github.skopylov58.functional">Validation.Builder</a></dt>
-<dd>&nbsp;</dd>
+<dt><a href="com/github/skopylov58/functional/Validation.html#builder()" class="member-name-link">builder()</a> - Static method in class com.github.skopylov58.functional.<a href="com/github/skopylov58/functional/Validation.html" title="class in com.github.skopylov58.functional">Validation</a></dt>
+<dd>
+<div class="block">Creates validation builder.</div>
+</dd>
 </dl>
 <h2 class="title" id="I:C">C</h2>
 <dl class="index">
@@ -483,12 +489,16 @@ loadScripts(document, 'script');</script>
 <h2 class="title" id="I:V">V</h2>
 <dl class="index">
 <dt><a href="com/github/skopylov58/functional/Validation.html#validate(T)" class="member-name-link">validate(T)</a> - Method in class com.github.skopylov58.functional.<a href="com/github/skopylov58/functional/Validation.html" title="class in com.github.skopylov58.functional">Validation</a></dt>
-<dd>&nbsp;</dd>
+<dd>
+<div class="block">Validates data.</div>
+</dd>
 <dt><a href="com/github/skopylov58/functional/Validation.html#validateToEither(T)" class="member-name-link">validateToEither(T)</a> - Method in class com.github.skopylov58.functional.<a href="com/github/skopylov58/functional/Validation.html" title="class in com.github.skopylov58.functional">Validation</a></dt>
-<dd>&nbsp;</dd>
+<dd>
+<div class="block">Validates data</div>
+</dd>
 <dt><a href="com/github/skopylov58/functional/Validation.html" class="type-name-link" title="class in com.github.skopylov58.functional">Validation</a>&lt;<a href="com/github/skopylov58/functional/Validation.html" title="type parameter in Validation">T</a>,<wbr><a href="com/github/skopylov58/functional/Validation.html" title="type parameter in Validation">E</a>&gt; - Class in <a href="com/github/skopylov58/functional/package-summary.html">com.github.skopylov58.functional</a></dt>
 <dd>
-<div class="block">Simple functional validator, collects all validation errors.</div>
+<div class="block">Simple functional validator collecting all validation errors.</div>
 </dd>
 <dt><a href="com/github/skopylov58/functional/Validation.Builder.html" class="type-name-link" title="class in com.github.skopylov58.functional">Validation.Builder</a>&lt;<a href="com/github/skopylov58/functional/Validation.Builder.html" title="type parameter in Validation.Builder">T</a>,<wbr><a href="com/github/skopylov58/functional/Validation.Builder.html" title="type parameter in Validation.Builder">E</a>&gt; - Class in <a href="com/github/skopylov58/functional/package-summary.html">com.github.skopylov58.functional</a></dt>
 <dd>
