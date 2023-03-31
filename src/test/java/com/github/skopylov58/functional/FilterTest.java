@@ -15,10 +15,6 @@ public class FilterTest {
         assertTrue(filtered.isFailure());
         filtered.onFailure(e -> assertEquals(NoSuchElementException.class, e.getClass()));
 
-        t = Try.success(3);
-        filtered = t.filter(i -> i%2 == 0, i -> System.out.println(i + " is fitered"));
-        assertTrue(filtered.isFailure());
-
         t = Try.success(4);
         filtered = t.filter(i -> i%2 == 0);
         assertTrue(filtered.isSuccess());

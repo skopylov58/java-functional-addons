@@ -42,8 +42,8 @@ public class NumbersTest {
 
     List<Number> fromStringArrayWithTry(String [] nums) {
         return Stream.of(nums)
-        .map(s -> Try.of(() ->Integer.valueOf(s)))
-        .peek(t -> t.onFailure(this::logError, e -> e instanceof NumberFormatException))
+        .map(s -> Try.of(() -> Integer.valueOf(s)))
+        .peek(t -> t.onFailure(this::logError))
         .flatMap(Try::stream)  //stream for Failure is empty
         .collect(Collectors.toList());
     }
@@ -51,7 +51,7 @@ public class NumbersTest {
     List<Number> fromStringArrayWithTry0(String [] nums) {
         return Stream.of(nums)
         .filter(Objects::nonNull)
-        .map(s -> Try.success(s).map(i-> Integer.valueOf(i) , (i, e) -> logError(e)))
+        .map(s -> Try.success(s).map(i-> Integer.valueOf(i)))
         .flatMap(Try::stream)  //stream for Failure is empty
         .collect(Collectors.toList());
     }
@@ -80,7 +80,7 @@ public class NumbersTest {
     List<Number> fromStringArrayWithHOF(String [] nums) {
         return Stream.of(nums)
         .filter(Objects::nonNull)
-        .map(Try.of(Integer::valueOf))
+        .map(Try.lift(Integer::valueOf))
         .flatMap(Try::stream)  //stream for Failure is empty
         .collect(Collectors.toList());
     }

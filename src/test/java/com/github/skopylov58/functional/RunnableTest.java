@@ -13,9 +13,9 @@ public class RunnableTest {
     @Test
     public void testRunnable() throws Exception {
         
-        Try<Class<Void>> run = Try.of(() -> System.out.println("Runnable"));
+        Try<Void> run = Try.of(() -> System.out.println("Runnable"));
         assertTrue(run.isSuccess());
-        assertEquals(Void.TYPE, run.get());
+        assertEquals(null, run.get());
 
         run = Try.of(() -> {throw new FileNotFoundException();});
         assertTrue(run.isFailure());
