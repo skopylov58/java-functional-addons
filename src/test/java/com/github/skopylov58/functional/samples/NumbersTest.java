@@ -80,7 +80,7 @@ public class NumbersTest {
     List<Number> fromStringArrayWithHOF(String [] nums) {
         return Stream.of(nums)
         .filter(Objects::nonNull)
-        .map(Try.lift(Integer::valueOf))
+        .map(Try.catching(Integer::valueOf))
         .flatMap(Try::stream)  //stream for Failure is empty
         .collect(Collectors.toList());
     }

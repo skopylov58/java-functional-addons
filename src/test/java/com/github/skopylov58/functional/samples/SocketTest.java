@@ -23,11 +23,13 @@ public class SocketTest {
     @Test
     public void testWithTry() {
         try (var s = Try.of(() -> new Socket("host", 8888))) {
-            s.map(Socket::getOutputStream)
+            s.flatMap(Try.catching(Socket::getOutputStream))
+            .flatMap(Try.consumeCatching(out -> out.write(new byte[] {1,2,3})))
             .onSuccess(out -> out.write(new byte[] {1,2,3}))
             .onFailure(e -> System.out.println(e));
         }
     }
 
+    
 
 }

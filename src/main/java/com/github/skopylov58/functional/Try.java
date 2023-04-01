@@ -5,6 +5,7 @@ import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
+import java.util.function.Supplier;
 import java.util.stream.Stream;
 
 /**
@@ -101,10 +102,26 @@ public interface Try<T> extends AutoCloseable {
      * @return this Try for success, new success or new failure depending on if supplier had thrown exception.
      */
     @SuppressWarnings("unchecked")
-    default Try<T> recover(CheckedSupplier<? extends T> supl) {
-        return (Try<T>) fold(__ -> this, e -> lift(toFunction(supl)).apply(e));
+    default Try<T> recover(CheckedSupplier<? extends T> supplier) {
+        return (Try<T>) fold(__ -> this, e -> catching(toFunction(supplier)).apply(e));
     }
 
+//    default Try<T> recover(Supplier<? extends T> supl) {
+//        return (Try<T>) fold(__ -> this, e -> success(supl.get()));
+//    }
+//
+//    default Try<T> recover(Function<Exception, ? extends T> mapper) {
+//        return (Try<T>) fold(__ -> this, e -> success(mapper.apply(e)));
+//    }
+//
+//    default Try<T> flatRecover(Function<Exception, Try<T>> mapper) {
+//        return fold(__ -> this, e -> mapper.apply(e));
+//    }
+//
+//    default Try<T> flatRecover(Supplier<Try<T>> supl) {
+//        return fold(__ -> this, e -> supl.get());
+//    }
+    
     /**
      * Tries recover failed try with given supplier, has no action for success.
      * @param supplier supplier to recover
@@ -123,7 +140,7 @@ public interface Try<T> extends AutoCloseable {
      */
     @SuppressWarnings("unchecked")
     default <R> Try<R> map(CheckedFunction<? super T, ? extends R> mapper) {
-        return (Try<R>) flatMap(lift(mapper));
+        return (Try<R>) flatMap(catching(mapper));
     }
 
     /**
@@ -244,7 +261,7 @@ public interface Try<T> extends AutoCloseable {
      */
     @SuppressWarnings("unchecked")
     static <T> Try<T> of(CheckedSupplier<? extends T> supplier) {
-        return (Try<T>) lift((T t) -> supplier.get()).apply(null);
+        return (Try<T>) catching((T t) -> supplier.get()).apply(null);
     }
 
     /**
@@ -277,15 +294,49 @@ public interface Try<T> extends AutoCloseable {
      * @param func partial function {@code T->R}
      * @return total function {@code T->Try<R>}
      */
-    static <T, R> Function<T, Try<R>> lift(CheckedFunction<T, R> func) {
-        return param -> { 
+    static <T, R> Function<T, Try<R>> catching(CheckedFunction<T, R> func) {
+        return (T t) -> { 
             try {
-                return success(func.apply(param));
+                return success(func.apply(t));
             } catch (Exception e) {
                 return failure(e);
             }
         };
     }
+    
+    static <T> Function<T, Try<T>> consumeCatching(CheckedConsumer<T> cons) {
+        return (T t) -> { 
+            try {
+                cons.accept(t);
+                return success(t);
+            } catch (Exception e) {
+                return failure(e);
+            }
+        };
+    }
+
+    static <T> Function<T, Try<T>> getCatching(CheckedSupplier<T> supl) {
+        return (T t) -> { 
+            try {
+                return success(supl.get());
+            } catch (Exception e) {
+                return failure(e);
+            }
+        };
+    }
+
+    static <T> Function<T, Try<Void>> runCatching(CheckedRunnable run) {
+        return (T t) -> { 
+            try {
+                run.run();
+                return success(null);
+            } catch (Exception e) {
+                return failure(e);
+            }
+        };
+    }
+
+    
     
     /**
      * Try's success projection.
