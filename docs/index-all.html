@@ -87,6 +87,11 @@ loadScripts(document, 'script');</script>
 </dl>
 <h2 class="title" id="I:C">C</h2>
 <dl class="index">
+<dt><a href="com/github/skopylov58/functional/Try.html#catching(com.github.skopylov58.functional.Try.CheckedFunction)" class="member-name-link">catching(Try.CheckedFunction&lt;T, R&gt;)</a> - Static method in interface com.github.skopylov58.functional.<a href="com/github/skopylov58/functional/Try.html" title="interface in com.github.skopylov58.functional">Try</a></dt>
+<dd>
+<div class="block">Higher order function to transform partial <code>T-&gt;R</code> function 
+ to the total <code>T-&gt;Try&lt;R&gt;</code> function.</div>
+</dd>
 <dt><a href="com/github/skopylov58/functional/TryUtils.ResultJava8.html#cause()" class="member-name-link">cause()</a> - Method in class com.github.skopylov58.functional.<a href="com/github/skopylov58/functional/TryUtils.ResultJava8.html" title="class in com.github.skopylov58.functional">TryUtils.ResultJava8</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="com/github/skopylov58/functional/Try.html#close()" class="member-name-link">close()</a> - Method in interface com.github.skopylov58.functional.<a href="com/github/skopylov58/functional/Try.html" title="interface in com.github.skopylov58.functional">Try</a></dt>
@@ -100,6 +105,8 @@ loadScripts(document, 'script');</script>
 <div class="block">This package provides interfaces for functional exception handling <code>Try&lt;T&gt;</code>,
  <code>Either&lt;R, L&gt;</code>, <code>Validation&lt;T, E&gt;</code> and some useful high order functions.</div>
 </dd>
+<dt><a href="com/github/skopylov58/functional/Try.html#consumeCatching(com.github.skopylov58.functional.Try.CheckedConsumer)" class="member-name-link">consumeCatching(Try.CheckedConsumer&lt;T&gt;)</a> - Static method in interface com.github.skopylov58.functional.<a href="com/github/skopylov58/functional/Try.html" title="interface in com.github.skopylov58.functional">Try</a></dt>
+<dd>&nbsp;</dd>
 </dl>
 <h2 class="title" id="I:E">E</h2>
 <dl class="index">
@@ -134,37 +141,27 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">Factory method to produce Try from value of Exception.</div>
 </dd>
-<dt><a href="com/github/skopylov58/functional/Try.Failure.html#filter(java.util.function.Predicate)" class="member-name-link">filter(Predicate&lt;T&gt;)</a> - Method in class com.github.skopylov58.functional.<a href="com/github/skopylov58/functional/Try.Failure.html" title="class in com.github.skopylov58.functional">Try.Failure</a></dt>
-<dd>&nbsp;</dd>
-<dt><a href="com/github/skopylov58/functional/Try.html#filter(java.util.function.Predicate)" class="member-name-link">filter(Predicate&lt;T&gt;)</a> - Method in interface com.github.skopylov58.functional.<a href="com/github/skopylov58/functional/Try.html" title="interface in com.github.skopylov58.functional">Try</a></dt>
+<dt><a href="com/github/skopylov58/functional/Try.html#filter(java.util.function.Predicate)" class="member-name-link">filter(Predicate&lt;? super T&gt;)</a> - Method in interface com.github.skopylov58.functional.<a href="com/github/skopylov58/functional/Try.html" title="interface in com.github.skopylov58.functional">Try</a></dt>
 <dd>
 <div class="block">Filters current Try, has no action for failure.</div>
 </dd>
-<dt><a href="com/github/skopylov58/functional/Try.Success.html#filter(java.util.function.Predicate)" class="member-name-link">filter(Predicate&lt;T&gt;)</a> - Method in class com.github.skopylov58.functional.<a href="com/github/skopylov58/functional/Try.Success.html" title="class in com.github.skopylov58.functional">Try.Success</a></dt>
-<dd>&nbsp;</dd>
-<dt><a href="com/github/skopylov58/functional/Try.Failure.html#filter(java.util.function.Predicate,java.util.function.Consumer)" class="member-name-link">filter(Predicate&lt;T&gt;, Consumer&lt;T&gt;)</a> - Method in class com.github.skopylov58.functional.<a href="com/github/skopylov58/functional/Try.Failure.html" title="class in com.github.skopylov58.functional">Try.Failure</a></dt>
-<dd>&nbsp;</dd>
-<dt><a href="com/github/skopylov58/functional/Try.html#filter(java.util.function.Predicate,java.util.function.Consumer)" class="member-name-link">filter(Predicate&lt;T&gt;, Consumer&lt;T&gt;)</a> - Method in interface com.github.skopylov58.functional.<a href="com/github/skopylov58/functional/Try.html" title="interface in com.github.skopylov58.functional">Try</a></dt>
-<dd>
-<div class="block">Filters current Try, has no action for failure.</div>
-</dd>
-<dt><a href="com/github/skopylov58/functional/Try.Success.html#filter(java.util.function.Predicate,java.util.function.Consumer)" class="member-name-link">filter(Predicate&lt;T&gt;, Consumer&lt;T&gt;)</a> - Method in class com.github.skopylov58.functional.<a href="com/github/skopylov58/functional/Try.Success.html" title="class in com.github.skopylov58.functional">Try.Success</a></dt>
-<dd>&nbsp;</dd>
 <dt><a href="com/github/skopylov58/functional/Tuple.html#first" class="member-name-link">first</a> - Variable in class com.github.skopylov58.functional.<a href="com/github/skopylov58/functional/Tuple.html" title="class in com.github.skopylov58.functional">Tuple</a></dt>
 <dd>&nbsp;</dd>
-<dt><a href="com/github/skopylov58/functional/Try.Failure.html#flatMap(com.github.skopylov58.functional.Try.CheckedFunction)" class="member-name-link">flatMap(Try.CheckedFunction&lt;? super T, Try&lt;R&gt;&gt;)</a> - Method in class com.github.skopylov58.functional.<a href="com/github/skopylov58/functional/Try.Failure.html" title="class in com.github.skopylov58.functional">Try.Failure</a></dt>
-<dd>&nbsp;</dd>
-<dt><a href="com/github/skopylov58/functional/Try.html#flatMap(com.github.skopylov58.functional.Try.CheckedFunction)" class="member-name-link">flatMap(Try.CheckedFunction&lt;? super T, Try&lt;R&gt;&gt;)</a> - Method in interface com.github.skopylov58.functional.<a href="com/github/skopylov58/functional/Try.html" title="interface in com.github.skopylov58.functional">Try</a></dt>
+<dt><a href="com/github/skopylov58/functional/Try.html#flatMap(java.util.function.Function)" class="member-name-link">flatMap(Function&lt;? super T, Try&lt;R&gt;&gt;)</a> - Method in interface com.github.skopylov58.functional.<a href="com/github/skopylov58/functional/Try.html" title="interface in com.github.skopylov58.functional">Try</a></dt>
 <dd>
-<div class="block">Maps Try of type T to type R</div>
+<div class="block">Maps Try of type T to try of type R</div>
 </dd>
-<dt><a href="com/github/skopylov58/functional/Try.Success.html#flatMap(com.github.skopylov58.functional.Try.CheckedFunction)" class="member-name-link">flatMap(Try.CheckedFunction&lt;? super T, Try&lt;R&gt;&gt;)</a> - Method in class com.github.skopylov58.functional.<a href="com/github/skopylov58/functional/Try.Success.html" title="class in com.github.skopylov58.functional">Try.Success</a></dt>
-<dd>&nbsp;</dd>
 <dt><a href="com/github/skopylov58/functional/Either.html#flatMap(java.util.function.Function)" class="member-name-link">flatMap(Function&lt;R, Either&lt;T, L&gt;&gt;)</a> - Method in interface com.github.skopylov58.functional.<a href="com/github/skopylov58/functional/Either.html" title="interface in com.github.skopylov58.functional">Either</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="com/github/skopylov58/functional/Either.Left.html#flatMap(java.util.function.Function)" class="member-name-link">flatMap(Function&lt;R, Either&lt;T, L&gt;&gt;)</a> - Method in class com.github.skopylov58.functional.<a href="com/github/skopylov58/functional/Either.Left.html" title="class in com.github.skopylov58.functional">Either.Left</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="com/github/skopylov58/functional/Either.Right.html#flatMap(java.util.function.Function)" class="member-name-link">flatMap(Function&lt;R, Either&lt;T, L&gt;&gt;)</a> - Method in class com.github.skopylov58.functional.<a href="com/github/skopylov58/functional/Either.Right.html" title="class in com.github.skopylov58.functional">Either.Right</a></dt>
+<dd>&nbsp;</dd>
+<dt><a href="com/github/skopylov58/functional/Try.Failure.html#fold(java.util.function.Function,java.util.function.Function)" class="member-name-link">fold(Function&lt;? super T, ? extends R&gt;, Function&lt;? super Exception, ? extends R&gt;)</a> - Method in class com.github.skopylov58.functional.<a href="com/github/skopylov58/functional/Try.Failure.html" title="class in com.github.skopylov58.functional">Try.Failure</a></dt>
+<dd>&nbsp;</dd>
+<dt><a href="com/github/skopylov58/functional/Try.html#fold(java.util.function.Function,java.util.function.Function)" class="member-name-link">fold(Function&lt;? super T, ? extends R&gt;, Function&lt;? super Exception, ? extends R&gt;)</a> - Method in interface com.github.skopylov58.functional.<a href="com/github/skopylov58/functional/Try.html" title="interface in com.github.skopylov58.functional">Try</a></dt>
+<dd>&nbsp;</dd>
+<dt><a href="com/github/skopylov58/functional/Try.Success.html#fold(java.util.function.Function,java.util.function.Function)" class="member-name-link">fold(Function&lt;? super T, ? extends R&gt;, Function&lt;? super Exception, ? extends R&gt;)</a> - Method in class com.github.skopylov58.functional.<a href="com/github/skopylov58/functional/Try.Success.html" title="class in com.github.skopylov58.functional">Try.Success</a></dt>
 <dd>&nbsp;</dd>
 </dl>
 <h2 class="title" id="I:G">G</h2>
@@ -176,6 +173,8 @@ loadScripts(document, 'script');</script>
 <div class="block">Synonym for <a href="com/github/skopylov58/functional/Try.html#orElseThrow()"><code>Try.orElseThrow()</code></a></div>
 </dd>
 <dt><a href="com/github/skopylov58/functional/TryUtils.CheckedSupplier.html#get()" class="member-name-link">get()</a> - Method in interface com.github.skopylov58.functional.<a href="com/github/skopylov58/functional/TryUtils.CheckedSupplier.html" title="interface in com.github.skopylov58.functional">TryUtils.CheckedSupplier</a></dt>
+<dd>&nbsp;</dd>
+<dt><a href="com/github/skopylov58/functional/Try.html#getCatching(com.github.skopylov58.functional.Try.CheckedSupplier)" class="member-name-link">getCatching(Try.CheckedSupplier&lt;T&gt;)</a> - Static method in interface com.github.skopylov58.functional.<a href="com/github/skopylov58/functional/Try.html" title="interface in com.github.skopylov58.functional">Try</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="com/github/skopylov58/functional/Either.html#getLeft()" class="member-name-link">getLeft()</a> - Method in interface com.github.skopylov58.functional.<a href="com/github/skopylov58/functional/Either.html" title="interface in com.github.skopylov58.functional">Either</a></dt>
 <dd>
@@ -203,10 +202,6 @@ loadScripts(document, 'script');</script>
 </dl>
 <h2 class="title" id="I:I">I</h2>
 <dl class="index">
-<dt><a href="com/github/skopylov58/functional/Try.html#ifInterrupted()" class="member-name-link">ifInterrupted()</a> - Method in interface com.github.skopylov58.functional.<a href="com/github/skopylov58/functional/Try.html" title="interface in com.github.skopylov58.functional">Try</a></dt>
-<dd>
-<div class="block">Convenience method to interrupt current thread if failure cause is <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/InterruptedException.html" title="class or interface in java.lang" class="external-link"><code>InterruptedException</code></a></div>
-</dd>
 <dt><a href="com/github/skopylov58/functional/Try.html#isFailure()" class="member-name-link">isFailure()</a> - Method in interface com.github.skopylov58.functional.<a href="com/github/skopylov58/functional/Try.html" title="interface in com.github.skopylov58.functional">Try</a></dt>
 <dd>
 <div class="block">Checks if it is failure try.</div>
@@ -223,14 +218,10 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">Checks if this is right side.</div>
 </dd>
-<dt><a href="com/github/skopylov58/functional/Try.Failure.html#isSuccess()" class="member-name-link">isSuccess()</a> - Method in class com.github.skopylov58.functional.<a href="com/github/skopylov58/functional/Try.Failure.html" title="class in com.github.skopylov58.functional">Try.Failure</a></dt>
-<dd>&nbsp;</dd>
 <dt><a href="com/github/skopylov58/functional/Try.html#isSuccess()" class="member-name-link">isSuccess()</a> - Method in interface com.github.skopylov58.functional.<a href="com/github/skopylov58/functional/Try.html" title="interface in com.github.skopylov58.functional">Try</a></dt>
 <dd>
 <div class="block">Checks if it is success try.</div>
 </dd>
-<dt><a href="com/github/skopylov58/functional/Try.Success.html#isSuccess()" class="member-name-link">isSuccess()</a> - Method in class com.github.skopylov58.functional.<a href="com/github/skopylov58/functional/Try.Success.html" title="class in com.github.skopylov58.functional">Try.Success</a></dt>
-<dd>&nbsp;</dd>
 </dl>
 <h2 class="title" id="I:L">L</h2>
 <dl class="index">
@@ -243,20 +234,10 @@ loadScripts(document, 'script');</script>
 </dl>
 <h2 class="title" id="I:M">M</h2>
 <dl class="index">
-<dt><a href="com/github/skopylov58/functional/Try.Failure.html#map(com.github.skopylov58.functional.Try.CheckedFunction)" class="member-name-link">map(Try.CheckedFunction&lt;? super T, ? extends R&gt;)</a> - Method in class com.github.skopylov58.functional.<a href="com/github/skopylov58/functional/Try.Failure.html" title="class in com.github.skopylov58.functional">Try.Failure</a></dt>
-<dd>&nbsp;</dd>
 <dt><a href="com/github/skopylov58/functional/Try.html#map(com.github.skopylov58.functional.Try.CheckedFunction)" class="member-name-link">map(Try.CheckedFunction&lt;? super T, ? extends R&gt;)</a> - Method in interface com.github.skopylov58.functional.<a href="com/github/skopylov58/functional/Try.html" title="interface in com.github.skopylov58.functional">Try</a></dt>
 <dd>
 <div class="block">Maps Try of type T to type R</div>
 </dd>
-<dt><a href="com/github/skopylov58/functional/Try.Success.html#map(com.github.skopylov58.functional.Try.CheckedFunction)" class="member-name-link">map(Try.CheckedFunction&lt;? super T, ? extends R&gt;)</a> - Method in class com.github.skopylov58.functional.<a href="com/github/skopylov58/functional/Try.Success.html" title="class in com.github.skopylov58.functional">Try.Success</a></dt>
-<dd>&nbsp;</dd>
-<dt><a href="com/github/skopylov58/functional/Try.Failure.html#map(com.github.skopylov58.functional.Try.CheckedFunction,java.util.function.BiConsumer)" class="member-name-link">map(Try.CheckedFunction&lt;? super T, ? extends R&gt;, BiConsumer&lt;T, Exception&gt;)</a> - Method in class com.github.skopylov58.functional.<a href="com/github/skopylov58/functional/Try.Failure.html" title="class in com.github.skopylov58.functional">Try.Failure</a></dt>
-<dd>&nbsp;</dd>
-<dt><a href="com/github/skopylov58/functional/Try.html#map(com.github.skopylov58.functional.Try.CheckedFunction,java.util.function.BiConsumer)" class="member-name-link">map(Try.CheckedFunction&lt;? super T, ? extends R&gt;, BiConsumer&lt;T, Exception&gt;)</a> - Method in interface com.github.skopylov58.functional.<a href="com/github/skopylov58/functional/Try.html" title="interface in com.github.skopylov58.functional">Try</a></dt>
-<dd>&nbsp;</dd>
-<dt><a href="com/github/skopylov58/functional/Try.Success.html#map(com.github.skopylov58.functional.Try.CheckedFunction,java.util.function.BiConsumer)" class="member-name-link">map(Try.CheckedFunction&lt;? super T, ? extends R&gt;, BiConsumer&lt;T, Exception&gt;)</a> - Method in class com.github.skopylov58.functional.<a href="com/github/skopylov58/functional/Try.Success.html" title="class in com.github.skopylov58.functional">Try.Success</a></dt>
-<dd>&nbsp;</dd>
 <dt><a href="com/github/skopylov58/functional/Either.Left.html#map(java.util.function.Function)" class="member-name-link">map(Function&lt;R, T&gt;)</a> - Method in class com.github.skopylov58.functional.<a href="com/github/skopylov58/functional/Either.Left.html" title="class in com.github.skopylov58.functional">Either.Left</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="com/github/skopylov58/functional/Either.html#map(java.util.function.Function)" class="member-name-link">map(Function&lt;R, T&gt;)</a> - Method in interface com.github.skopylov58.functional.<a href="com/github/skopylov58/functional/Either.html" title="interface in com.github.skopylov58.functional">Either</a></dt>
@@ -268,48 +249,23 @@ loadScripts(document, 'script');</script>
 </dl>
 <h2 class="title" id="I:O">O</h2>
 <dl class="index">
-<dt><a href="com/github/skopylov58/functional/Try.html#of(com.github.skopylov58.functional.Try.CheckedFunction)" class="member-name-link">of(Try.CheckedFunction&lt;T, R&gt;)</a> - Static method in interface com.github.skopylov58.functional.<a href="com/github/skopylov58/functional/Try.html" title="interface in com.github.skopylov58.functional">Try</a></dt>
-<dd>
-<div class="block">Higher order function to transform partial <code>T-&gt;R</code> function 
- to the total <code>T-&gt;Try&lt;R&gt;</code> function.</div>
-</dd>
 <dt><a href="com/github/skopylov58/functional/Try.html#of(com.github.skopylov58.functional.Try.CheckedRunnable)" class="member-name-link">of(Try.CheckedRunnable)</a> - Static method in interface com.github.skopylov58.functional.<a href="com/github/skopylov58/functional/Try.html" title="interface in com.github.skopylov58.functional">Try</a></dt>
 <dd>
 <div class="block">Factory method to produce Try from runnable that may throw an exception.</div>
 </dd>
-<dt><a href="com/github/skopylov58/functional/Try.html#of(com.github.skopylov58.functional.Try.CheckedSupplier)" class="member-name-link">of(Try.CheckedSupplier&lt;T&gt;)</a> - Static method in interface com.github.skopylov58.functional.<a href="com/github/skopylov58/functional/Try.html" title="interface in com.github.skopylov58.functional">Try</a></dt>
+<dt><a href="com/github/skopylov58/functional/Try.html#of(com.github.skopylov58.functional.Try.CheckedSupplier)" class="member-name-link">of(Try.CheckedSupplier&lt;? extends T&gt;)</a> - Static method in interface com.github.skopylov58.functional.<a href="com/github/skopylov58/functional/Try.html" title="interface in com.github.skopylov58.functional">Try</a></dt>
 <dd>
 <div class="block">Factory method to produce Try from supplier that may throw an exception.</div>
 </dd>
-<dt><a href="com/github/skopylov58/functional/Try.Failure.html#onFailure(java.util.function.Consumer)" class="member-name-link">onFailure(Consumer&lt;Exception&gt;)</a> - Method in class com.github.skopylov58.functional.<a href="com/github/skopylov58/functional/Try.Failure.html" title="class in com.github.skopylov58.functional">Try.Failure</a></dt>
-<dd>&nbsp;</dd>
 <dt><a href="com/github/skopylov58/functional/Try.html#onFailure(java.util.function.Consumer)" class="member-name-link">onFailure(Consumer&lt;Exception&gt;)</a> - Method in interface com.github.skopylov58.functional.<a href="com/github/skopylov58/functional/Try.html" title="interface in com.github.skopylov58.functional">Try</a></dt>
 <dd>
 <div class="block">Executes action on failure, has no action for success.</div>
 </dd>
-<dt><a href="com/github/skopylov58/functional/Try.Success.html#onFailure(java.util.function.Consumer)" class="member-name-link">onFailure(Consumer&lt;Exception&gt;)</a> - Method in class com.github.skopylov58.functional.<a href="com/github/skopylov58/functional/Try.Success.html" title="class in com.github.skopylov58.functional">Try.Success</a></dt>
-<dd>&nbsp;</dd>
-<dt><a href="com/github/skopylov58/functional/Try.Failure.html#onFailure(java.util.function.Consumer,java.util.function.Predicate)" class="member-name-link">onFailure(Consumer&lt;Exception&gt;, Predicate&lt;Exception&gt;)</a> - Method in class com.github.skopylov58.functional.<a href="com/github/skopylov58/functional/Try.Failure.html" title="class in com.github.skopylov58.functional">Try.Failure</a></dt>
-<dd>&nbsp;</dd>
-<dt><a href="com/github/skopylov58/functional/Try.html#onFailure(java.util.function.Consumer,java.util.function.Predicate)" class="member-name-link">onFailure(Consumer&lt;Exception&gt;, Predicate&lt;Exception&gt;)</a> - Method in interface com.github.skopylov58.functional.<a href="com/github/skopylov58/functional/Try.html" title="interface in com.github.skopylov58.functional">Try</a></dt>
-<dd>
-<div class="block">Executes action on failure if predicate is true, has no action for success.</div>
-</dd>
-<dt><a href="com/github/skopylov58/functional/Try.Success.html#onFailure(java.util.function.Consumer,java.util.function.Predicate)" class="member-name-link">onFailure(Consumer&lt;Exception&gt;, Predicate&lt;Exception&gt;)</a> - Method in class com.github.skopylov58.functional.<a href="com/github/skopylov58/functional/Try.Success.html" title="class in com.github.skopylov58.functional">Try.Success</a></dt>
-<dd>&nbsp;</dd>
-<dt><a href="com/github/skopylov58/functional/Try.Failure.html#onSuccess(com.github.skopylov58.functional.Try.CheckedConsumer)" class="member-name-link">onSuccess(Try.CheckedConsumer&lt;? super T&gt;)</a> - Method in class com.github.skopylov58.functional.<a href="com/github/skopylov58/functional/Try.Failure.html" title="class in com.github.skopylov58.functional">Try.Failure</a></dt>
-<dd>&nbsp;</dd>
 <dt><a href="com/github/skopylov58/functional/Try.html#onSuccess(com.github.skopylov58.functional.Try.CheckedConsumer)" class="member-name-link">onSuccess(Try.CheckedConsumer&lt;? super T&gt;)</a> - Method in interface com.github.skopylov58.functional.<a href="com/github/skopylov58/functional/Try.html" title="interface in com.github.skopylov58.functional">Try</a></dt>
 <dd>
 <div class="block">Executes action on success, has no action for failure.</div>
 </dd>
-<dt><a href="com/github/skopylov58/functional/Try.Success.html#onSuccess(com.github.skopylov58.functional.Try.CheckedConsumer)" class="member-name-link">onSuccess(Try.CheckedConsumer&lt;? super T&gt;)</a> - Method in class com.github.skopylov58.functional.<a href="com/github/skopylov58/functional/Try.Success.html" title="class in com.github.skopylov58.functional">Try.Success</a></dt>
-<dd>&nbsp;</dd>
-<dt><a href="com/github/skopylov58/functional/Try.Failure.html#optional()" class="member-name-link">optional()</a> - Method in class com.github.skopylov58.functional.<a href="com/github/skopylov58/functional/Try.Failure.html" title="class in com.github.skopylov58.functional">Try.Failure</a></dt>
-<dd>&nbsp;</dd>
 <dt><a href="com/github/skopylov58/functional/Try.html#optional()" class="member-name-link">optional()</a> - Method in interface com.github.skopylov58.functional.<a href="com/github/skopylov58/functional/Try.html" title="interface in com.github.skopylov58.functional">Try</a></dt>
-<dd>&nbsp;</dd>
-<dt><a href="com/github/skopylov58/functional/Try.Success.html#optional()" class="member-name-link">optional()</a> - Method in class com.github.skopylov58.functional.<a href="com/github/skopylov58/functional/Try.Success.html" title="class in com.github.skopylov58.functional">Try.Success</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="com/github/skopylov58/functional/Try.Failure.html#orElseThrow()" class="member-name-link">orElseThrow()</a> - Method in class com.github.skopylov58.functional.<a href="com/github/skopylov58/functional/Try.Failure.html" title="class in com.github.skopylov58.functional">Try.Failure</a></dt>
 <dd>&nbsp;</dd>
@@ -329,22 +285,14 @@ loadScripts(document, 'script');</script>
 </dl>
 <h2 class="title" id="I:R">R</h2>
 <dl class="index">
-<dt><a href="com/github/skopylov58/functional/Try.Failure.html#recover(com.github.skopylov58.functional.Try.CheckedSupplier)" class="member-name-link">recover(Try.CheckedSupplier&lt;T&gt;)</a> - Method in class com.github.skopylov58.functional.<a href="com/github/skopylov58/functional/Try.Failure.html" title="class in com.github.skopylov58.functional">Try.Failure</a></dt>
-<dd>&nbsp;</dd>
-<dt><a href="com/github/skopylov58/functional/Try.html#recover(com.github.skopylov58.functional.Try.CheckedSupplier)" class="member-name-link">recover(Try.CheckedSupplier&lt;T&gt;)</a> - Method in interface com.github.skopylov58.functional.<a href="com/github/skopylov58/functional/Try.html" title="interface in com.github.skopylov58.functional">Try</a></dt>
+<dt><a href="com/github/skopylov58/functional/Try.html#recover(com.github.skopylov58.functional.Try.CheckedSupplier)" class="member-name-link">recover(Try.CheckedSupplier&lt;? extends T&gt;)</a> - Method in interface com.github.skopylov58.functional.<a href="com/github/skopylov58/functional/Try.html" title="interface in com.github.skopylov58.functional">Try</a></dt>
 <dd>
 <div class="block">Tries recover failed try with given supplier, has no action for success.</div>
 </dd>
-<dt><a href="com/github/skopylov58/functional/Try.Success.html#recover(com.github.skopylov58.functional.Try.CheckedSupplier)" class="member-name-link">recover(Try.CheckedSupplier&lt;T&gt;)</a> - Method in class com.github.skopylov58.functional.<a href="com/github/skopylov58/functional/Try.Success.html" title="class in com.github.skopylov58.functional">Try.Success</a></dt>
-<dd>&nbsp;</dd>
-<dt><a href="com/github/skopylov58/functional/Try.Failure.html#recover(com.github.skopylov58.functional.Try.CheckedSupplier,java.util.function.Predicate)" class="member-name-link">recover(Try.CheckedSupplier&lt;T&gt;, Predicate&lt;Exception&gt;)</a> - Method in class com.github.skopylov58.functional.<a href="com/github/skopylov58/functional/Try.Failure.html" title="class in com.github.skopylov58.functional">Try.Failure</a></dt>
-<dd>&nbsp;</dd>
-<dt><a href="com/github/skopylov58/functional/Try.html#recover(com.github.skopylov58.functional.Try.CheckedSupplier,java.util.function.Predicate)" class="member-name-link">recover(Try.CheckedSupplier&lt;T&gt;, Predicate&lt;Exception&gt;)</a> - Method in interface com.github.skopylov58.functional.<a href="com/github/skopylov58/functional/Try.html" title="interface in com.github.skopylov58.functional">Try</a></dt>
+<dt><a href="com/github/skopylov58/functional/Try.html#recover(com.github.skopylov58.functional.Try.CheckedSupplier,java.util.function.Predicate)" class="member-name-link">recover(Try.CheckedSupplier&lt;? extends T&gt;, Predicate&lt;Exception&gt;)</a> - Method in interface com.github.skopylov58.functional.<a href="com/github/skopylov58/functional/Try.html" title="interface in com.github.skopylov58.functional">Try</a></dt>
 <dd>
 <div class="block">Tries recover failed try with given supplier, has no action for success.</div>
 </dd>
-<dt><a href="com/github/skopylov58/functional/Try.Success.html#recover(com.github.skopylov58.functional.Try.CheckedSupplier,java.util.function.Predicate)" class="member-name-link">recover(Try.CheckedSupplier&lt;T&gt;, Predicate&lt;Exception&gt;)</a> - Method in class com.github.skopylov58.functional.<a href="com/github/skopylov58/functional/Try.Success.html" title="class in com.github.skopylov58.functional">Try.Success</a></dt>
-<dd>&nbsp;</dd>
 <dt><a href="com/github/skopylov58/functional/TryUtils.Result.html#result()" class="member-name-link">result()</a> - Method in record class com.github.skopylov58.functional.<a href="com/github/skopylov58/functional/TryUtils.Result.html" title="class in com.github.skopylov58.functional">TryUtils.Result</a></dt>
 <dd>
 <div class="block">Returns the value of the <code>result</code> record component.</div>
@@ -367,6 +315,8 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="com/github/skopylov58/functional/Try.CheckedRunnable.html#run()" class="member-name-link">run()</a> - Method in interface com.github.skopylov58.functional.<a href="com/github/skopylov58/functional/Try.CheckedRunnable.html" title="interface in com.github.skopylov58.functional">Try.CheckedRunnable</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="com/github/skopylov58/functional/Try.html#runCatching(com.github.skopylov58.functional.Try.CheckedRunnable)" class="member-name-link">runCatching(Try.CheckedRunnable)</a> - Static method in interface com.github.skopylov58.functional.<a href="com/github/skopylov58/functional/Try.html" title="interface in com.github.skopylov58.functional">Try</a></dt>
+<dd>&nbsp;</dd>
 </dl>
 <h2 class="title" id="I:S">S</h2>
 <dl class="index">
@@ -380,11 +330,7 @@ loadScripts(document, 'script');</script>
 <dd>&nbsp;</dd>
 <dt><a href="com/github/skopylov58/functional/Either.html#stream()" class="member-name-link">stream()</a> - Method in interface com.github.skopylov58.functional.<a href="com/github/skopylov58/functional/Either.html" title="interface in com.github.skopylov58.functional">Either</a></dt>
 <dd>&nbsp;</dd>
-<dt><a href="com/github/skopylov58/functional/Try.Failure.html#stream()" class="member-name-link">stream()</a> - Method in class com.github.skopylov58.functional.<a href="com/github/skopylov58/functional/Try.Failure.html" title="class in com.github.skopylov58.functional">Try.Failure</a></dt>
-<dd>&nbsp;</dd>
 <dt><a href="com/github/skopylov58/functional/Try.html#stream()" class="member-name-link">stream()</a> - Method in interface com.github.skopylov58.functional.<a href="com/github/skopylov58/functional/Try.html" title="interface in com.github.skopylov58.functional">Try</a></dt>
-<dd>&nbsp;</dd>
-<dt><a href="com/github/skopylov58/functional/Try.Success.html#stream()" class="member-name-link">stream()</a> - Method in class com.github.skopylov58.functional.<a href="com/github/skopylov58/functional/Try.Success.html" title="class in com.github.skopylov58.functional">Try.Success</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="com/github/skopylov58/functional/TryUtils.Result.html#stream()" class="member-name-link">stream()</a> - Method in record class com.github.skopylov58.functional.<a href="com/github/skopylov58/functional/TryUtils.Result.html" title="class in com.github.skopylov58.functional">TryUtils.Result</a></dt>
 <dd>&nbsp;</dd>
@@ -406,6 +352,12 @@ loadScripts(document, 'script');</script>
 <dt><a href="com/github/skopylov58/functional/TryUtils.html#toEither(com.github.skopylov58.functional.TryUtils.CheckedFunction)" class="member-name-link">toEither(TryUtils.CheckedFunction&lt;T, R&gt;)</a> - Static method in interface com.github.skopylov58.functional.<a href="com/github/skopylov58/functional/TryUtils.html" title="interface in com.github.skopylov58.functional">TryUtils</a></dt>
 <dd>
 <div class="block">Higher-order function to convert partial function <code>T=&gt;R</code> to total function <code>T=&gt;Either&lt;R, Exception&gt;</code></div>
+</dd>
+<dt><a href="com/github/skopylov58/functional/Try.html#toFunction(com.github.skopylov58.functional.Try.CheckedConsumer)" class="member-name-link">toFunction(Try.CheckedConsumer&lt;? super T&gt;)</a> - Static method in interface com.github.skopylov58.functional.<a href="com/github/skopylov58/functional/Try.html" title="interface in com.github.skopylov58.functional">Try</a></dt>
+<dd>&nbsp;</dd>
+<dt><a href="com/github/skopylov58/functional/Try.html#toFunction(com.github.skopylov58.functional.Try.CheckedSupplier)" class="member-name-link">toFunction(Try.CheckedSupplier&lt;? extends U&gt;)</a> - Static method in interface com.github.skopylov58.functional.<a href="com/github/skopylov58/functional/Try.html" title="interface in com.github.skopylov58.functional">Try</a></dt>
+<dd>
+<div class="block">Converts supplier to function.</div>
 </dd>
 <dt><a href="com/github/skopylov58/functional/TryUtils.html#toFuture(com.github.skopylov58.functional.TryUtils.CheckedFunction)" class="member-name-link">toFuture(TryUtils.CheckedFunction&lt;T, R&gt;)</a> - Static method in interface com.github.skopylov58.functional.<a href="com/github/skopylov58/functional/TryUtils.html" title="interface in com.github.skopylov58.functional">TryUtils</a></dt>
 <dd>&nbsp;</dd>
