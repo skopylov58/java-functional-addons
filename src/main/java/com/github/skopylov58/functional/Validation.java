@@ -71,7 +71,7 @@ public class Validation<T, E> {
      * @param t data to validate
      * @return Either
      */
-    public Either<T, List<E>> validateToEither(T t) {
+    public Either<List<E>, T> validateToEither(T t) {
         List<E> list = validate(t);
         return list.isEmpty() ? Either.right(t) : Either.left(list);
     }

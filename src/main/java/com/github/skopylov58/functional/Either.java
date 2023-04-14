@@ -1,24 +1,50 @@
 package com.github.skopylov58.functional;
 
+import java.util.Optional;
+import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.stream.Stream;
+
+import com.github.skopylov58.functional.Try.CheckedConsumer;
+import com.github.skopylov58.functional.Try.CheckedFunction;
+import com.github.skopylov58.functional.Try.CheckedSupplier;
 
 /**
  * Minimal functional Either implementation.
  * 
+ * <p>
+ * 
+ * It does not have left or right projections, map/flatMap/filter operations work only on 
+ * right side of Either and do not have effect for left side. Anyway you can use {@link #swap()} for this purpose.
+ *
+ * <p>
+ * 
+ * Either has a set of {@link #catching(CheckedConsumer)} helper methods which will be useful for exception handling.
+ * 
+ * <pre>
+ *    catching(() -> new Socket("foo", 1234))
+ *       .flatMap(catching(Socket::getOutputStream))
+ *       .flatMap(catching(o -> {
+ *        o.write(new byte[] {1,2,3});
+ * }));
+ * </pre>
+ * 
  * @author skopylov@gmail.com
  *
- * @param <R> right side type
  * @param <L> left side type
+ * @param <R> right side type
  */
-public interface Either<R, L> {
+@SuppressWarnings("rawtypes")
+public sealed interface Either<L, R>  permits Either.Left, Either.Right {
 
     /**
      * Checks if this is left side.
      * @return true is this is left side of Either.
      */
-    boolean isLeft();
-    
+    default boolean isLeft() {
+        return fold(__ -> true, __ -> false);
+    }
     
     /**
      * Checks if this is right side.
@@ -27,27 +53,93 @@ public interface Either<R, L> {
     default boolean isRight() {return !isLeft();}
     
     /**
-     * Gets right side of either.
-     * @return right side or throws {@link IllegalStateException} for the left side.
-     * @throws IllegalStateException for left side
+     * Converts Either to Stream
+     * @return one element stream for right, empty stream for left.
      */
-    R getRight();
+    default Stream<R> stream() {
+        return fold(__ -> Stream.empty(), Stream::of);
+    }
+
+    /**
+     * Converts Either to Optional
+     * @return Optional for right, Optional empty for left.
+     */
+    default Optional<R> optional() {
+        return fold(__ -> Optional.empty(), Optional::ofNullable);
+    }
     
     /**
-     * Gets left side of either.
-     * @return left side or throws {@link IllegalStateException} for the right side.
-     * @throws IllegalStateException for right side
+     * Maps right side of the Either. 
+     * @param <T> new right type
+     * @param mapper mapper function that maps R type to T type
+     * @return new Either
      */
-    L getLeft();
-    
-    Stream<R> stream();
-    
-    <T> Either<T, L> map(Function<R, T> mapper);
-    
-    Either<L, R> swap();
+    @SuppressWarnings("unchecked")
+    default <T> Either<L, T> map(Function<? super R, ? extends T> mapper) {
+        return (Either<L, T>) fold(__ -> this, r -> right(mapper.apply(r)));
+    }
 
-    <T> Either<T, L> flatMap(Function<R, Either<T,L>> mapper);
+    /**
+     * Flat maps right side of the Either.
+     * @param <T> new right type
+     * @param mapper R to {@code Either<L,T>}
+     * @return new {@code Either<L,T>}
+     */
+    @SuppressWarnings("unchecked")
+    default <T> Either<L, T> flatMap(Function<? super R, ? extends Either<? extends L, ? extends T>> mapper) {
+        return (Either<L, T>) fold(__ -> this, mapper::apply);
+    }
 
+    /**
+     * Filters right side of Either, does not have effect if it is left side.
+     * @param predicate condition to test
+     * @param leftMapper will map R to L if predicate return false
+     * @return Either
+     */
+    default Either<L,R> filter(Predicate<? super R> predicate, Function<? super R, ? extends L> leftMapper) {
+        return fold(
+                left -> this,
+                right -> predicate.test(right) ? this : left(leftMapper.apply(right)) 
+                );
+    }
+    
+    /**
+     * Swaps Either
+     * @return swapped Either
+     */
+    default Either<R, L> swap() {
+        return fold(Either::right, Either::left);
+    }
+
+    /**
+     * Folds Either to type T
+     * @param <T> folded type
+     * @param leftMapper maps left to T
+     * @param rihgtMapper maps right to T
+     * @return value of T type
+     */
+    <T> T fold(Function<? super L, ? extends T> leftMapper, Function<? super R, ? extends T> rihgtMapper);
+
+    /**
+     * Produces side effects for Either
+     * @param leftConsumer left side effect
+     * @param rightConsumer right side effect
+     * @return this Either
+     */
+    default Either<L, R> accept(Consumer<? super L> leftConsumer, Consumer<? super R> rightConsumer) {
+        fold(left -> {
+                leftConsumer.accept(left);
+                return null; 
+            }, 
+            right -> {
+                rightConsumer.accept(right);
+                return null;
+            }
+            );
+        return this;
+    }
+
+    
     /**
      * Factory method to produce right side of Either from R value
      * @param <R> type of right side
@@ -55,7 +147,7 @@ public interface Either<R, L> {
      * @param right right value
      * @return {@link Either.Right}
      */
-    static <R, L> Either<R, L> right(R right) {return new Right<>(right);}
+    static <L, R> Either<L, R> right(R right) {return new Right<>(right);}
 
     /**
      * Factory method to produce left side of Either from L value
@@ -64,7 +156,7 @@ public interface Either<R, L> {
      * @param left left value
      * @return {@link Either.Left}
      */
-    static <R, L> Either<R, L> left(L left) {return new Left<>(left);}
+    static <L, R> Either<L, R> left(L left) {return new Left<>(left);}
     
     /**
      * Right side of Either.
@@ -73,32 +165,11 @@ public interface Either<R, L> {
      * @param <R> type of right side
      * @param <L> type of left side
      */
-    class Right<R, L> implements Either<R, L> {
-        
-        protected final R right;
-        
-        Right (R r ) {right = r;}
-
+    record Right<L, R>(R right) implements Either<L, R> {
         @Override
-        public boolean isLeft() {return false;}
-
-        @Override
-        public R getRight() {return right;}
-
-        @Override
-        public L getLeft() {throw new IllegalStateException("This is right");}
-        
-        @Override
-        public Stream<R> stream() {return Stream.of(right);}
-        
-        @Override
-        public <T> Either<T, L> map(Function<R, T> mapper) {return right(mapper.apply(right));}
-
-        @Override
-        public <T> Either<T, L> flatMap(Function<R, Either<T, L>> mapper) {return mapper.apply(right);}
-        
-        @Override
-        public Either<L, R> swap() {return left(right);}
+        public <T> T fold(Function<? super L, ? extends T> leftMapper, Function<? super R, ? extends T> rihgtMapper) {
+            return rihgtMapper.apply(right);
+        }
     }
     
     /**
@@ -109,32 +180,58 @@ public interface Either<R, L> {
      * @param <L> type of left side
      */
 
-    class Left<R, L> implements Either<R, L> {
-        
-        protected final L left;
-        
-        Left(L l) {left = l;}
+    record Left<L, R>(L left) implements Either<L, R> {
+        @Override
+        public <T> T fold(Function<? super L, ? extends T> leftMapper, Function<? super R, ? extends T> rihgtMapper) {
+            return leftMapper.apply(left);
+        }
+    }
+    
+    static <L, R> Either<L, R> catching(CheckedSupplier<? extends R> supplier, Function<Exception, ? extends L> mapper) {
+        try {
+            return right(supplier.get());
+        } catch (Exception e) {
+            return left(mapper.apply(e));
+        }
+    }
 
-        @Override
-        public boolean isLeft() {return true;}
+    /**
+     * Factory method to produce {@code Either<Exception,R>} from throwing supplier
+     * @param <R> right side type
+     * @param supplier throwing supplier of R
+     * @return Either
+     */
+    static <R> Either<Exception, R> catching(CheckedSupplier<? extends R> supplier) {
+        return catching(supplier, e -> e);
+    }
 
-        @Override
-        public R getRight() {throw new IllegalStateException("This is left");}
+    /**
+     * HOF, lifts throwing{@code R->T} function to total {@code R->Either<Exception,R>} function.
+     * May be useful with flatMap.
+     * @param <R>
+     * @param <T>
+     * @param mapper
+     * @return
+     */
+    static <R,T> Function<R, Either<Exception, T>> catching(CheckedFunction<? super R, ? extends T> mapper) {
+        return param -> {
+            try {
+                return right(mapper.apply(param));
+            } catch (Exception e) {
+                return left(e);
+            }
+        };
+    }
 
-        @Override
-        public L getLeft() {return left;}
-        
-        @Override
-        public Stream<R> stream() {return Stream.empty();}
-        
-        @Override
-        public <T> Either<T, L> map(Function<R, T> mapper) {return (Either<T, L>) this;}
-        
-        @Override
-        public <T> Either<T, L> flatMap(Function<R, Either<T, L>> mapper) {return (Either<T, L>) this;}
-        
-        @Override
-        public Either<L, R> swap() {return right(left);}
+    static <R> Function<R, Either<Exception, R>> catching(CheckedConsumer<? super R> consumer) {
+        return param -> {
+            try {
+                consumer.accept(param);
+                return right(param);
+            } catch (Exception e) {
+                return left(e);
+            }
+        };
     }
 }
 

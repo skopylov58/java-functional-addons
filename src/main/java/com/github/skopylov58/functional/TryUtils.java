@@ -1,13 +1,19 @@
 package com.github.skopylov58.functional;
 
+import java.net.Socket;
 import java.time.Duration;
 import java.time.Instant;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
+import java.util.function.BiFunction;
+import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
+import com.github.skopylov58.functional.Try.CheckedConsumer;
 import com.github.skopylov58.functional.Try.CheckedRunnable;
 
 /**
@@ -43,9 +49,38 @@ public interface TryUtils {
     }
 
     /** Try Result for Java 14+ */
-    record Result<T>(T result, Exception exception) {
-        public boolean failed() {return exception != null;}
-        public Stream<T> stream() {return failed() ? Stream.empty() : Stream.of(result);}
+    @SuppressWarnings("unchecked")
+    public record Result<T>(T result, Exception exception) {
+        public static <T> Result<T> success(T t) {return new Result<>(t, null);}
+        public static <T> Result<T> failure(Exception e) {return new Result<>(null, e);}
+        public boolean isFailure() {return exception != null;}
+        public boolean isSuccess() {return !isFailure();}
+        public <R> Result<R> map(Function<T,R> mapper) {return isSuccess() ? success(mapper.apply(result)) : (Result<R>) this;}
+        public <R> Result<R> flatMap(Function<T,Result<R>> mapper) {return isSuccess() ? mapper.apply(result) : (Result<R>) this;}
+        public Result<T> filter(Predicate<T> pred) {return isSuccess() ? pred.test(result) ? this : failure(new NoSuchElementException()) : this;}
+        public Stream<T> stream() {return isFailure() ? Stream.empty() : Stream.of(result);}
+        public Optional<T> optional() {return isFailure() ? Optional.empty() : Optional.ofNullable(result);}
+        public <R> R fold(Function<T,R> onSuccess, Function<Exception, R> onFailure) {return isSuccess() ? onSuccess.apply(result) : onFailure.apply(exception);}
+        public Result<T> fold(Consumer<T> onSuccess, Consumer<Exception> onFailure) {if(isSuccess()) onSuccess.accept(result); else onFailure.accept(exception); return this;}
+        public <R> Result<R> handle(BiFunction<T, Exception, Result<R>> handler) {return handler.apply(result, exception);}
+        public Result<T> recover(Supplier<Result<T>> supplier) {return isFailure() ? supplier.get() : this;}
+        public Result<T> recover(Function<Exception, Result<T>> errorMapper) {return isFailure() ? errorMapper.apply(exception) : this;}
+        static <T, R> Function<T, Result<R>> catching(CheckedFunction<T, R> func) {
+            return param -> {
+                try {
+                    return success(func.apply(param));
+                } catch (Exception e) {
+                    return failure(e);
+                }
+            };
+        }
+        static <T> Result<T> catching(CheckedSupplier<T> supplier) {
+            try {
+                return success(supplier.get());
+            } catch (Exception e) {
+                return failure(e);
+            }
+        }
     } 
 
     /**
@@ -58,14 +93,36 @@ public interface TryUtils {
     static <T, R> Function<T, Result<R>> toResult(CheckedFunction<T, R> func) {
         return param -> {
             try {
-                return new Result<>(func.apply(param), null);
-            } catch (RuntimeException re) {
-                throw re;
+                return Result.success(func.apply(param));
             } catch (Exception e) {
-                return new Result<>(null, e);
+                return Result.failure(e);
             }
         };
     }
+    
+    default <T> Result<T> onSuccessCatching(Result<T> result, CheckedConsumer<T> cons) {
+        CheckedFunction<T, T> f = param -> {
+                cons.accept(param);
+                return param;
+        };
+        return result.flatMap(Result.catching(f));
+    }
+    
+    default void foo() {
+        var r = Result.success(1);
+        r.fold(System.out::println, e -> {});
+        r.handle((i,e) -> null);
+        
+        var s = Result.catching(() -> new Socket("host", 1234))
+                .flatMap(Result.catching(Socket::getOutputStream))
+                .flatMap(Result.catching(o -> {
+                    o.write("Hello, world".getBytes());
+                    return o;
+                }))
+                .flatMap(Result.catching(o -> {o.close(); return o;}))
+                ;
+    }
+    
     
     /**
      * Higher-order function to convert partial function {@code T=>R} to total function {@code T=>Optional<R>}
@@ -108,7 +165,7 @@ public interface TryUtils {
      * @param func partial function {@code T=>R} that may throw an exception
      * @return total function {@code T=>Either<R, Exception>}
      */
-    static <T, R> Function<T, Either<R, Exception>> toEither(CheckedFunction<T, R> func) {
+    static <T, R> Function<T, Either<Exception, R>> toEither(CheckedFunction<T, R> func) {
         return param -> {
             try {
                 return Either.right(func.apply(param));

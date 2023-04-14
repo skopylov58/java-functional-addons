@@ -1,11 +1,11 @@
 package com.github.skopylov58.functional;
 
 import static com.github.skopylov58.functional.TryUtils.toEither;
+import static com.github.skopylov58.functional.TryUtils.toFuture;
 import static com.github.skopylov58.functional.TryUtils.toOptional;
 import static com.github.skopylov58.functional.TryUtils.toResult;
 import static com.github.skopylov58.functional.TryUtils.toResultJava8;
 import static java.util.function.Predicate.not;
-import static com.github.skopylov58.functional.TryUtils.toFuture;
 import static org.junit.Assert.assertTrue;
 
 import java.net.MalformedURLException;
@@ -21,7 +21,6 @@ import java.util.stream.Stream;
 
 import org.junit.Test;
 
-import com.github.skopylov58.functional.TryUtils.CheckedFunction;
 import com.github.skopylov58.functional.TryUtils.Result;
 
 public class TryUtilsTest {
@@ -48,9 +47,8 @@ public class TryUtilsTest {
     public void testWithEither() throws Exception {
         List<URL> res = URLS.stream()
             .map(toEither(URL::new))
-            .peek(either -> {if (either.isLeft()) System.out.println(either.getLeft());})
-            .filter(Either::isRight)
-            .map(Either::getRight)
+            .peek(either -> either.accept(System.out::println, r -> {}))
+            .flatMap(Either::stream)
             .toList();
         check(res);
     }
@@ -70,7 +68,7 @@ public class TryUtilsTest {
     public void testWithResultRecord() throws Exception {
         var res = URLS.stream()
             .map(toResult(URL::new))
-            .filter(rec -> !rec.failed())
+            .filter(rec -> !rec.isFailure())
             .map(Result::result)
             .toList();
         
@@ -85,7 +83,7 @@ public class TryUtilsTest {
         .toList();
     }
 
-    @Test(expected = NumberFormatException.class)
+    @Test
     public void intListWithResult() throws NumberFormatException {
         var list = Stream.of(NUMS)
         .map(toResult(Integer::parseInt)) //Runtime NumberFormatException may happen here
@@ -106,7 +104,7 @@ public class TryUtilsTest {
     }
     
     void handleErr(Result r) {
-        if (r.failed()) {
+        if (r.isFailure()) {
             System.out.println(r.exception());
         }
     }
