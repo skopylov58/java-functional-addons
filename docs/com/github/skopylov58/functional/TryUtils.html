@@ -15,7 +15,11 @@
 <script type="text/javascript" src="../../../../script-dir/jquery-ui.min.js"></script>
 </head>
 <body class="class-declaration-page">
-<script type="text/javascript">var pathtoroot = "../../../../";
+<script type="text/javascript">var evenRowColor = "even-row-color";
+var oddRowColor = "odd-row-color";
+var tableTab = "table-tab";
+var activeTableTab = "active-table-tab";
+var pathtoroot = "../../../../";
 loadScripts(document, 'script');</script>
 <noscript>
 <div>JavaScript is disabled on your browser.</div>
@@ -109,19 +113,27 @@ loadScripts(document, 'script');</script>
 <section class="method-summary" id="method-summary">
 <h2>Method Summary</h2>
 <div id="method-summary-table">
-<div class="caption"><span>Static Methods</span></div>
-<div class="summary-table three-column-summary">
+<div class="table-tabs" role="tablist" aria-orientation="horizontal"><button id="method-summary-table-tab0" role="tab" aria-selected="true" aria-controls="method-summary-table.tabpanel" tabindex="0" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table', 3)" class="active-table-tab">All Methods</button><button id="method-summary-table-tab1" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab1', 3)" class="table-tab">Static Methods</button><button id="method-summary-table-tab2" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab2', 3)" class="table-tab">Instance Methods</button><button id="method-summary-table-tab5" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab5', 3)" class="table-tab">Default Methods</button></div>
+<div id="method-summary-table.tabpanel" role="tabpanel">
+<div class="summary-table three-column-summary" aria-labelledby="method-summary-table-tab0">
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab1"><code>static <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/time/Duration.html" title="class or interface in java.time" class="external-link">Duration</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab1"><code><a href="#measure(java.lang.Runnable)" class="member-name-link">measure</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Runnable.html" title="class or interface in java.lang" class="external-link">Runnable</a>&nbsp;runnable)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab1">&nbsp;</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5"><code>default void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5"><code><a href="#foo()" class="member-name-link">foo</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5">&nbsp;</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1"><code>static <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/time/Duration.html" title="class or interface in java.time" class="external-link">Duration</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1"><code><a href="#measure(java.lang.Runnable)" class="member-name-link">measure</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Runnable.html" title="class or interface in java.lang" class="external-link">Runnable</a>&nbsp;runnable)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1">&nbsp;</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5"><code>default &lt;T&gt;&nbsp;<a href="TryUtils.Result.html" title="class in com.github.skopylov58.functional">TryUtils.Result</a>&lt;T&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5"><code><a href="#onSuccessCatching(com.github.skopylov58.functional.TryUtils.Result,com.github.skopylov58.functional.Try.CheckedConsumer)" class="member-name-link">onSuccessCatching</a><wbr>(<a href="TryUtils.Result.html" title="class in com.github.skopylov58.functional">TryUtils.Result</a>&lt;T&gt;&nbsp;result,
+ <a href="Try.CheckedConsumer.html" title="interface in com.github.skopylov58.functional">Try.CheckedConsumer</a>&lt;T&gt;&nbsp;cons)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5">&nbsp;</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab1"><code>static &lt;E extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Throwable.html" title="class or interface in java.lang" class="external-link">Throwable</a>&gt;<br>void</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab1"><code><a href="#sneakyThrow(java.lang.Throwable)" class="member-name-link">sneakyThrow</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Throwable.html" title="class or interface in java.lang" class="external-link">Throwable</a>&nbsp;e)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab1">&nbsp;</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab1"><code>static &lt;T,<wbr>
-R&gt;&nbsp;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/Function.html" title="class or interface in java.util.function" class="external-link">Function</a>&lt;T,<wbr><a href="Either.html" title="interface in com.github.skopylov58.functional">Either</a>&lt;R,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Exception.html" title="class or interface in java.lang" class="external-link">Exception</a>&gt;&gt;</code></div>
+R&gt;&nbsp;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/Function.html" title="class or interface in java.util.function" class="external-link">Function</a>&lt;T,<wbr><a href="Either.html" title="interface in com.github.skopylov58.functional">Either</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Exception.html" title="class or interface in java.lang" class="external-link">Exception</a>,<wbr>R&gt;&gt;</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab1"><code><a href="#toEither(com.github.skopylov58.functional.TryUtils.CheckedFunction)" class="member-name-link">toEither</a><wbr>(<a href="TryUtils.CheckedFunction.html" title="interface in com.github.skopylov58.functional">TryUtils.CheckedFunction</a>&lt;T,<wbr>R&gt;&nbsp;func)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab1">
 <div class="block">Higher-order function to convert partial function <code>T=&gt;R</code> to total function <code>T=&gt;Either&lt;R, Exception&gt;</code></div>
@@ -156,6 +168,7 @@ R&gt;&nbsp;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base
 <div class="col-last even-row-color method-summary-table method-summary-table-tab1">&nbsp;</div>
 </div>
 </div>
+</div>
 </section>
 </li>
 </ul>
@@ -182,6 +195,19 @@ R&gt;</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/
 <dt>Returns:</dt>
 <dd>total function <code>T=&gt;Result&lt;R&gt;</code></dd>
 </dl>
+</section>
+</li>
+<li>
+<section class="detail" id="onSuccessCatching(com.github.skopylov58.functional.TryUtils.Result,com.github.skopylov58.functional.Try.CheckedConsumer)">
+<h3>onSuccessCatching</h3>
+<div class="member-signature"><span class="modifiers">default</span>&nbsp;<span class="type-parameters">&lt;T&gt;</span>&nbsp;<span class="return-type"><a href="TryUtils.Result.html" title="class in com.github.skopylov58.functional">TryUtils.Result</a>&lt;T&gt;</span>&nbsp;<span class="element-name">onSuccessCatching</span><wbr><span class="parameters">(<a href="TryUtils.Result.html" title="class in com.github.skopylov58.functional">TryUtils.Result</a>&lt;T&gt;&nbsp;result,
+ <a href="Try.CheckedConsumer.html" title="interface in com.github.skopylov58.functional">Try.CheckedConsumer</a>&lt;T&gt;&nbsp;cons)</span></div>
+</section>
+</li>
+<li>
+<section class="detail" id="foo()">
+<h3>foo</h3>
+<div class="member-signature"><span class="modifiers">default</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">foo</span>()</div>
 </section>
 </li>
 <li>
@@ -220,7 +246,7 @@ R&gt;</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/
 <section class="detail" id="toEither(com.github.skopylov58.functional.TryUtils.CheckedFunction)">
 <h3>toEither</h3>
 <div class="member-signature"><span class="modifiers">static</span>&nbsp;<span class="type-parameters">&lt;T,<wbr>
-R&gt;</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/Function.html" title="class or interface in java.util.function" class="external-link">Function</a>&lt;T,<wbr><a href="Either.html" title="interface in com.github.skopylov58.functional">Either</a>&lt;R,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Exception.html" title="class or interface in java.lang" class="external-link">Exception</a>&gt;&gt;</span>&nbsp;<span class="element-name">toEither</span><wbr><span class="parameters">(<a href="TryUtils.CheckedFunction.html" title="interface in com.github.skopylov58.functional">TryUtils.CheckedFunction</a>&lt;T,<wbr>R&gt;&nbsp;func)</span></div>
+R&gt;</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/Function.html" title="class or interface in java.util.function" class="external-link">Function</a>&lt;T,<wbr><a href="Either.html" title="interface in com.github.skopylov58.functional">Either</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Exception.html" title="class or interface in java.lang" class="external-link">Exception</a>,<wbr>R&gt;&gt;</span>&nbsp;<span class="element-name">toEither</span><wbr><span class="parameters">(<a href="TryUtils.CheckedFunction.html" title="interface in com.github.skopylov58.functional">TryUtils.CheckedFunction</a>&lt;T,<wbr>R&gt;&nbsp;func)</span></div>
 <div class="block">Higher-order function to convert partial function <code>T=&gt;R</code> to total function <code>T=&gt;Either&lt;R, Exception&gt;</code></div>
 <dl class="notes">
 <dt>Type Parameters:</dt>

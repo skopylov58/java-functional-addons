@@ -67,21 +67,39 @@ loadScripts(document, 'script');</script>
 <!-- ======== START OF CLASS DATA ======== -->
 <div class="header">
 <div class="sub-title"><span class="package-label-in-type">Package</span>&nbsp;<a href="package-summary.html">com.github.skopylov58.functional</a></div>
-<h1 title="Interface Either" class="title">Interface Either&lt;R,<wbr>L&gt;</h1>
+<h1 title="Interface Either" class="title">Interface Either&lt;L,<wbr>R&gt;</h1>
 </div>
 <section class="class-description" id="class-description">
 <dl class="notes">
 <dt>Type Parameters:</dt>
-<dd><code>R</code> - right side type</dd>
 <dd><code>L</code> - left side type</dd>
+<dd><code>R</code> - right side type</dd>
 </dl>
 <dl class="notes">
 <dt>All Known Implementing Classes:</dt>
 <dd><code><a href="Either.Left.html" title="class in com.github.skopylov58.functional">Either.Left</a></code>, <code><a href="Either.Right.html" title="class in com.github.skopylov58.functional">Either.Right</a></code></dd>
 </dl>
 <hr>
-<div class="type-signature"><span class="modifiers">public interface </span><span class="element-name type-name-label">Either&lt;R,<wbr>L&gt;</span></div>
-<div class="block">Minimal functional Either implementation.</div>
+<div class="type-signature"><span class="modifiers">public sealed interface </span><span class="element-name type-name-label">Either&lt;L,<wbr>R&gt;</span>
+<span class="permits">permits <a href="Either.Left.html" title="class in com.github.skopylov58.functional">Either.Left</a>&lt;L,<wbr>R&gt;, <a href="Either.Right.html" title="class in com.github.skopylov58.functional">Either.Right</a>&lt;L,<wbr>R&gt;</span></div>
+<div class="block">Minimal functional Either implementation.
+ 
+ <p>
+ 
+ It does not have left or right projections, map/flatMap/filter operations work only on 
+ right side of Either and do not have effect for left side. Anyway you can use <a href="#swap()"><code>swap()</code></a> for this purpose.
+
+ <p>
+ 
+ Either has a set of <a href="#catching(com.github.skopylov58.functional.Try.CheckedConsumer)"><code>catching(CheckedConsumer)</code></a> helper methods which will be useful for exception handling.
+ 
+ <pre>
+    catching(() -> new Socket("foo", 1234))
+       .flatMap(catching(Socket::getOutputStream))
+       .flatMap(catching(o -> {
+        o.write(new byte[] {1,2,3});
+ }));
+ </pre></div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -94,13 +112,13 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Interface</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color"><code>static class&nbsp;</code></div>
-<div class="col-second even-row-color"><code><a href="Either.Left.html" class="type-name-link" title="class in com.github.skopylov58.functional">Either.Left</a>&lt;<a href="Either.Left.html" title="type parameter in Either.Left">R</a>,<wbr><a href="Either.Left.html" title="type parameter in Either.Left">L</a>&gt;</code></div>
+<div class="col-first even-row-color"><code>static final record&nbsp;</code></div>
+<div class="col-second even-row-color"><code><a href="Either.Left.html" class="type-name-link" title="class in com.github.skopylov58.functional">Either.Left</a>&lt;<a href="Either.Left.html" title="type parameter in Either.Left">L</a>,<wbr><a href="Either.Left.html" title="type parameter in Either.Left">R</a>&gt;</code></div>
 <div class="col-last even-row-color">
 <div class="block">Left side of Either.</div>
 </div>
-<div class="col-first odd-row-color"><code>static class&nbsp;</code></div>
-<div class="col-second odd-row-color"><code><a href="Either.Right.html" class="type-name-link" title="class in com.github.skopylov58.functional">Either.Right</a>&lt;<a href="Either.Right.html" title="type parameter in Either.Right">R</a>,<wbr><a href="Either.Right.html" title="type parameter in Either.Right">L</a>&gt;</code></div>
+<div class="col-first odd-row-color"><code>static final record&nbsp;</code></div>
+<div class="col-second odd-row-color"><code><a href="Either.Right.html" class="type-name-link" title="class in com.github.skopylov58.functional">Either.Right</a>&lt;<a href="Either.Right.html" title="type parameter in Either.Right">L</a>,<wbr><a href="Either.Right.html" title="type parameter in Either.Right">R</a>&gt;</code></div>
 <div class="col-last odd-row-color">
 <div class="block">Right side of Either.</div>
 </div>
@@ -118,50 +136,90 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>&lt;T&gt;&nbsp;<a href="Either.html" title="interface in com.github.skopylov58.functional">Either</a>&lt;T,<wbr><a href="Either.html" title="type parameter in Either">L</a>&gt;</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#flatMap(java.util.function.Function)" class="member-name-link">flatMap</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/Function.html" title="class or interface in java.util.function" class="external-link">Function</a>&lt;<a href="Either.html" title="type parameter in Either">R</a>,<wbr><a href="Either.html" title="interface in com.github.skopylov58.functional">Either</a>&lt;T,<wbr><a href="Either.html" title="type parameter in Either">L</a>&gt;&gt;&nbsp;mapper)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="Either.html" title="type parameter in Either">L</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#getLeft()" class="member-name-link">getLeft</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
-<div class="block">Gets left side of either.</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5"><code>default <a href="Either.html" title="interface in com.github.skopylov58.functional">Either</a>&lt;<a href="Either.html" title="type parameter in Either">L</a>,<wbr><a href="Either.html" title="type parameter in Either">R</a>&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5"><code><a href="#accept(java.util.function.Consumer,java.util.function.Consumer)" class="member-name-link">accept</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/Consumer.html" title="class or interface in java.util.function" class="external-link">Consumer</a>&lt;? super <a href="Either.html" title="type parameter in Either">L</a>&gt;&nbsp;leftConsumer,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/Consumer.html" title="class or interface in java.util.function" class="external-link">Consumer</a>&lt;? super <a href="Either.html" title="type parameter in Either">R</a>&gt;&nbsp;rightConsumer)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5">
+<div class="block">Produces side effects for Either</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="Either.html" title="type parameter in Either">R</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#getRight()" class="member-name-link">getRight</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
-<div class="block">Gets right side of either.</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1"><code>static &lt;R&gt;&nbsp;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/Function.html" title="class or interface in java.util.function" class="external-link">Function</a>&lt;R,<wbr><a href="Either.html" title="interface in com.github.skopylov58.functional">Either</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Exception.html" title="class or interface in java.lang" class="external-link">Exception</a>,<wbr>R&gt;&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1"><code><a href="#catching(com.github.skopylov58.functional.Try.CheckedConsumer)" class="member-name-link">catching</a><wbr>(<a href="Try.CheckedConsumer.html" title="interface in com.github.skopylov58.functional">Try.CheckedConsumer</a>&lt;? super R&gt;&nbsp;consumer)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1">&nbsp;</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1"><code>static &lt;R,<wbr>
+T&gt;&nbsp;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/Function.html" title="class or interface in java.util.function" class="external-link">Function</a>&lt;R,<wbr><a href="Either.html" title="interface in com.github.skopylov58.functional">Either</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Exception.html" title="class or interface in java.lang" class="external-link">Exception</a>,<wbr>T&gt;&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1"><code><a href="#catching(com.github.skopylov58.functional.Try.CheckedFunction)" class="member-name-link">catching</a><wbr>(<a href="Try.CheckedFunction.html" title="interface in com.github.skopylov58.functional">Try.CheckedFunction</a>&lt;? super R,<wbr>? extends T&gt;&nbsp;mapper)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1">
+<div class="block">HOF, lifts throwing<code>R-&gt;T</code> function to total <code>R-&gt;Either&lt;Exception,R&gt;</code> function.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>boolean</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#isLeft()" class="member-name-link">isLeft</a>()</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1"><code>static &lt;R&gt;&nbsp;<a href="Either.html" title="interface in com.github.skopylov58.functional">Either</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Exception.html" title="class or interface in java.lang" class="external-link">Exception</a>,<wbr>R&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1"><code><a href="#catching(com.github.skopylov58.functional.Try.CheckedSupplier)" class="member-name-link">catching</a><wbr>(<a href="Try.CheckedSupplier.html" title="interface in com.github.skopylov58.functional">Try.CheckedSupplier</a>&lt;? extends R&gt;&nbsp;supplier)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1">
+<div class="block">Factory method to produce <code>Either&lt;Exception,R&gt;</code> from throwing supplier</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1"><code>static &lt;L,<wbr>
+R&gt;&nbsp;<a href="Either.html" title="interface in com.github.skopylov58.functional">Either</a>&lt;L,<wbr>R&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1"><code><a href="#catching(com.github.skopylov58.functional.Try.CheckedSupplier,java.util.function.Function)" class="member-name-link">catching</a><wbr>(<a href="Try.CheckedSupplier.html" title="interface in com.github.skopylov58.functional">Try.CheckedSupplier</a>&lt;? extends R&gt;&nbsp;supplier,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/Function.html" title="class or interface in java.util.function" class="external-link">Function</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Exception.html" title="class or interface in java.lang" class="external-link">Exception</a>,<wbr>? extends L&gt;&nbsp;mapper)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1">&nbsp;</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5"><code>default <a href="Either.html" title="interface in com.github.skopylov58.functional">Either</a>&lt;<a href="Either.html" title="type parameter in Either">L</a>,<wbr><a href="Either.html" title="type parameter in Either">R</a>&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5"><code><a href="#filter(java.util.function.Predicate,java.util.function.Function)" class="member-name-link">filter</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/Predicate.html" title="class or interface in java.util.function" class="external-link">Predicate</a>&lt;? super <a href="Either.html" title="type parameter in Either">R</a>&gt;&nbsp;predicate,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/Function.html" title="class or interface in java.util.function" class="external-link">Function</a>&lt;? super <a href="Either.html" title="type parameter in Either">R</a>,<wbr>? extends <a href="Either.html" title="type parameter in Either">L</a>&gt;&nbsp;leftMapper)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5">
+<div class="block">Filters right side of Either, does not have effect if it is left side.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5"><code>default &lt;T&gt;&nbsp;<a href="Either.html" title="interface in com.github.skopylov58.functional">Either</a>&lt;<a href="Either.html" title="type parameter in Either">L</a>,<wbr>T&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5"><code><a href="#flatMap(java.util.function.Function)" class="member-name-link">flatMap</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/Function.html" title="class or interface in java.util.function" class="external-link">Function</a>&lt;? super <a href="Either.html" title="type parameter in Either">R</a>,<wbr>? extends <a href="Either.html" title="interface in com.github.skopylov58.functional">Either</a>&lt;? extends <a href="Either.html" title="type parameter in Either">L</a>,<wbr>? extends T&gt;&gt;&nbsp;mapper)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5">
+<div class="block">Flat maps right side of the Either.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>&lt;T&gt;&nbsp;T</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#fold(java.util.function.Function,java.util.function.Function)" class="member-name-link">fold</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/Function.html" title="class or interface in java.util.function" class="external-link">Function</a>&lt;? super <a href="Either.html" title="type parameter in Either">L</a>,<wbr>? extends T&gt;&nbsp;leftMapper,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/Function.html" title="class or interface in java.util.function" class="external-link">Function</a>&lt;? super <a href="Either.html" title="type parameter in Either">R</a>,<wbr>? extends T&gt;&nbsp;rihgtMapper)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
-<div class="block">Checks if this is left side.</div>
+<div class="block">Folds Either to type T</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5"><code>default boolean</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5"><code><a href="#isRight()" class="member-name-link">isRight</a>()</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5"><code><a href="#isLeft()" class="member-name-link">isLeft</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5">
+<div class="block">Checks if this is left side.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5"><code>default boolean</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5"><code><a href="#isRight()" class="member-name-link">isRight</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5">
 <div class="block">Checks if this is right side.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab1"><code>static &lt;R,<wbr>
-L&gt;&nbsp;<a href="Either.html" title="interface in com.github.skopylov58.functional">Either</a>&lt;R,<wbr>L&gt;</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab1"><code><a href="#left(L)" class="member-name-link">left</a><wbr>(L&nbsp;left)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab1">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1"><code>static &lt;L,<wbr>
+R&gt;&nbsp;<a href="Either.html" title="interface in com.github.skopylov58.functional">Either</a>&lt;L,<wbr>R&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1"><code><a href="#left(L)" class="member-name-link">left</a><wbr>(L&nbsp;left)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1">
 <div class="block">Factory method to produce left side of Either from L value</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>&lt;T&gt;&nbsp;<a href="Either.html" title="interface in com.github.skopylov58.functional">Either</a>&lt;T,<wbr><a href="Either.html" title="type parameter in Either">L</a>&gt;</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#map(java.util.function.Function)" class="member-name-link">map</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/Function.html" title="class or interface in java.util.function" class="external-link">Function</a>&lt;<a href="Either.html" title="type parameter in Either">R</a>,<wbr>T&gt;&nbsp;mapper)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab1"><code>static &lt;R,<wbr>
-L&gt;&nbsp;<a href="Either.html" title="interface in com.github.skopylov58.functional">Either</a>&lt;R,<wbr>L&gt;</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5"><code>default &lt;T&gt;&nbsp;<a href="Either.html" title="interface in com.github.skopylov58.functional">Either</a>&lt;<a href="Either.html" title="type parameter in Either">L</a>,<wbr>T&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5"><code><a href="#map(java.util.function.Function)" class="member-name-link">map</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/Function.html" title="class or interface in java.util.function" class="external-link">Function</a>&lt;? super <a href="Either.html" title="type parameter in Either">R</a>,<wbr>? extends T&gt;&nbsp;mapper)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5">
+<div class="block">Maps right side of the Either.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5"><code>default <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Optional.html" title="class or interface in java.util" class="external-link">Optional</a>&lt;<a href="Either.html" title="type parameter in Either">R</a>&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5"><code><a href="#optional()" class="member-name-link">optional</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5">
+<div class="block">Converts Either to Optional</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1"><code>static &lt;L,<wbr>
+R&gt;&nbsp;<a href="Either.html" title="interface in com.github.skopylov58.functional">Either</a>&lt;L,<wbr>R&gt;</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab1"><code><a href="#right(R)" class="member-name-link">right</a><wbr>(R&nbsp;right)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab1">
 <div class="block">Factory method to produce right side of Either from R value</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/stream/Stream.html" title="class or interface in java.util.stream" class="external-link">Stream</a>&lt;<a href="Either.html" title="type parameter in Either">R</a>&gt;</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#stream()" class="member-name-link">stream</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="Either.html" title="interface in com.github.skopylov58.functional">Either</a>&lt;<a href="Either.html" title="type parameter in Either">L</a>,<wbr><a href="Either.html" title="type parameter in Either">R</a>&gt;</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#swap()" class="member-name-link">swap</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">&nbsp;</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5"><code>default <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/stream/Stream.html" title="class or interface in java.util.stream" class="external-link">Stream</a>&lt;<a href="Either.html" title="type parameter in Either">R</a>&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5"><code><a href="#stream()" class="member-name-link">stream</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5">
+<div class="block">Converts Either to Stream</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5"><code>default <a href="Either.html" title="interface in com.github.skopylov58.functional">Either</a>&lt;<a href="Either.html" title="type parameter in Either">R</a>,<wbr><a href="Either.html" title="type parameter in Either">L</a>&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5"><code><a href="#swap()" class="member-name-link">swap</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5">
+<div class="block">Swaps Either</div>
+</div>
 </div>
 </div>
 </div>
@@ -179,7 +237,7 @@ L&gt;&nbsp;<a href="Either.html" title="interface in com.github.skopylov58.funct
 <li>
 <section class="detail" id="isLeft()">
 <h3>isLeft</h3>
-<div class="member-signature"><span class="return-type">boolean</span>&nbsp;<span class="element-name">isLeft</span>()</div>
+<div class="member-signature"><span class="modifiers">default</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">isLeft</span>()</div>
 <div class="block">Checks if this is left side.</div>
 <dl class="notes">
 <dt>Returns:</dt>
@@ -199,60 +257,120 @@ L&gt;&nbsp;<a href="Either.html" title="interface in com.github.skopylov58.funct
 </section>
 </li>
 <li>
-<section class="detail" id="getRight()">
-<h3>getRight</h3>
-<div class="member-signature"><span class="return-type"><a href="Either.html" title="type parameter in Either">R</a></span>&nbsp;<span class="element-name">getRight</span>()</div>
-<div class="block">Gets right side of either.</div>
-<dl class="notes">
-<dt>Returns:</dt>
-<dd>right side or throws <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/IllegalStateException.html" title="class or interface in java.lang" class="external-link"><code>IllegalStateException</code></a> for the left side.</dd>
-<dt>Throws:</dt>
-<dd><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/IllegalStateException.html" title="class or interface in java.lang" class="external-link">IllegalStateException</a></code> - for left side</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="getLeft()">
-<h3>getLeft</h3>
-<div class="member-signature"><span class="return-type"><a href="Either.html" title="type parameter in Either">L</a></span>&nbsp;<span class="element-name">getLeft</span>()</div>
-<div class="block">Gets left side of either.</div>
-<dl class="notes">
-<dt>Returns:</dt>
-<dd>left side or throws <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/IllegalStateException.html" title="class or interface in java.lang" class="external-link"><code>IllegalStateException</code></a> for the right side.</dd>
-<dt>Throws:</dt>
-<dd><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/IllegalStateException.html" title="class or interface in java.lang" class="external-link">IllegalStateException</a></code> - for right side</dd>
-</dl>
-</section>
-</li>
-<li>
 <section class="detail" id="stream()">
 <h3>stream</h3>
-<div class="member-signature"><span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/stream/Stream.html" title="class or interface in java.util.stream" class="external-link">Stream</a>&lt;<a href="Either.html" title="type parameter in Either">R</a>&gt;</span>&nbsp;<span class="element-name">stream</span>()</div>
+<div class="member-signature"><span class="modifiers">default</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/stream/Stream.html" title="class or interface in java.util.stream" class="external-link">Stream</a>&lt;<a href="Either.html" title="type parameter in Either">R</a>&gt;</span>&nbsp;<span class="element-name">stream</span>()</div>
+<div class="block">Converts Either to Stream</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>one element stream for right, empty stream for left.</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="optional()">
+<h3>optional</h3>
+<div class="member-signature"><span class="modifiers">default</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Optional.html" title="class or interface in java.util" class="external-link">Optional</a>&lt;<a href="Either.html" title="type parameter in Either">R</a>&gt;</span>&nbsp;<span class="element-name">optional</span>()</div>
+<div class="block">Converts Either to Optional</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>Optional for right, Optional empty for left.</dd>
+</dl>
 </section>
 </li>
 <li>
 <section class="detail" id="map(java.util.function.Function)">
 <h3>map</h3>
-<div class="member-signature"><span class="type-parameters">&lt;T&gt;</span>&nbsp;<span class="return-type"><a href="Either.html" title="interface in com.github.skopylov58.functional">Either</a>&lt;T,<wbr><a href="Either.html" title="type parameter in Either">L</a>&gt;</span>&nbsp;<span class="element-name">map</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/Function.html" title="class or interface in java.util.function" class="external-link">Function</a>&lt;<a href="Either.html" title="type parameter in Either">R</a>,<wbr>T&gt;&nbsp;mapper)</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="swap()">
-<h3>swap</h3>
-<div class="member-signature"><span class="return-type"><a href="Either.html" title="interface in com.github.skopylov58.functional">Either</a>&lt;<a href="Either.html" title="type parameter in Either">L</a>,<wbr><a href="Either.html" title="type parameter in Either">R</a>&gt;</span>&nbsp;<span class="element-name">swap</span>()</div>
+<div class="member-signature"><span class="modifiers">default</span>&nbsp;<span class="type-parameters">&lt;T&gt;</span>&nbsp;<span class="return-type"><a href="Either.html" title="interface in com.github.skopylov58.functional">Either</a>&lt;<a href="Either.html" title="type parameter in Either">L</a>,<wbr>T&gt;</span>&nbsp;<span class="element-name">map</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/Function.html" title="class or interface in java.util.function" class="external-link">Function</a>&lt;? super <a href="Either.html" title="type parameter in Either">R</a>,<wbr>? extends T&gt;&nbsp;mapper)</span></div>
+<div class="block">Maps right side of the Either.</div>
+<dl class="notes">
+<dt>Type Parameters:</dt>
+<dd><code>T</code> - new right type</dd>
+<dt>Parameters:</dt>
+<dd><code>mapper</code> - mapper function that maps R type to T type</dd>
+<dt>Returns:</dt>
+<dd>new Either</dd>
+</dl>
 </section>
 </li>
 <li>
 <section class="detail" id="flatMap(java.util.function.Function)">
 <h3>flatMap</h3>
-<div class="member-signature"><span class="type-parameters">&lt;T&gt;</span>&nbsp;<span class="return-type"><a href="Either.html" title="interface in com.github.skopylov58.functional">Either</a>&lt;T,<wbr><a href="Either.html" title="type parameter in Either">L</a>&gt;</span>&nbsp;<span class="element-name">flatMap</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/Function.html" title="class or interface in java.util.function" class="external-link">Function</a>&lt;<a href="Either.html" title="type parameter in Either">R</a>,<wbr><a href="Either.html" title="interface in com.github.skopylov58.functional">Either</a>&lt;T,<wbr><a href="Either.html" title="type parameter in Either">L</a>&gt;&gt;&nbsp;mapper)</span></div>
+<div class="member-signature"><span class="modifiers">default</span>&nbsp;<span class="type-parameters">&lt;T&gt;</span>&nbsp;<span class="return-type"><a href="Either.html" title="interface in com.github.skopylov58.functional">Either</a>&lt;<a href="Either.html" title="type parameter in Either">L</a>,<wbr>T&gt;</span>&nbsp;<span class="element-name">flatMap</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/Function.html" title="class or interface in java.util.function" class="external-link">Function</a>&lt;? super <a href="Either.html" title="type parameter in Either">R</a>,<wbr>? extends <a href="Either.html" title="interface in com.github.skopylov58.functional">Either</a>&lt;? extends <a href="Either.html" title="type parameter in Either">L</a>,<wbr>? extends T&gt;&gt;&nbsp;mapper)</span></div>
+<div class="block">Flat maps right side of the Either.</div>
+<dl class="notes">
+<dt>Type Parameters:</dt>
+<dd><code>T</code> - new right type</dd>
+<dt>Parameters:</dt>
+<dd><code>mapper</code> - R to <code>Either&lt;L,T&gt;</code></dd>
+<dt>Returns:</dt>
+<dd>new <code>Either&lt;L,T&gt;</code></dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="filter(java.util.function.Predicate,java.util.function.Function)">
+<h3>filter</h3>
+<div class="member-signature"><span class="modifiers">default</span>&nbsp;<span class="return-type"><a href="Either.html" title="interface in com.github.skopylov58.functional">Either</a>&lt;<a href="Either.html" title="type parameter in Either">L</a>,<wbr><a href="Either.html" title="type parameter in Either">R</a>&gt;</span>&nbsp;<span class="element-name">filter</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/Predicate.html" title="class or interface in java.util.function" class="external-link">Predicate</a>&lt;? super <a href="Either.html" title="type parameter in Either">R</a>&gt;&nbsp;predicate,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/Function.html" title="class or interface in java.util.function" class="external-link">Function</a>&lt;? super <a href="Either.html" title="type parameter in Either">R</a>,<wbr>? extends <a href="Either.html" title="type parameter in Either">L</a>&gt;&nbsp;leftMapper)</span></div>
+<div class="block">Filters right side of Either, does not have effect if it is left side.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>predicate</code> - condition to test</dd>
+<dd><code>leftMapper</code> - will map R to L if predicate return false</dd>
+<dt>Returns:</dt>
+<dd>Either</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="swap()">
+<h3>swap</h3>
+<div class="member-signature"><span class="modifiers">default</span>&nbsp;<span class="return-type"><a href="Either.html" title="interface in com.github.skopylov58.functional">Either</a>&lt;<a href="Either.html" title="type parameter in Either">R</a>,<wbr><a href="Either.html" title="type parameter in Either">L</a>&gt;</span>&nbsp;<span class="element-name">swap</span>()</div>
+<div class="block">Swaps Either</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>swapped Either</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="fold(java.util.function.Function,java.util.function.Function)">
+<h3>fold</h3>
+<div class="member-signature"><span class="type-parameters">&lt;T&gt;</span>&nbsp;<span class="return-type">T</span>&nbsp;<span class="element-name">fold</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/Function.html" title="class or interface in java.util.function" class="external-link">Function</a>&lt;? super <a href="Either.html" title="type parameter in Either">L</a>,<wbr>? extends T&gt;&nbsp;leftMapper,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/Function.html" title="class or interface in java.util.function" class="external-link">Function</a>&lt;? super <a href="Either.html" title="type parameter in Either">R</a>,<wbr>? extends T&gt;&nbsp;rihgtMapper)</span></div>
+<div class="block">Folds Either to type T</div>
+<dl class="notes">
+<dt>Type Parameters:</dt>
+<dd><code>T</code> - folded type</dd>
+<dt>Parameters:</dt>
+<dd><code>leftMapper</code> - maps left to T</dd>
+<dd><code>rihgtMapper</code> - maps right to T</dd>
+<dt>Returns:</dt>
+<dd>value of T type</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="accept(java.util.function.Consumer,java.util.function.Consumer)">
+<h3>accept</h3>
+<div class="member-signature"><span class="modifiers">default</span>&nbsp;<span class="return-type"><a href="Either.html" title="interface in com.github.skopylov58.functional">Either</a>&lt;<a href="Either.html" title="type parameter in Either">L</a>,<wbr><a href="Either.html" title="type parameter in Either">R</a>&gt;</span>&nbsp;<span class="element-name">accept</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/Consumer.html" title="class or interface in java.util.function" class="external-link">Consumer</a>&lt;? super <a href="Either.html" title="type parameter in Either">L</a>&gt;&nbsp;leftConsumer,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/Consumer.html" title="class or interface in java.util.function" class="external-link">Consumer</a>&lt;? super <a href="Either.html" title="type parameter in Either">R</a>&gt;&nbsp;rightConsumer)</span></div>
+<div class="block">Produces side effects for Either</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>leftConsumer</code> - left side effect</dd>
+<dd><code>rightConsumer</code> - right side effect</dd>
+<dt>Returns:</dt>
+<dd>this Either</dd>
+</dl>
 </section>
 </li>
 <li>
 <section class="detail" id="right(R)">
 <h3 id="right(java.lang.Object)">right</h3>
-<div class="member-signature"><span class="modifiers">static</span>&nbsp;<span class="type-parameters">&lt;R,<wbr>
-L&gt;</span>&nbsp;<span class="return-type"><a href="Either.html" title="interface in com.github.skopylov58.functional">Either</a>&lt;R,<wbr>L&gt;</span>&nbsp;<span class="element-name">right</span><wbr><span class="parameters">(R&nbsp;right)</span></div>
+<div class="member-signature"><span class="modifiers">static</span>&nbsp;<span class="type-parameters">&lt;L,<wbr>
+R&gt;</span>&nbsp;<span class="return-type"><a href="Either.html" title="interface in com.github.skopylov58.functional">Either</a>&lt;L,<wbr>R&gt;</span>&nbsp;<span class="element-name">right</span><wbr><span class="parameters">(R&nbsp;right)</span></div>
 <div class="block">Factory method to produce right side of Either from R value</div>
 <dl class="notes">
 <dt>Type Parameters:</dt>
@@ -268,8 +386,8 @@ L&gt;</span>&nbsp;<span class="return-type"><a href="Either.html" title="interfa
 <li>
 <section class="detail" id="left(L)">
 <h3 id="left(java.lang.Object)">left</h3>
-<div class="member-signature"><span class="modifiers">static</span>&nbsp;<span class="type-parameters">&lt;R,<wbr>
-L&gt;</span>&nbsp;<span class="return-type"><a href="Either.html" title="interface in com.github.skopylov58.functional">Either</a>&lt;R,<wbr>L&gt;</span>&nbsp;<span class="element-name">left</span><wbr><span class="parameters">(L&nbsp;left)</span></div>
+<div class="member-signature"><span class="modifiers">static</span>&nbsp;<span class="type-parameters">&lt;L,<wbr>
+R&gt;</span>&nbsp;<span class="return-type"><a href="Either.html" title="interface in com.github.skopylov58.functional">Either</a>&lt;L,<wbr>R&gt;</span>&nbsp;<span class="element-name">left</span><wbr><span class="parameters">(L&nbsp;left)</span></div>
 <div class="block">Factory method to produce left side of Either from L value</div>
 <dl class="notes">
 <dt>Type Parameters:</dt>
@@ -280,6 +398,52 @@ L&gt;</span>&nbsp;<span class="return-type"><a href="Either.html" title="interfa
 <dt>Returns:</dt>
 <dd><a href="Either.Left.html" title="class in com.github.skopylov58.functional"><code>Either.Left</code></a></dd>
 </dl>
+</section>
+</li>
+<li>
+<section class="detail" id="catching(com.github.skopylov58.functional.Try.CheckedSupplier,java.util.function.Function)">
+<h3>catching</h3>
+<div class="member-signature"><span class="modifiers">static</span>&nbsp;<span class="type-parameters">&lt;L,<wbr>
+R&gt;</span>&nbsp;<span class="return-type"><a href="Either.html" title="interface in com.github.skopylov58.functional">Either</a>&lt;L,<wbr>R&gt;</span>&nbsp;<span class="element-name">catching</span><wbr><span class="parameters">(<a href="Try.CheckedSupplier.html" title="interface in com.github.skopylov58.functional">Try.CheckedSupplier</a>&lt;? extends R&gt;&nbsp;supplier,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/Function.html" title="class or interface in java.util.function" class="external-link">Function</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Exception.html" title="class or interface in java.lang" class="external-link">Exception</a>,<wbr>? extends L&gt;&nbsp;mapper)</span></div>
+</section>
+</li>
+<li>
+<section class="detail" id="catching(com.github.skopylov58.functional.Try.CheckedSupplier)">
+<h3>catching</h3>
+<div class="member-signature"><span class="modifiers">static</span>&nbsp;<span class="type-parameters">&lt;R&gt;</span>&nbsp;<span class="return-type"><a href="Either.html" title="interface in com.github.skopylov58.functional">Either</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Exception.html" title="class or interface in java.lang" class="external-link">Exception</a>,<wbr>R&gt;</span>&nbsp;<span class="element-name">catching</span><wbr><span class="parameters">(<a href="Try.CheckedSupplier.html" title="interface in com.github.skopylov58.functional">Try.CheckedSupplier</a>&lt;? extends R&gt;&nbsp;supplier)</span></div>
+<div class="block">Factory method to produce <code>Either&lt;Exception,R&gt;</code> from throwing supplier</div>
+<dl class="notes">
+<dt>Type Parameters:</dt>
+<dd><code>R</code> - right side type</dd>
+<dt>Parameters:</dt>
+<dd><code>supplier</code> - throwing supplier of R</dd>
+<dt>Returns:</dt>
+<dd>Either</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="catching(com.github.skopylov58.functional.Try.CheckedFunction)">
+<h3>catching</h3>
+<div class="member-signature"><span class="modifiers">static</span>&nbsp;<span class="type-parameters">&lt;R,<wbr>
+T&gt;</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/Function.html" title="class or interface in java.util.function" class="external-link">Function</a>&lt;R,<wbr><a href="Either.html" title="interface in com.github.skopylov58.functional">Either</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Exception.html" title="class or interface in java.lang" class="external-link">Exception</a>,<wbr>T&gt;&gt;</span>&nbsp;<span class="element-name">catching</span><wbr><span class="parameters">(<a href="Try.CheckedFunction.html" title="interface in com.github.skopylov58.functional">Try.CheckedFunction</a>&lt;? super R,<wbr>? extends T&gt;&nbsp;mapper)</span></div>
+<div class="block">HOF, lifts throwing<code>R-&gt;T</code> function to total <code>R-&gt;Either&lt;Exception,R&gt;</code> function.
+ May be useful with flatMap.</div>
+<dl class="notes">
+<dt>Type Parameters:</dt>
+<dd><code>R</code> - </dd>
+<dd><code>T</code> - </dd>
+<dt>Parameters:</dt>
+<dd><code>mapper</code> - </dd>
+<dt>Returns:</dt>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="catching(com.github.skopylov58.functional.Try.CheckedConsumer)">
+<h3>catching</h3>
+<div class="member-signature"><span class="modifiers">static</span>&nbsp;<span class="type-parameters">&lt;R&gt;</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/Function.html" title="class or interface in java.util.function" class="external-link">Function</a>&lt;R,<wbr><a href="Either.html" title="interface in com.github.skopylov58.functional">Either</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Exception.html" title="class or interface in java.lang" class="external-link">Exception</a>,<wbr>R&gt;&gt;</span>&nbsp;<span class="element-name">catching</span><wbr><span class="parameters">(<a href="Try.CheckedConsumer.html" title="interface in com.github.skopylov58.functional">Try.CheckedConsumer</a>&lt;? super R&gt;&nbsp;consumer)</span></div>
 </section>
 </li>
 </ul>
