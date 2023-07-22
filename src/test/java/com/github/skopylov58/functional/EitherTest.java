@@ -17,24 +17,15 @@ public class EitherTest {
     }
     
     @Test
-    public void testEitherWithLeftString() throws Exception {
-        var either = Either.catching(
-                () -> new URL("foo"),
-                e -> e.getMessage());
-        
-        either.map(u -> u.getFile())
-        .filter(n -> !n.isEmpty(), f -> "Empty file");
-    }
-    
-    @Test
     public void testSocket() throws Exception {
         
-        catching(() -> new Socket("foo", 1234))
-        .flatMap(catching(Socket::getOutputStream))
-        .flatMap(catching(o -> {
-            o.write(new byte[] {1,2,3});
-        }));
-        
+        var socket = catching(() -> new Socket("foo", 1234));
+        try (var c = socket.asCloseable()) {
+            socket.flatMap(catching(Socket::getOutputStream))
+            .flatMap(catching(o -> {
+                o.write(new byte[] {1,2,3});
+            }));
+        }
     }
     
 }

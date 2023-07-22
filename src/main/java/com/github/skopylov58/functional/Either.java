@@ -1,5 +1,9 @@
 package com.github.skopylov58.functional;
 
+import static com.github.skopylov58.functional.Either.catching;
+
+import java.io.Closeable;
+import java.net.Socket;
 import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -20,13 +24,21 @@ import com.github.skopylov58.functional.Try.CheckedSupplier;
  *
  * <p>
  * 
- * Either has a set of {@link #catching(CheckedConsumer)} helper methods which will be useful for exception handling.
+ * Either intentionally does not have any getX() methods, use {@link #fold(Function, Function)}, 
+ * {@link #optional()} or {@link #stream()} instead.
+ * 
+ * <p>
+ * 
+ * Either has a set of {@link #catching(CheckedConsumer)} higher order functions  which will be useful for exception handling.
  * 
  * <pre>
- *    catching(() -> new Socket("foo", 1234))
- *       .flatMap(catching(Socket::getOutputStream))
- *       .flatMap(catching(o -> {
- *        o.write(new byte[] {1,2,3});
+ *       var socket = catching(() -> new Socket("foo", 1234));
+ *       try (var c = socket.asCloseable()) {
+ *           socket.flatMap(catching(Socket::getOutputStream))
+ *           .flatMap(catching(o -> {
+ *            o.write(new byte[] {1,2,3});
+ *        }));
+ *    }
  * }));
  * </pre>
  * 
@@ -36,7 +48,7 @@ import com.github.skopylov58.functional.Try.CheckedSupplier;
  * @param <R> right side type
  */
 @SuppressWarnings("rawtypes")
-public sealed interface Either<L, R>  permits Either.Left, Either.Right {
+public sealed interface Either<L, R> permits Either.Left, Either.Right {
 
     /**
      * Checks if this is left side.
@@ -102,7 +114,15 @@ public sealed interface Either<L, R>  permits Either.Left, Either.Right {
                 right -> predicate.test(right) ? this : left(leftMapper.apply(right)) 
                 );
     }
-    
+
+    @SuppressWarnings("unchecked")
+    default Either<L,Optional<R>> filter(Predicate<? super R> predicate) {
+        return (Either<L, Optional<R>>) fold(
+                left -> this,
+                right -> predicate.test(right) ? right(Optional.of(right)) : right(Optional.empty()) 
+                );
+    }
+
     /**
      * Swaps Either
      * @return swapped Either
@@ -139,7 +159,6 @@ public sealed interface Either<L, R>  permits Either.Left, Either.Right {
         return this;
     }
 
-    
     /**
      * Factory method to produce right side of Either from R value
      * @param <R> type of right side
@@ -187,14 +206,6 @@ public sealed interface Either<L, R>  permits Either.Left, Either.Right {
         }
     }
     
-    static <L, R> Either<L, R> catching(CheckedSupplier<? extends R> supplier, Function<Exception, ? extends L> mapper) {
-        try {
-            return right(supplier.get());
-        } catch (Exception e) {
-            return left(mapper.apply(e));
-        }
-    }
-
     /**
      * Factory method to produce {@code Either<Exception,R>} from throwing supplier
      * @param <R> right side type
@@ -202,16 +213,20 @@ public sealed interface Either<L, R>  permits Either.Left, Either.Right {
      * @return Either
      */
     static <R> Either<Exception, R> catching(CheckedSupplier<? extends R> supplier) {
-        return catching(supplier, e -> e);
+        try {
+            return right(supplier.get());
+        } catch (Exception e) {
+            return left(e);
+        }
     }
 
     /**
-     * HOF, lifts throwing{@code R->T} function to total {@code R->Either<Exception,R>} function.
+     * Lifts throwing {@code R->T} function to total {@code R->Either<Exception,R>} function.
      * May be useful with flatMap.
-     * @param <R>
-     * @param <T>
-     * @param mapper
-     * @return
+     * @param <R> right side type
+     * @param <T> left side type
+     * @param mapper throwing function
+     * @return lifted function
      */
     static <R,T> Function<R, Either<Exception, T>> catching(CheckedFunction<? super R, ? extends T> mapper) {
         return param -> {
@@ -223,6 +238,12 @@ public sealed interface Either<L, R>  permits Either.Left, Either.Right {
         };
     }
 
+    /**
+     * Lifts throwing consumer to total {@code R->Either<Exception,R>} function.
+     * @param <R> right side type
+     * @param consumer
+     * @return lifted function
+     */
     static <R> Function<R, Either<Exception, R>> catching(CheckedConsumer<? super R> consumer) {
         return param -> {
             try {
@@ -233,6 +254,25 @@ public sealed interface Either<L, R>  permits Either.Left, Either.Right {
             }
         };
     }
+    
+    /**
+     * Converts this Either to Closeable which is handy to use in try-with-resources block.
+     * @return Closeable
+     */
+    default Closeable asCloseable() {
+        return fold(
+                left -> () -> {
+                    if (left instanceof Closeable clo) {
+                        clo.close();
+                    } 
+                },
+                right -> () -> {
+                    if (right instanceof Closeable clo) {
+                        clo.close();
+                    }
+                });
+    }
+    
 }
 
 
