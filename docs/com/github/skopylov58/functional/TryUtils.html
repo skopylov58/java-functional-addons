@@ -85,24 +85,27 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Interface</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color"><code>static interface&nbsp;</code></div>
-<div class="col-second even-row-color"><code><a href="TryUtils.CheckedFunction.html" class="type-name-link" title="interface in com.github.skopylov58.functional">TryUtils.CheckedFunction</a>&lt;<a href="TryUtils.CheckedFunction.html" title="type parameter in TryUtils.CheckedFunction">T</a>,<wbr><a href="TryUtils.CheckedFunction.html" title="type parameter in TryUtils.CheckedFunction">R</a>&gt;</code></div>
-<div class="col-last even-row-color">
+<div class="col-first even-row-color"><code>static class&nbsp;</code></div>
+<div class="col-second even-row-color"><code><a href="TryUtils.BooleanLatch.html" class="type-name-link" title="class in com.github.skopylov58.functional">TryUtils.BooleanLatch</a></code></div>
+<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><code>static interface&nbsp;</code></div>
+<div class="col-second odd-row-color"><code><a href="TryUtils.CheckedFunction.html" class="type-name-link" title="interface in com.github.skopylov58.functional">TryUtils.CheckedFunction</a>&lt;<a href="TryUtils.CheckedFunction.html" title="type parameter in TryUtils.CheckedFunction">T</a>,<wbr><a href="TryUtils.CheckedFunction.html" title="type parameter in TryUtils.CheckedFunction">R</a>&gt;</code></div>
+<div class="col-last odd-row-color">
 <div class="block">Function that may throw an exception.</div>
 </div>
-<div class="col-first odd-row-color"><code>static interface&nbsp;</code></div>
-<div class="col-second odd-row-color"><code><a href="TryUtils.CheckedSupplier.html" class="type-name-link" title="interface in com.github.skopylov58.functional">TryUtils.CheckedSupplier</a>&lt;<a href="TryUtils.CheckedSupplier.html" title="type parameter in TryUtils.CheckedSupplier">T</a>&gt;</code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code>static interface&nbsp;</code></div>
+<div class="col-second even-row-color"><code><a href="TryUtils.CheckedSupplier.html" class="type-name-link" title="interface in com.github.skopylov58.functional">TryUtils.CheckedSupplier</a>&lt;<a href="TryUtils.CheckedSupplier.html" title="type parameter in TryUtils.CheckedSupplier">T</a>&gt;</code></div>
+<div class="col-last even-row-color">
 <div class="block">Supplier that may throw an exception.</div>
 </div>
-<div class="col-first even-row-color"><code>static final record&nbsp;</code></div>
-<div class="col-second even-row-color"><code><a href="TryUtils.Result.html" class="type-name-link" title="class in com.github.skopylov58.functional">TryUtils.Result</a>&lt;<a href="TryUtils.Result.html" title="type parameter in TryUtils.Result">T</a>&gt;</code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code>static final record&nbsp;</code></div>
+<div class="col-second odd-row-color"><code><a href="TryUtils.Result.html" class="type-name-link" title="class in com.github.skopylov58.functional">TryUtils.Result</a>&lt;<a href="TryUtils.Result.html" title="type parameter in TryUtils.Result">T</a>&gt;</code></div>
+<div class="col-last odd-row-color">
 <div class="block">Try Result for Java 14+</div>
 </div>
-<div class="col-first odd-row-color"><code>static class&nbsp;</code></div>
-<div class="col-second odd-row-color"><code><a href="TryUtils.ResultJava8.html" class="type-name-link" title="class in com.github.skopylov58.functional">TryUtils.ResultJava8</a>&lt;<a href="TryUtils.ResultJava8.html" title="type parameter in TryUtils.ResultJava8">T</a>&gt;</code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code>static class&nbsp;</code></div>
+<div class="col-second even-row-color"><code><a href="TryUtils.ResultJava8.html" class="type-name-link" title="class in com.github.skopylov58.functional">TryUtils.ResultJava8</a>&lt;<a href="TryUtils.ResultJava8.html" title="type parameter in TryUtils.ResultJava8">T</a>&gt;</code></div>
+<div class="col-last even-row-color">
 <div class="block">Try Result for Java 8+</div>
 </div>
 </div>
@@ -119,18 +122,56 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5"><code>default void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5"><code><a href="#foo()" class="member-name-link">foo</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5">&nbsp;</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1"><code>static &lt;T,<wbr>
+R&gt;&nbsp;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/Function.html" title="class or interface in java.util.function" class="external-link">Function</a>&lt;T,<wbr>R&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1"><code><a href="#after(java.util.function.Function,java.util.function.Consumer)" class="member-name-link">after</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/Function.html" title="class or interface in java.util.function" class="external-link">Function</a>&lt;T,<wbr>R&gt;&nbsp;func,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/Consumer.html" title="class or interface in java.util.function" class="external-link">Consumer</a>&lt;R&gt;&nbsp;after)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1">&nbsp;</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1"><code>static &lt;T,<wbr>
+R&gt;&nbsp;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/Function.html" title="class or interface in java.util.function" class="external-link">Function</a>&lt;T,<wbr>R&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1"><code><a href="#before(java.util.function.Function,java.util.function.Consumer)" class="member-name-link">before</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/Function.html" title="class or interface in java.util.function" class="external-link">Function</a>&lt;T,<wbr>R&gt;&nbsp;func,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/Consumer.html" title="class or interface in java.util.function" class="external-link">Consumer</a>&lt;T&gt;&nbsp;before)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1">&nbsp;</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1"><code>static &lt;T,<wbr>
+R&gt;&nbsp;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/Function.html" title="class or interface in java.util.function" class="external-link">Function</a>&lt;T,<wbr>R&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1"><code><a href="#catchingMapper(com.github.skopylov58.functional.TryUtils.CheckedFunction,java.util.function.BiFunction)" class="member-name-link">catchingMapper</a><wbr>(<a href="TryUtils.CheckedFunction.html" title="interface in com.github.skopylov58.functional">TryUtils.CheckedFunction</a>&lt;T,<wbr>R&gt;&nbsp;func,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/BiFunction.html" title="class or interface in java.util.function" class="external-link">BiFunction</a>&lt;T,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Exception.html" title="class or interface in java.lang" class="external-link">Exception</a>,<wbr>R&gt;&nbsp;errorMapper)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1">&nbsp;</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1"><code>static &lt;T,<wbr>
+R&gt;&nbsp;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/Function.html" title="class or interface in java.util.function" class="external-link">Function</a>&lt;T,<wbr>R&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1"><code><a href="#catchingMapper(com.github.skopylov58.functional.TryUtils.CheckedFunction,java.util.function.Supplier)" class="member-name-link">catchingMapper</a><wbr>(<a href="TryUtils.CheckedFunction.html" title="interface in com.github.skopylov58.functional">TryUtils.CheckedFunction</a>&lt;T,<wbr>R&gt;&nbsp;func,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/Supplier.html" title="class or interface in java.util.function" class="external-link">Supplier</a>&lt;R&gt;&nbsp;supplier)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1">&nbsp;</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1"><code>static &lt;T&gt;&nbsp;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/UnaryOperator.html" title="class or interface in java.util.function" class="external-link">UnaryOperator</a>&lt;T&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1"><code><a href="#ctou(java.util.function.Consumer)" class="member-name-link">ctou</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/Consumer.html" title="class or interface in java.util.function" class="external-link">Consumer</a>&lt;T&gt;&nbsp;cons)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1">
+<div class="block">Consumer to UnaryOperator conversion.</div>
+</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab1"><code>static <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/time/Duration.html" title="class or interface in java.time" class="external-link">Duration</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab1"><code><a href="#measure(java.lang.Runnable)" class="member-name-link">measure</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Runnable.html" title="class or interface in java.lang" class="external-link">Runnable</a>&nbsp;runnable)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab1">&nbsp;</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5"><code>default &lt;T&gt;&nbsp;<a href="TryUtils.Result.html" title="class in com.github.skopylov58.functional">TryUtils.Result</a>&lt;T&gt;</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5"><code><a href="#onSuccessCatching(com.github.skopylov58.functional.TryUtils.Result,com.github.skopylov58.functional.Try.CheckedConsumer)" class="member-name-link">onSuccessCatching</a><wbr>(<a href="TryUtils.Result.html" title="class in com.github.skopylov58.functional">TryUtils.Result</a>&lt;T&gt;&nbsp;result,
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1"><code>static &lt;T,<wbr>
+R&gt;&nbsp;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/Function.html" title="class or interface in java.util.function" class="external-link">Function</a>&lt;T,<wbr>R&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1"><code><a href="#memoize(java.util.function.Function)" class="member-name-link">memoize</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/Function.html" title="class or interface in java.util.function" class="external-link">Function</a>&lt;T,<wbr>R&gt;&nbsp;func)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1">&nbsp;</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1"><code>static &lt;T,<wbr>
+R&gt;&nbsp;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/Function.html" title="class or interface in java.util.function" class="external-link">Function</a>&lt;T,<wbr>R&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1"><code><a href="#memoize(java.util.function.Function,java.util.Map)" class="member-name-link">memoize</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/Function.html" title="class or interface in java.util.function" class="external-link">Function</a>&lt;T,<wbr>R&gt;&nbsp;func,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;T,<wbr>R&gt;&nbsp;cache)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1">&nbsp;</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1"><code>static <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Runnable.html" title="class or interface in java.lang" class="external-link">Runnable</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1"><code><a href="#once(java.lang.Runnable)" class="member-name-link">once</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Runnable.html" title="class or interface in java.lang" class="external-link">Runnable</a>&nbsp;run)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1">&nbsp;</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5"><code>default &lt;T&gt;&nbsp;<a href="TryUtils.Result.html" title="class in com.github.skopylov58.functional">TryUtils.Result</a>&lt;T&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5"><code><a href="#onSuccessCatching(com.github.skopylov58.functional.TryUtils.Result,com.github.skopylov58.functional.Try.CheckedConsumer)" class="member-name-link">onSuccessCatching</a><wbr>(<a href="TryUtils.Result.html" title="class in com.github.skopylov58.functional">TryUtils.Result</a>&lt;T&gt;&nbsp;result,
  <a href="Try.CheckedConsumer.html" title="interface in com.github.skopylov58.functional">Try.CheckedConsumer</a>&lt;T&gt;&nbsp;cons)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab1"><code>static &lt;E extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Throwable.html" title="class or interface in java.lang" class="external-link">Throwable</a>&gt;<br>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab1"><code><a href="#sneakyThrow(java.lang.Throwable)" class="member-name-link">sneakyThrow</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Throwable.html" title="class or interface in java.lang" class="external-link">Throwable</a>&nbsp;e)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5">&nbsp;</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1"><code>static &lt;E extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Throwable.html" title="class or interface in java.lang" class="external-link">Throwable</a>&gt;<br>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1"><code><a href="#sneakyThrow(java.lang.Throwable)" class="member-name-link">sneakyThrow</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Throwable.html" title="class or interface in java.lang" class="external-link">Throwable</a>&nbsp;e)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1">&nbsp;</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1"><code>static &lt;T,<wbr>
+R&gt;&nbsp;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/Function.html" title="class or interface in java.util.function" class="external-link">Function</a>&lt;T,<wbr>R&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1"><code><a href="#throwingMapper(com.github.skopylov58.functional.TryUtils.CheckedFunction)" class="member-name-link">throwingMapper</a><wbr>(<a href="TryUtils.CheckedFunction.html" title="interface in com.github.skopylov58.functional">TryUtils.CheckedFunction</a>&lt;T,<wbr>R&gt;&nbsp;func)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab1">&nbsp;</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab1"><code>static &lt;T,<wbr>
 R&gt;&nbsp;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/Function.html" title="class or interface in java.util.function" class="external-link">Function</a>&lt;T,<wbr><a href="Either.html" title="interface in com.github.skopylov58.functional">Either</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Exception.html" title="class or interface in java.lang" class="external-link">Exception</a>,<wbr>R&gt;&gt;</code></div>
@@ -148,8 +189,22 @@ R&gt;&nbsp;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base
 <div class="col-last even-row-color method-summary-table method-summary-table-tab1">
 <div class="block">Higher-order function to convert partial function <code>T=&gt;R</code> to total function <code>T=&gt;Optional&lt;R&gt;</code></div>
 </div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1"><code>static &lt;T,<wbr>
+R&gt;&nbsp;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/Function.html" title="class or interface in java.util.function" class="external-link">Function</a>&lt;T,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Optional.html" title="class or interface in java.util" class="external-link">Optional</a>&lt;R&gt;&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1"><code><a href="#toOptional(com.github.skopylov58.functional.TryUtils.CheckedFunction,java.util.function.BiConsumer)" class="member-name-link">toOptional</a><wbr>(<a href="TryUtils.CheckedFunction.html" title="interface in com.github.skopylov58.functional">TryUtils.CheckedFunction</a>&lt;T,<wbr>R&gt;&nbsp;func,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/BiConsumer.html" title="class or interface in java.util.function" class="external-link">BiConsumer</a>&lt;T,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Exception.html" title="class or interface in java.lang" class="external-link">Exception</a>&gt;&nbsp;consumer)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1">
+<div class="block">Higher-order function to convert partial function <code>T=&gt;R</code> to total function <code>T=&gt;Optional&lt;R&gt;</code>
+ Gives access to Exception and corresponding input value.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1"><code>static &lt;T&gt;&nbsp;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/Supplier.html" title="class or interface in java.util.function" class="external-link">Supplier</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Optional.html" title="class or interface in java.util" class="external-link">Optional</a>&lt;T&gt;&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1"><code><a href="#toOptional(com.github.skopylov58.functional.TryUtils.CheckedSupplier)" class="member-name-link">toOptional</a><wbr>(<a href="TryUtils.CheckedSupplier.html" title="interface in com.github.skopylov58.functional">TryUtils.CheckedSupplier</a>&lt;T&gt;&nbsp;supplier)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1">
+<div class="block">Higher-order function to convert partial supplier <code>()=&gt;T</code> to total supplier <code>()=&gt;Optional&lt;T&gt;</code></div>
+</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab1"><code>static &lt;T&gt;&nbsp;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/Supplier.html" title="class or interface in java.util.function" class="external-link">Supplier</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Optional.html" title="class or interface in java.util" class="external-link">Optional</a>&lt;T&gt;&gt;</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab1"><code><a href="#toOptional(com.github.skopylov58.functional.TryUtils.CheckedSupplier)" class="member-name-link">toOptional</a><wbr>(<a href="TryUtils.CheckedSupplier.html" title="interface in com.github.skopylov58.functional">TryUtils.CheckedSupplier</a>&lt;T&gt;&nbsp;supplier)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1"><code><a href="#toOptional(com.github.skopylov58.functional.TryUtils.CheckedSupplier,java.util.function.Consumer)" class="member-name-link">toOptional</a><wbr>(<a href="TryUtils.CheckedSupplier.html" title="interface in com.github.skopylov58.functional">TryUtils.CheckedSupplier</a>&lt;T&gt;&nbsp;supplier,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/Consumer.html" title="class or interface in java.util.function" class="external-link">Consumer</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Exception.html" title="class or interface in java.lang" class="external-link">Exception</a>&gt;&nbsp;consumer)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab1">
 <div class="block">Higher-order function to convert partial supplier <code>()=&gt;T</code> to total supplier <code>()=&gt;Optional&lt;T&gt;</code></div>
 </div>
@@ -205,12 +260,6 @@ R&gt;</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/
 </section>
 </li>
 <li>
-<section class="detail" id="foo()">
-<h3>foo</h3>
-<div class="member-signature"><span class="modifiers">default</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">foo</span>()</div>
-</section>
-</li>
-<li>
 <section class="detail" id="toOptional(com.github.skopylov58.functional.TryUtils.CheckedFunction)">
 <h3>toOptional</h3>
 <div class="member-signature"><span class="modifiers">static</span>&nbsp;<span class="type-parameters">&lt;T,<wbr>
@@ -228,6 +277,49 @@ R&gt;</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/
 </section>
 </li>
 <li>
+<section class="detail" id="toOptional(com.github.skopylov58.functional.TryUtils.CheckedFunction,java.util.function.BiConsumer)">
+<h3>toOptional</h3>
+<div class="member-signature"><span class="modifiers">static</span>&nbsp;<span class="type-parameters">&lt;T,<wbr>
+R&gt;</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/Function.html" title="class or interface in java.util.function" class="external-link">Function</a>&lt;T,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Optional.html" title="class or interface in java.util" class="external-link">Optional</a>&lt;R&gt;&gt;</span>&nbsp;<span class="element-name">toOptional</span><wbr><span class="parameters">(<a href="TryUtils.CheckedFunction.html" title="interface in com.github.skopylov58.functional">TryUtils.CheckedFunction</a>&lt;T,<wbr>R&gt;&nbsp;func,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/BiConsumer.html" title="class or interface in java.util.function" class="external-link">BiConsumer</a>&lt;T,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Exception.html" title="class or interface in java.lang" class="external-link">Exception</a>&gt;&nbsp;consumer)</span></div>
+<div class="block">Higher-order function to convert partial function <code>T=&gt;R</code> to total function <code>T=&gt;Optional&lt;R&gt;</code>
+ Gives access to Exception and corresponding input value.</div>
+<dl class="notes">
+<dt>Type Parameters:</dt>
+<dd><code>T</code> - function input parameter type</dd>
+<dd><code>R</code> - function result type</dd>
+<dt>Parameters:</dt>
+<dd><code>func</code> - partial function <code>T=&gt;R</code> that may throw checked exception</dd>
+<dd><code>consumer</code> - has access to exception and corresponding input value</dd>
+<dt>Returns:</dt>
+<dd>total function <code>T=&gt;Optional&lt;R&gt;</code></dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="catchingMapper(com.github.skopylov58.functional.TryUtils.CheckedFunction,java.util.function.BiFunction)">
+<h3>catchingMapper</h3>
+<div class="member-signature"><span class="modifiers">static</span>&nbsp;<span class="type-parameters">&lt;T,<wbr>
+R&gt;</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/Function.html" title="class or interface in java.util.function" class="external-link">Function</a>&lt;T,<wbr>R&gt;</span>&nbsp;<span class="element-name">catchingMapper</span><wbr><span class="parameters">(<a href="TryUtils.CheckedFunction.html" title="interface in com.github.skopylov58.functional">TryUtils.CheckedFunction</a>&lt;T,<wbr>R&gt;&nbsp;func,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/BiFunction.html" title="class or interface in java.util.function" class="external-link">BiFunction</a>&lt;T,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Exception.html" title="class or interface in java.lang" class="external-link">Exception</a>,<wbr>R&gt;&nbsp;errorMapper)</span></div>
+</section>
+</li>
+<li>
+<section class="detail" id="throwingMapper(com.github.skopylov58.functional.TryUtils.CheckedFunction)">
+<h3>throwingMapper</h3>
+<div class="member-signature"><span class="modifiers">static</span>&nbsp;<span class="type-parameters">&lt;T,<wbr>
+R&gt;</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/Function.html" title="class or interface in java.util.function" class="external-link">Function</a>&lt;T,<wbr>R&gt;</span>&nbsp;<span class="element-name">throwingMapper</span><wbr><span class="parameters">(<a href="TryUtils.CheckedFunction.html" title="interface in com.github.skopylov58.functional">TryUtils.CheckedFunction</a>&lt;T,<wbr>R&gt;&nbsp;func)</span></div>
+</section>
+</li>
+<li>
+<section class="detail" id="catchingMapper(com.github.skopylov58.functional.TryUtils.CheckedFunction,java.util.function.Supplier)">
+<h3>catchingMapper</h3>
+<div class="member-signature"><span class="modifiers">static</span>&nbsp;<span class="type-parameters">&lt;T,<wbr>
+R&gt;</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/Function.html" title="class or interface in java.util.function" class="external-link">Function</a>&lt;T,<wbr>R&gt;</span>&nbsp;<span class="element-name">catchingMapper</span><wbr><span class="parameters">(<a href="TryUtils.CheckedFunction.html" title="interface in com.github.skopylov58.functional">TryUtils.CheckedFunction</a>&lt;T,<wbr>R&gt;&nbsp;func,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/Supplier.html" title="class or interface in java.util.function" class="external-link">Supplier</a>&lt;R&gt;&nbsp;supplier)</span></div>
+</section>
+</li>
+<li>
 <section class="detail" id="toOptional(com.github.skopylov58.functional.TryUtils.CheckedSupplier)">
 <h3>toOptional</h3>
 <div class="member-signature"><span class="modifiers">static</span>&nbsp;<span class="type-parameters">&lt;T&gt;</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/Supplier.html" title="class or interface in java.util.function" class="external-link">Supplier</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Optional.html" title="class or interface in java.util" class="external-link">Optional</a>&lt;T&gt;&gt;</span>&nbsp;<span class="element-name">toOptional</span><wbr><span class="parameters">(<a href="TryUtils.CheckedSupplier.html" title="interface in com.github.skopylov58.functional">TryUtils.CheckedSupplier</a>&lt;T&gt;&nbsp;supplier)</span></div>
@@ -237,6 +329,23 @@ R&gt;</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/
 <dd><code>T</code> - supplier result type</dd>
 <dt>Parameters:</dt>
 <dd><code>supplier</code> - <code>()=&gt;T</code> that may throw an exception</dd>
+<dt>Returns:</dt>
+<dd>total supplier <code>()=&gt;Optional&lt;T&gt;</code></dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="toOptional(com.github.skopylov58.functional.TryUtils.CheckedSupplier,java.util.function.Consumer)">
+<h3>toOptional</h3>
+<div class="member-signature"><span class="modifiers">static</span>&nbsp;<span class="type-parameters">&lt;T&gt;</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/Supplier.html" title="class or interface in java.util.function" class="external-link">Supplier</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Optional.html" title="class or interface in java.util" class="external-link">Optional</a>&lt;T&gt;&gt;</span>&nbsp;<span class="element-name">toOptional</span><wbr><span class="parameters">(<a href="TryUtils.CheckedSupplier.html" title="interface in com.github.skopylov58.functional">TryUtils.CheckedSupplier</a>&lt;T&gt;&nbsp;supplier,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/Consumer.html" title="class or interface in java.util.function" class="external-link">Consumer</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Exception.html" title="class or interface in java.lang" class="external-link">Exception</a>&gt;&nbsp;consumer)</span></div>
+<div class="block">Higher-order function to convert partial supplier <code>()=&gt;T</code> to total supplier <code>()=&gt;Optional&lt;T&gt;</code></div>
+<dl class="notes">
+<dt>Type Parameters:</dt>
+<dd><code>T</code> - supplier result type</dd>
+<dt>Parameters:</dt>
+<dd><code>supplier</code> - <code>()=&gt;T</code> that may throw an exception</dd>
+<dd><code>consumer</code> - error consumer</dd>
 <dt>Returns:</dt>
 <dd>total supplier <code>()=&gt;Optional&lt;T&gt;</code></dd>
 </dl>
@@ -294,6 +403,58 @@ R&gt;</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/
 <section class="detail" id="measure(java.lang.Runnable)">
 <h3>measure</h3>
 <div class="member-signature"><span class="modifiers">static</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/time/Duration.html" title="class or interface in java.time" class="external-link">Duration</a></span>&nbsp;<span class="element-name">measure</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Runnable.html" title="class or interface in java.lang" class="external-link">Runnable</a>&nbsp;runnable)</span></div>
+</section>
+</li>
+<li>
+<section class="detail" id="after(java.util.function.Function,java.util.function.Consumer)">
+<h3>after</h3>
+<div class="member-signature"><span class="modifiers">static</span>&nbsp;<span class="type-parameters">&lt;T,<wbr>
+R&gt;</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/Function.html" title="class or interface in java.util.function" class="external-link">Function</a>&lt;T,<wbr>R&gt;</span>&nbsp;<span class="element-name">after</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/Function.html" title="class or interface in java.util.function" class="external-link">Function</a>&lt;T,<wbr>R&gt;&nbsp;func,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/Consumer.html" title="class or interface in java.util.function" class="external-link">Consumer</a>&lt;R&gt;&nbsp;after)</span></div>
+</section>
+</li>
+<li>
+<section class="detail" id="before(java.util.function.Function,java.util.function.Consumer)">
+<h3>before</h3>
+<div class="member-signature"><span class="modifiers">static</span>&nbsp;<span class="type-parameters">&lt;T,<wbr>
+R&gt;</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/Function.html" title="class or interface in java.util.function" class="external-link">Function</a>&lt;T,<wbr>R&gt;</span>&nbsp;<span class="element-name">before</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/Function.html" title="class or interface in java.util.function" class="external-link">Function</a>&lt;T,<wbr>R&gt;&nbsp;func,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/Consumer.html" title="class or interface in java.util.function" class="external-link">Consumer</a>&lt;T&gt;&nbsp;before)</span></div>
+</section>
+</li>
+<li>
+<section class="detail" id="memoize(java.util.function.Function,java.util.Map)">
+<h3>memoize</h3>
+<div class="member-signature"><span class="modifiers">static</span>&nbsp;<span class="type-parameters">&lt;T,<wbr>
+R&gt;</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/Function.html" title="class or interface in java.util.function" class="external-link">Function</a>&lt;T,<wbr>R&gt;</span>&nbsp;<span class="element-name">memoize</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/Function.html" title="class or interface in java.util.function" class="external-link">Function</a>&lt;T,<wbr>R&gt;&nbsp;func,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;T,<wbr>R&gt;&nbsp;cache)</span></div>
+</section>
+</li>
+<li>
+<section class="detail" id="memoize(java.util.function.Function)">
+<h3>memoize</h3>
+<div class="member-signature"><span class="modifiers">static</span>&nbsp;<span class="type-parameters">&lt;T,<wbr>
+R&gt;</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/Function.html" title="class or interface in java.util.function" class="external-link">Function</a>&lt;T,<wbr>R&gt;</span>&nbsp;<span class="element-name">memoize</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/Function.html" title="class or interface in java.util.function" class="external-link">Function</a>&lt;T,<wbr>R&gt;&nbsp;func)</span></div>
+</section>
+</li>
+<li>
+<section class="detail" id="once(java.lang.Runnable)">
+<h3>once</h3>
+<div class="member-signature"><span class="modifiers">static</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Runnable.html" title="class or interface in java.lang" class="external-link">Runnable</a></span>&nbsp;<span class="element-name">once</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Runnable.html" title="class or interface in java.lang" class="external-link">Runnable</a>&nbsp;run)</span></div>
+</section>
+</li>
+<li>
+<section class="detail" id="ctou(java.util.function.Consumer)">
+<h3>ctou</h3>
+<div class="member-signature"><span class="modifiers">static</span>&nbsp;<span class="type-parameters">&lt;T&gt;</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/UnaryOperator.html" title="class or interface in java.util.function" class="external-link">UnaryOperator</a>&lt;T&gt;</span>&nbsp;<span class="element-name">ctou</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/Consumer.html" title="class or interface in java.util.function" class="external-link">Consumer</a>&lt;T&gt;&nbsp;cons)</span></div>
+<div class="block">Consumer to UnaryOperator conversion.</div>
+<dl class="notes">
+<dt>Type Parameters:</dt>
+<dd><code>T</code> - type T</dd>
+<dt>Parameters:</dt>
+<dd><code>cons</code> - consumer</dd>
+<dt>Returns:</dt>
+<dd>UnaryOperator</dd>
+</dl>
 </section>
 </li>
 </ul>
