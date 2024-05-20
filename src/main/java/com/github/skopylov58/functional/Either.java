@@ -1,9 +1,6 @@
 package com.github.skopylov58.functional;
 
-import static com.github.skopylov58.functional.Either.catching;
-
 import java.io.Closeable;
-import java.net.Socket;
 import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Function;

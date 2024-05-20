@@ -1,22 +1,28 @@
 package com.github.skopylov58.functional;
 
+import static com.github.skopylov58.functional.TryUtils.throwingMapper;
 import static com.github.skopylov58.functional.TryUtils.toEither;
 import static com.github.skopylov58.functional.TryUtils.toFuture;
 import static com.github.skopylov58.functional.TryUtils.toOptional;
 import static com.github.skopylov58.functional.TryUtils.toResult;
 import static com.github.skopylov58.functional.TryUtils.toResultJava8;
+import static com.github.skopylov58.functional.TryUtils.memoize;
+import static com.github.skopylov58.functional.TryUtils.ctou;
 import static java.util.function.Predicate.not;
-import static org.junit.Assert.assertTrue;
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.*;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.URLConnection;
 import java.text.NumberFormat;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
+import java.util.function.UnaryOperator;
 import java.util.stream.Stream;
 
 import org.junit.Test;
@@ -75,8 +81,8 @@ public class TryUtilsTest {
         check(res);
     }
 
-    @Test(expected = NumberFormatException.class)
-    public void intList() throws NumberFormatException {
+    @Test
+    public void intList() {
         var list = Stream.of(NUMS)
         .map(toOptional(Integer::parseInt)) //Runtime NumberFormatException may happen here
         .flatMap(Optional::stream)
@@ -127,29 +133,97 @@ public class TryUtilsTest {
         .toList();                     //List<Number>
     }
     
+    @Test
+	public void testCurrying() throws Exception {
+    	Function<String,Integer> handled = TryUtils.catchingMapper(Integer::parseInt, (t,e) -> -1);
+	}
     
-    void foo() {
-        Function<String,CompletableFuture<URL>> futureFunc = TryUtils.toFuture(URL::new);
-        CompletableFuture<URL> url = futureFunc.apply("bar");
-        
-        url.thenCompose(TryUtils.toFuture(URL::openConnection))
-        .thenCompose(TryUtils.toFuture(URLConnection::getOutputStream));
-        
+    @Test
+    public void testIgnoreErrors() {
+    	var list = Stream.of("1", "foo", "2", "bar")
+		.map(toOptional(Integer::valueOf))
+		.flatMap(Optional::stream)
+		.toList();
+    	
+    	 assertThat(List.of(1, 2), is(list));
+    }
+    
+    @Test
+    public void testIgnoreErrorsAndLog() {
+    	var list = Stream.of("1", "foo", "2", "bar")
+		.map(toOptional(Integer::valueOf, (i, e) -> System.err.println(i + " causes error " + e.getMessage())))
+		.flatMap(Optional::stream)
+		.toList();
 
-        
-        CompletableFuture<Integer> f = CompletableFuture.completedFuture(1);
-        f.thenApply(i -> "");
-        
-        
-        
-        
+		assertThat(List.of(1, 2), is(list));
+    }
+    
+    @Test
+    public void testProvideDefaultsForErrors() {
+    	var list = Stream.of("1", "foo", "2", "bar")
+		.map(toOptional(Integer::valueOf))
+		.map(o -> o.orElse(-1))
+		.toList();
+    	
+		assertThat(List.of(1, -1, 2, -1), is(list));
+    }
+    
+    @Test
+    public void testHandleErrors() {
+    	var list = Stream.of("1", "foo", "2", "foo-bar")
+		.map(TryUtils.catchingMapper(Integer::valueOf, (s, e) -> s.length()))
+		.toList();
+    	
+    	assertThat(List.of(1, 3, 2, 7), is(list));
     }
 
-//    @Test
-//    public void testSocket() throws Exception {
-//        Optional.of("host")
-//        .flatMap(TryUtils.toOptional(h -> new Socket(h, 8848)))
-//        .flatMap(TryUtils.toOptional(Socket::getOutputStream))
-//        .ifPresent(TryUtils.toOptional(out -> out.write(new byte[] {1,2,3})));
-//    }
+    @Test(expected = NumberFormatException.class)
+    public void testStopOnErrors() {
+    	Stream.of("1", "foo", "2", "bar")
+		.map(throwingMapper(Integer::valueOf))
+		.toList();
+    	
+    	fail();
+    }
+    
+    @Test
+	public void testMemoize() throws Exception {
+    	
+    	Function<String, String> hello = s -> {
+    		try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+    		return "Hello " + s;
+    	};
+    	
+    	var cache = new ConcurrentHashMap<String, String>();
+    	Function<String,String> memoizedHello = memoize(hello, cache);
+    	
+    	System.out.println("Start");
+    	String apply = memoizedHello.apply("Sergey");
+    	System.out.println(apply);
+    	
+
+    	apply = memoizedHello.apply("Sergey");
+    	System.out.println(apply);
+	}
+    
+    
+    @Test
+	public void testDecorator() throws Exception {
+    	
+    	Function<String, String> hello = s -> "Hello " + s;
+    	
+    	UnaryOperator<String> before = ctou(s -> {System.out.println("before " + s);}); 
+    	UnaryOperator<String> after  = ctou(s -> {System.out.println("after " + s);}); 
+    	
+    	Function<String, String> decoratedHello = hello.compose(before).andThen(after);
+    	
+    	String h = decoratedHello.apply("Sergey");
+    	System.out.println(h);
+	}
+    
+    
 }

@@ -1,20 +1,22 @@
 package com.github.skopylov58.functional;
 
-import java.net.Socket;
 import java.time.Duration;
 import java.time.Instant;
+import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
+import java.util.function.UnaryOperator;
 import java.util.stream.Stream;
 
 import com.github.skopylov58.functional.Try.CheckedConsumer;
-import com.github.skopylov58.functional.Try.CheckedRunnable;
 
 /**
  * Collection of higher-order functions to handle exceptions in functional style.
@@ -108,20 +110,20 @@ public interface TryUtils {
         return result.flatMap(Result.catching(f));
     }
     
-    default void foo() {
-        var r = Result.success(1);
-        r.fold(System.out::println, e -> {});
-        r.handle((i,e) -> null);
-        
-        var s = Result.catching(() -> new Socket("host", 1234))
-                .flatMap(Result.catching(Socket::getOutputStream))
-                .flatMap(Result.catching(o -> {
-                    o.write("Hello, world".getBytes());
-                    return o;
-                }))
-                .flatMap(Result.catching(o -> {o.close(); return o;}))
-                ;
-    }
+//    default void foo() {
+//        var r = Result.success(1);
+//        r.fold(System.out::println, e -> {});
+//        r.handle((i,e) -> null);
+//        
+//        var s = Result.catching(() -> new Socket("host", 1234))
+//                .flatMap(Result.catching(Socket::getOutputStream))
+//                .flatMap(Result.catching(o -> {
+//                    o.write("Hello, world".getBytes());
+//                    return o;
+//                }))
+//                .flatMap(Result.catching(o -> {o.close(); return o;}))
+//                ;
+//    }
     
     
     /**
@@ -132,17 +134,56 @@ public interface TryUtils {
      * @return total function {@code T=>Optional<R>}
      */
     static <T, R> Function<T, Optional<R>> toOptional(CheckedFunction<T, R> func) {
+    	return toOptional(func, (t, e) -> {});
+    }
+
+    /**
+     * Higher-order function to convert partial function {@code T=>R} to total function {@code T=>Optional<R>}
+     * Gives access to Exception and corresponding input value.
+     * 
+     * @param <T> function input parameter type
+     * @param <R> function result type
+     * @param func partial function {@code T=>R} that may throw checked exception
+     * @param consumer has access to exception and corresponding input value
+     * @return total function {@code T=>Optional<R>}
+     */
+    static <T, R> Function<T, Optional<R>> toOptional(CheckedFunction<T, R> func, BiConsumer<T, Exception> consumer) {
         return param -> {
             try {
                 return Optional.ofNullable(func.apply(param));
-            } catch (RuntimeException re) {
-                throw re;
             } catch (Exception e) {
+            	consumer.accept(param, e);
                 return Optional.empty();
             }
         };
     }
 
+    static <T, R> Function<T, R> catchingMapper(CheckedFunction<T, R> func, BiFunction<T, Exception, R> errorMapper) {
+        return param -> {
+            try {
+                return func.apply(param);
+            } catch (Exception e) {
+                return errorMapper.apply(param, e);
+            }
+        };
+    }
+
+    static <T, R> Function<T, R> throwingMapper(CheckedFunction<T, R> func) {
+        return param -> {
+            try {
+                return func.apply(param);
+            } catch (Exception e) {
+            	sneakyThrow(e);
+                return null;
+            }
+        };
+    }
+
+    static <T, R> Function<T, R> catchingMapper(CheckedFunction<T, R> func, Supplier<R> supplier) {
+    	return catchingMapper(func, (t, e) -> supplier.get());
+    }
+
+    
     /**
      * Higher-order function to convert partial supplier {@code ()=>T} to total supplier {@code ()=>Optional<T>}
      * @param <T> supplier result type
@@ -150,14 +191,27 @@ public interface TryUtils {
      * @return total supplier {@code ()=>Optional<T>}
      */
     static <T> Supplier<Optional<T>> toOptional(CheckedSupplier<T> supplier) {
+        return toOptional(supplier, e -> {});
+    }
+
+    /**
+     * Higher-order function to convert partial supplier {@code ()=>T} to total supplier {@code ()=>Optional<T>}
+     * @param <T> supplier result type
+     * @param supplier {@code ()=>T} that may throw an exception
+     * @param consumer error consumer
+     * @return total supplier {@code ()=>Optional<T>}
+     */
+    static <T> Supplier<Optional<T>> toOptional(CheckedSupplier<T> supplier, Consumer<Exception> consumer) {
         return () -> {
             try {
                 return Optional.ofNullable(supplier.get());
             } catch (Exception e) {
+            	consumer.accept(e);
                 return Optional.empty();
             }
         };
     }
+    
     /**
      * Higher-order function to convert partial function {@code T=>R} to total function {@code T=>Either<R, Exception>}
      * @param <T> function input parameter type
@@ -217,4 +271,63 @@ public interface TryUtils {
         Instant end = Instant.now();
         return Duration.between(start, end);
     }
+    
+    static <T, R> Function<T, R> after(Function<T, R> func, Consumer<R> after) {
+    	return t -> {
+    		R r = func.apply(t);
+    		after.accept(r);
+			return r;
+    	};
+    }
+    
+    static <T, R> Function<T, R> before(Function<T, R> func, Consumer<T> before) {
+    	return t -> {
+    		before.accept(t);
+    		return func.apply(t);
+    	};
+    }
+    
+    static <T, R> Function<T, R> memoize(Function<T, R> func, Map<T, R> cache) {
+    	return t -> cache.computeIfAbsent(t, func::apply);
+    }
+
+    static <T, R> Function<T, R> memoize(Function<T, R> func) {
+    	return memoize(func, new ConcurrentHashMap<>());
+    }
+    
+    class BooleanLatch {
+    	boolean opened = true;
+    	boolean get() {
+    		boolean retVal = opened;
+   			opened = false;
+    		return retVal;
+    	}
+    }
+
+    private static Runnable once(Runnable run, BooleanLatch latch) {
+    	return () -> {
+    		if (latch.get()) {
+    			run.run();
+    		}
+    	};
+    }
+    
+    static Runnable once(Runnable run) {
+    	return once(run, new BooleanLatch());
+    }
+    
+    /**
+     * Consumer to UnaryOperator conversion.
+     * @param <T> type T
+     * @param cons consumer
+     * @return UnaryOperator
+     */
+    static <T> UnaryOperator<T> ctou(Consumer<T> cons) {
+        return t -> {
+            cons.accept(t);
+            return t;
+        };
+    }
+
+    
 }
