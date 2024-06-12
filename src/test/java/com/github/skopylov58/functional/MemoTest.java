@@ -22,12 +22,12 @@ public class MemoTest {
 		
 		Function<Integer, Integer> memoized = Memo.memoize(add3);
 		
-		Duration duration = TryUtils.measure(() -> {
+		Duration duration = FPUtils.measure(() -> {
 			memoized.apply(2);
 		});
 		System.out.println("First call: " + duration);
 
-		duration = TryUtils.measure(() -> {
+		duration = FPUtils.measure(() -> {
 			memoized.apply(2);
 		});
 		System.out.println("Second call: " + duration);

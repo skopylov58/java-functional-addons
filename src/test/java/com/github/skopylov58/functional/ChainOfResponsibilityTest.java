@@ -1,12 +1,8 @@
 package com.github.skopylov58.functional;
 
-import java.io.OutputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.Arrays;
 import java.util.function.Consumer;
 import java.util.function.Function;
-
 import org.junit.Test;
 
 public class ChainOfResponsibilityTest {
