@@ -79,6 +79,10 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">Behaves like finally block in Java's try/catch/finally.</div>
 </dd>
+<dt><a href="com/github/skopylov58/functional/State.html#apply(S)" class="member-name-link">apply(S)</a> - Method in interface com.github.skopylov58.functional.<a href="com/github/skopylov58/functional/State.html" title="interface in com.github.skopylov58.functional">State</a></dt>
+<dd>
+<div class="block">State monad is just function S -> (T, S)</div>
+</dd>
 <dt><a href="com/github/skopylov58/functional/Decorator.html#apply(T)" class="member-name-link">apply(T)</a> - Method in class com.github.skopylov58.functional.<a href="com/github/skopylov58/functional/Decorator.html" title="class in com.github.skopylov58.functional">Decorator</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="com/github/skopylov58/functional/FPUtils.CheckedFunction.html#apply(T)" class="member-name-link">apply(T)</a> - Method in interface com.github.skopylov58.functional.<a href="com/github/skopylov58/functional/FPUtils.CheckedFunction.html" title="interface in com.github.skopylov58.functional">FPUtils.CheckedFunction</a></dt>
@@ -101,6 +105,10 @@ loadScripts(document, 'script');</script>
 <dt><a href="com/github/skopylov58/functional/Option.None.html#bind(java.util.function.Function)" class="member-name-link">bind(Function&lt;? super T, ? extends Monad&lt;R&gt;&gt;)</a> - Method in record class com.github.skopylov58.functional.<a href="com/github/skopylov58/functional/Option.None.html" title="class in com.github.skopylov58.functional">Option.None</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="com/github/skopylov58/functional/Option.Some.html#bind(java.util.function.Function)" class="member-name-link">bind(Function&lt;? super T, ? extends Monad&lt;R&gt;&gt;)</a> - Method in record class com.github.skopylov58.functional.<a href="com/github/skopylov58/functional/Option.Some.html" title="class in com.github.skopylov58.functional">Option.Some</a></dt>
+<dd>&nbsp;</dd>
+<dt><a href="com/github/skopylov58/functional/Result.Failure.html#bind(java.util.function.Function)" class="member-name-link">bind(Function&lt;? super T, ? extends Monad&lt;R&gt;&gt;)</a> - Method in class com.github.skopylov58.functional.<a href="com/github/skopylov58/functional/Result.Failure.html" title="class in com.github.skopylov58.functional">Result.Failure</a></dt>
+<dd>&nbsp;</dd>
+<dt><a href="com/github/skopylov58/functional/Result.Success.html#bind(java.util.function.Function)" class="member-name-link">bind(Function&lt;? super T, ? extends Monad&lt;R&gt;&gt;)</a> - Method in class com.github.skopylov58.functional.<a href="com/github/skopylov58/functional/Result.Success.html" title="class in com.github.skopylov58.functional">Result.Success</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="com/github/skopylov58/functional/Validation.Builder.html#build()" class="member-name-link">build()</a> - Method in class com.github.skopylov58.functional.<a href="com/github/skopylov58/functional/Validation.Builder.html" title="class in com.github.skopylov58.functional">Validation.Builder</a></dt>
 <dd>
@@ -222,6 +230,8 @@ loadScripts(document, 'script');</script>
 <dd>&nbsp;</dd>
 <dt><a href="com/github/skopylov58/functional/FPUtils.Result.html#failure(java.lang.Exception)" class="member-name-link">failure(Exception)</a> - Static method in record class com.github.skopylov58.functional.<a href="com/github/skopylov58/functional/FPUtils.Result.html" title="class in com.github.skopylov58.functional">FPUtils.Result</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="com/github/skopylov58/functional/Result.html#failure(java.lang.Exception)" class="member-name-link">failure(Exception)</a> - Static method in interface com.github.skopylov58.functional.<a href="com/github/skopylov58/functional/Result.html" title="interface in com.github.skopylov58.functional">Result</a></dt>
+<dd>&nbsp;</dd>
 <dt><a href="com/github/skopylov58/functional/Try.html#failure(java.lang.Exception)" class="member-name-link">failure(Exception)</a> - Static method in interface com.github.skopylov58.functional.<a href="com/github/skopylov58/functional/Try.html" title="interface in com.github.skopylov58.functional">Try</a></dt>
 <dd>
 <div class="block">Factory method to produce Try from value of Exception.</div>
@@ -253,6 +263,14 @@ loadScripts(document, 'script');</script>
 <dt><a href="com/github/skopylov58/functional/Option.None.html#flatMap(java.util.function.Function)" class="member-name-link">flatMap(Function&lt;? super T, ? extends Option&lt;R&gt;&gt;)</a> - Method in record class com.github.skopylov58.functional.<a href="com/github/skopylov58/functional/Option.None.html" title="class in com.github.skopylov58.functional">Option.None</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="com/github/skopylov58/functional/Option.Some.html#flatMap(java.util.function.Function)" class="member-name-link">flatMap(Function&lt;? super T, ? extends Option&lt;R&gt;&gt;)</a> - Method in record class com.github.skopylov58.functional.<a href="com/github/skopylov58/functional/Option.Some.html" title="class in com.github.skopylov58.functional">Option.Some</a></dt>
+<dd>&nbsp;</dd>
+<dt><a href="com/github/skopylov58/functional/Result.Failure.html#flatMap(java.util.function.Function)" class="member-name-link">flatMap(Function&lt;? super T, ? extends Result&lt;R&gt;&gt;)</a> - Method in class com.github.skopylov58.functional.<a href="com/github/skopylov58/functional/Result.Failure.html" title="class in com.github.skopylov58.functional">Result.Failure</a></dt>
+<dd>&nbsp;</dd>
+<dt><a href="com/github/skopylov58/functional/Result.Success.html#flatMap(java.util.function.Function)" class="member-name-link">flatMap(Function&lt;? super T, ? extends Result&lt;R&gt;&gt;)</a> - Method in class com.github.skopylov58.functional.<a href="com/github/skopylov58/functional/Result.Success.html" title="class in com.github.skopylov58.functional">Result.Success</a></dt>
+<dd>&nbsp;</dd>
+<dt><a href="com/github/skopylov58/functional/Reader.html#flatMap(java.util.function.Function)" class="member-name-link">flatMap(Function&lt;? super T, Reader&lt;C, R&gt;&gt;)</a> - Method in interface com.github.skopylov58.functional.<a href="com/github/skopylov58/functional/Reader.html" title="interface in com.github.skopylov58.functional">Reader</a></dt>
+<dd>&nbsp;</dd>
+<dt><a href="com/github/skopylov58/functional/State.html#flatMap(java.util.function.Function)" class="member-name-link">flatMap(Function&lt;? super T, State&lt;R, S&gt;&gt;)</a> - Method in interface com.github.skopylov58.functional.<a href="com/github/skopylov58/functional/State.html" title="interface in com.github.skopylov58.functional">State</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="com/github/skopylov58/functional/Try.html#flatMap(java.util.function.Function)" class="member-name-link">flatMap(Function&lt;? super T, Try&lt;R&gt;&gt;)</a> - Method in interface com.github.skopylov58.functional.<a href="com/github/skopylov58/functional/Try.html" title="interface in com.github.skopylov58.functional">Try</a></dt>
 <dd>
@@ -329,6 +347,10 @@ loadScripts(document, 'script');</script>
 <dd>&nbsp;</dd>
 <dt><a href="com/github/skopylov58/functional/Option.Some.html#getOrDefault(T)" class="member-name-link">getOrDefault(T)</a> - Method in record class com.github.skopylov58.functional.<a href="com/github/skopylov58/functional/Option.Some.html" title="class in com.github.skopylov58.functional">Option.Some</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="com/github/skopylov58/functional/Result.Failure.html#getOrDefault(T)" class="member-name-link">getOrDefault(T)</a> - Method in class com.github.skopylov58.functional.<a href="com/github/skopylov58/functional/Result.Failure.html" title="class in com.github.skopylov58.functional">Result.Failure</a></dt>
+<dd>&nbsp;</dd>
+<dt><a href="com/github/skopylov58/functional/Result.Success.html#getOrDefault(T)" class="member-name-link">getOrDefault(T)</a> - Method in class com.github.skopylov58.functional.<a href="com/github/skopylov58/functional/Result.Success.html" title="class in com.github.skopylov58.functional">Result.Success</a></dt>
+<dd>&nbsp;</dd>
 </dl>
 <h2 class="title" id="I:H">H</h2>
 <dl class="index">
@@ -404,6 +426,8 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">Creates an instance of a <code>Left</code> record class.</div>
 </dd>
+<dt><a href="com/github/skopylov58/functional/Result.html#lift(com.github.skopylov58.functional.FPUtils.CheckedFunction)" class="member-name-link">lift(FPUtils.CheckedFunction&lt;T, R&gt;)</a> - Static method in interface com.github.skopylov58.functional.<a href="com/github/skopylov58/functional/Result.html" title="interface in com.github.skopylov58.functional">Result</a></dt>
+<dd>&nbsp;</dd>
 <dt><a href="com/github/skopylov58/functional/Monad.html#liftM2(com.github.skopylov58.functional.Monad,com.github.skopylov58.functional.Monad,java.util.function.BiFunction)" class="member-name-link">liftM2(Monad&lt;A&gt;, Monad&lt;B&gt;, BiFunction&lt;A, B, C&gt;)</a> - Static method in interface com.github.skopylov58.functional.<a href="com/github/skopylov58/functional/Monad.html" title="interface in com.github.skopylov58.functional">Monad</a></dt>
 <dd>&nbsp;</dd>
 </dl>
@@ -424,6 +448,14 @@ loadScripts(document, 'script');</script>
 <dt><a href="com/github/skopylov58/functional/Option.None.html#map(java.util.function.Function)" class="member-name-link">map(Function&lt;? super T, ? extends R&gt;)</a> - Method in record class com.github.skopylov58.functional.<a href="com/github/skopylov58/functional/Option.None.html" title="class in com.github.skopylov58.functional">Option.None</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="com/github/skopylov58/functional/Option.Some.html#map(java.util.function.Function)" class="member-name-link">map(Function&lt;? super T, ? extends R&gt;)</a> - Method in record class com.github.skopylov58.functional.<a href="com/github/skopylov58/functional/Option.Some.html" title="class in com.github.skopylov58.functional">Option.Some</a></dt>
+<dd>&nbsp;</dd>
+<dt><a href="com/github/skopylov58/functional/Reader.html#map(java.util.function.Function)" class="member-name-link">map(Function&lt;? super T, ? extends R&gt;)</a> - Method in interface com.github.skopylov58.functional.<a href="com/github/skopylov58/functional/Reader.html" title="interface in com.github.skopylov58.functional">Reader</a></dt>
+<dd>&nbsp;</dd>
+<dt><a href="com/github/skopylov58/functional/Result.Failure.html#map(java.util.function.Function)" class="member-name-link">map(Function&lt;? super T, ? extends R&gt;)</a> - Method in class com.github.skopylov58.functional.<a href="com/github/skopylov58/functional/Result.Failure.html" title="class in com.github.skopylov58.functional">Result.Failure</a></dt>
+<dd>&nbsp;</dd>
+<dt><a href="com/github/skopylov58/functional/Result.Success.html#map(java.util.function.Function)" class="member-name-link">map(Function&lt;? super T, ? extends R&gt;)</a> - Method in class com.github.skopylov58.functional.<a href="com/github/skopylov58/functional/Result.Success.html" title="class in com.github.skopylov58.functional">Result.Success</a></dt>
+<dd>&nbsp;</dd>
+<dt><a href="com/github/skopylov58/functional/State.html#map(java.util.function.Function)" class="member-name-link">map(Function&lt;? super T, ? extends R&gt;)</a> - Method in interface com.github.skopylov58.functional.<a href="com/github/skopylov58/functional/State.html" title="interface in com.github.skopylov58.functional">State</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="com/github/skopylov58/functional/FPUtils.Result.html#map(java.util.function.Function)" class="member-name-link">map(Function&lt;T, R&gt;)</a> - Method in record class com.github.skopylov58.functional.<a href="com/github/skopylov58/functional/FPUtils.Result.html" title="class in com.github.skopylov58.functional">FPUtils.Result</a></dt>
 <dd>&nbsp;</dd>
@@ -519,6 +551,10 @@ loadScripts(document, 'script');</script>
 <dd>&nbsp;</dd>
 <dt><a href="com/github/skopylov58/functional/Option.Some.html#optional()" class="member-name-link">optional()</a> - Method in record class com.github.skopylov58.functional.<a href="com/github/skopylov58/functional/Option.Some.html" title="class in com.github.skopylov58.functional">Option.Some</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="com/github/skopylov58/functional/Result.Failure.html#optional()" class="member-name-link">optional()</a> - Method in class com.github.skopylov58.functional.<a href="com/github/skopylov58/functional/Result.Failure.html" title="class in com.github.skopylov58.functional">Result.Failure</a></dt>
+<dd>&nbsp;</dd>
+<dt><a href="com/github/skopylov58/functional/Result.Success.html#optional()" class="member-name-link">optional()</a> - Method in class com.github.skopylov58.functional.<a href="com/github/skopylov58/functional/Result.Success.html" title="class in com.github.skopylov58.functional">Result.Success</a></dt>
+<dd>&nbsp;</dd>
 <dt><a href="com/github/skopylov58/functional/Try.html#optional()" class="member-name-link">optional()</a> - Method in interface com.github.skopylov58.functional.<a href="com/github/skopylov58/functional/Try.html" title="interface in com.github.skopylov58.functional">Try</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="com/github/skopylov58/functional/Try.Failure.html#orElseThrow()" class="member-name-link">orElseThrow()</a> - Method in class com.github.skopylov58.functional.<a href="com/github/skopylov58/functional/Try.Failure.html" title="class in com.github.skopylov58.functional">Try.Failure</a></dt>
@@ -536,9 +572,21 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">Gives access to current Try.</div>
 </dd>
+<dt><a href="com/github/skopylov58/functional/Reader.html#pure(T)" class="member-name-link">pure(T)</a> - Static method in interface com.github.skopylov58.functional.<a href="com/github/skopylov58/functional/Reader.html" title="interface in com.github.skopylov58.functional">Reader</a></dt>
+<dd>
+<div class="block">Creates Reader monad from value of type T</div>
+</dd>
+<dt><a href="com/github/skopylov58/functional/State.html#pure(T)" class="member-name-link">pure(T)</a> - Static method in interface com.github.skopylov58.functional.<a href="com/github/skopylov58/functional/State.html" title="interface in com.github.skopylov58.functional">State</a></dt>
+<dd>
+<div class="block">Creates state monad from pure value</div>
+</dd>
 </dl>
 <h2 class="title" id="I:R">R</h2>
 <dl class="index">
+<dt><a href="com/github/skopylov58/functional/Reader.html" class="type-name-link" title="interface in com.github.skopylov58.functional">Reader</a>&lt;<a href="com/github/skopylov58/functional/Reader.html" title="type parameter in Reader">C</a>,<wbr><a href="com/github/skopylov58/functional/Reader.html" title="type parameter in Reader">T</a>&gt; - Interface in <a href="com/github/skopylov58/functional/package-summary.html">com.github.skopylov58.functional</a></dt>
+<dd>
+<div class="block">Reader monad.</div>
+</dd>
 <dt><a href="com/github/skopylov58/functional/Try.html#recover(com.github.skopylov58.functional.Try.CheckedSupplier)" class="member-name-link">recover(Try.CheckedSupplier&lt;? extends T&gt;)</a> - Method in interface com.github.skopylov58.functional.<a href="com/github/skopylov58/functional/Try.html" title="interface in com.github.skopylov58.functional">Try</a></dt>
 <dd>
 <div class="block">Tries recover failed try with given supplier, has no action for success.</div>
@@ -557,10 +605,18 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="com/github/skopylov58/functional/FPUtils.ResultJava8.html#result()" class="member-name-link">result()</a> - Method in class com.github.skopylov58.functional.<a href="com/github/skopylov58/functional/FPUtils.ResultJava8.html" title="class in com.github.skopylov58.functional">FPUtils.ResultJava8</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="com/github/skopylov58/functional/Result.html" class="type-name-link" title="interface in com.github.skopylov58.functional">Result</a>&lt;<a href="com/github/skopylov58/functional/Result.html" title="type parameter in Result">T</a>&gt; - Interface in <a href="com/github/skopylov58/functional/package-summary.html">com.github.skopylov58.functional</a></dt>
+<dd>
+<div class="block">Result monad</div>
+</dd>
 <dt><a href="com/github/skopylov58/functional/FPUtils.Result.html#%3Cinit%3E(T,java.lang.Exception)" class="member-name-link">Result(T, Exception)</a> - Constructor for record class com.github.skopylov58.functional.<a href="com/github/skopylov58/functional/FPUtils.Result.html" title="class in com.github.skopylov58.functional">FPUtils.Result</a></dt>
 <dd>
 <div class="block">Creates an instance of a <code>Result</code> record class.</div>
 </dd>
+<dt><a href="com/github/skopylov58/functional/Result.Failure.html" class="type-name-link" title="class in com.github.skopylov58.functional">Result.Failure</a>&lt;<a href="com/github/skopylov58/functional/Result.Failure.html" title="type parameter in Result.Failure">T</a>&gt; - Class in <a href="com/github/skopylov58/functional/package-summary.html">com.github.skopylov58.functional</a></dt>
+<dd>&nbsp;</dd>
+<dt><a href="com/github/skopylov58/functional/Result.Success.html" class="type-name-link" title="class in com.github.skopylov58.functional">Result.Success</a>&lt;<a href="com/github/skopylov58/functional/Result.Success.html" title="type parameter in Result.Success">T</a>&gt; - Class in <a href="com/github/skopylov58/functional/package-summary.html">com.github.skopylov58.functional</a></dt>
+<dd>&nbsp;</dd>
 <dt><a href="com/github/skopylov58/functional/FPUtils.ResultJava8.html#%3Cinit%3E(java.lang.Exception)" class="member-name-link">ResultJava8(Exception)</a> - Constructor for class com.github.skopylov58.functional.<a href="com/github/skopylov58/functional/FPUtils.ResultJava8.html" title="class in com.github.skopylov58.functional">FPUtils.ResultJava8</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="com/github/skopylov58/functional/FPUtils.ResultJava8.html#%3Cinit%3E(T)" class="member-name-link">ResultJava8(T)</a> - Constructor for class com.github.skopylov58.functional.<a href="com/github/skopylov58/functional/FPUtils.ResultJava8.html" title="class in com.github.skopylov58.functional">FPUtils.ResultJava8</a></dt>
@@ -597,6 +653,10 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">Returns the value of the <code>run</code> record component.</div>
 </dd>
+<dt><a href="com/github/skopylov58/functional/Reader.html#run(C)" class="member-name-link">run(C)</a> - Method in interface com.github.skopylov58.functional.<a href="com/github/skopylov58/functional/Reader.html" title="interface in com.github.skopylov58.functional">Reader</a></dt>
+<dd>
+<div class="block">Reader monad is just function C -> T where C is context, T is value</div>
+</dd>
 <dt><a href="com/github/skopylov58/functional/Try.html#runCatching(com.github.skopylov58.functional.Try.CheckedRunnable)" class="member-name-link">runCatching(Try.CheckedRunnable)</a> - Static method in interface com.github.skopylov58.functional.<a href="com/github/skopylov58/functional/Try.html" title="interface in com.github.skopylov58.functional">Try</a></dt>
 <dd>&nbsp;</dd>
 </dl>
@@ -618,6 +678,10 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">Creates an instance of a <code>Some</code> record class.</div>
 </dd>
+<dt><a href="com/github/skopylov58/functional/State.html" class="type-name-link" title="interface in com.github.skopylov58.functional">State</a>&lt;<a href="com/github/skopylov58/functional/State.html" title="type parameter in State">T</a>,<wbr><a href="com/github/skopylov58/functional/State.html" title="type parameter in State">S</a>&gt; - Interface in <a href="com/github/skopylov58/functional/package-summary.html">com.github.skopylov58.functional</a></dt>
+<dd>
+<div class="block">State monad.</div>
+</dd>
 <dt><a href="com/github/skopylov58/functional/Either.html#stream()" class="member-name-link">stream()</a> - Method in interface com.github.skopylov58.functional.<a href="com/github/skopylov58/functional/Either.html" title="interface in com.github.skopylov58.functional">Either</a></dt>
 <dd>
 <div class="block">Converts Either to Stream</div>
@@ -630,11 +694,17 @@ loadScripts(document, 'script');</script>
 <dd>&nbsp;</dd>
 <dt><a href="com/github/skopylov58/functional/Option.Some.html#stream()" class="member-name-link">stream()</a> - Method in record class com.github.skopylov58.functional.<a href="com/github/skopylov58/functional/Option.Some.html" title="class in com.github.skopylov58.functional">Option.Some</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="com/github/skopylov58/functional/Result.Failure.html#stream()" class="member-name-link">stream()</a> - Method in class com.github.skopylov58.functional.<a href="com/github/skopylov58/functional/Result.Failure.html" title="class in com.github.skopylov58.functional">Result.Failure</a></dt>
+<dd>&nbsp;</dd>
+<dt><a href="com/github/skopylov58/functional/Result.Success.html#stream()" class="member-name-link">stream()</a> - Method in class com.github.skopylov58.functional.<a href="com/github/skopylov58/functional/Result.Success.html" title="class in com.github.skopylov58.functional">Result.Success</a></dt>
+<dd>&nbsp;</dd>
 <dt><a href="com/github/skopylov58/functional/Try.html#stream()" class="member-name-link">stream()</a> - Method in interface com.github.skopylov58.functional.<a href="com/github/skopylov58/functional/Try.html" title="interface in com.github.skopylov58.functional">Try</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="com/github/skopylov58/functional/ZIO.html#succeed(A)" class="member-name-link">succeed(A)</a> - Static method in record class com.github.skopylov58.functional.<a href="com/github/skopylov58/functional/ZIO.html" title="class in com.github.skopylov58.functional">ZIO</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="com/github/skopylov58/functional/FPUtils.Result.html#success(T)" class="member-name-link">success(T)</a> - Static method in record class com.github.skopylov58.functional.<a href="com/github/skopylov58/functional/FPUtils.Result.html" title="class in com.github.skopylov58.functional">FPUtils.Result</a></dt>
+<dd>&nbsp;</dd>
+<dt><a href="com/github/skopylov58/functional/Result.html#success(T)" class="member-name-link">success(T)</a> - Static method in interface com.github.skopylov58.functional.<a href="com/github/skopylov58/functional/Result.html" title="interface in com.github.skopylov58.functional">Result</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="com/github/skopylov58/functional/Try.html#success(T)" class="member-name-link">success(T)</a> - Static method in interface com.github.skopylov58.functional.<a href="com/github/skopylov58/functional/Try.html" title="interface in com.github.skopylov58.functional">Try</a></dt>
 <dd>
