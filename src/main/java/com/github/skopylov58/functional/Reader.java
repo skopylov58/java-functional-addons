@@ -9,7 +9,7 @@ import java.util.function.Function;
  * @param T value type
  */
 @FunctionalInterface
-interface Reader<C, T> {
+public interface Reader<C, T> {
 
   /**
    * Reader monad is just function C -> T where C is context, T is value

@@ -10,7 +10,7 @@ import java.util.function.Function;
  * @param <S> state type
  */
 @FunctionalInterface
-interface State<T, S> {
+public interface State<T, S> {
 
   /**
    * State monad is just function S -> (T, S)
