@@ -34,6 +34,7 @@ loadScripts(document, 'script');</script>
 <li><a href="package-summary.html">Package</a></li>
 <li class="nav-bar-cell1-rev">Class</li>
 <li><a href="package-tree.html">Tree</a></li>
+<li><a href="../../../../deprecated-list.html">Deprecated</a></li>
 <li><a href="../../../../index-all.html">Index</a></li>
 <li><a href="../../../../help-doc.html#class">Help</a></li>
 </ul>
@@ -71,15 +72,20 @@ loadScripts(document, 'script');</script>
 </div>
 <section class="class-description" id="class-description">
 <dl class="notes">
+<dt>All Superinterfaces:</dt>
+<dd><code><a href="MonadAccessor.html" title="interface in com.github.skopylov58.functional">MonadAccessor</a>&lt;T&gt;</code></dd>
+</dl>
+<dl class="notes">
 <dt>All Known Subinterfaces:</dt>
-<dd><code><a href="Option.html" title="interface in com.github.skopylov58.functional">Option</a>&lt;T&gt;</code>, <code><a href="Result.html" title="interface in com.github.skopylov58.functional">Result</a>&lt;T&gt;</code></dd>
+<dd><code><a href="Option.html" title="interface in com.github.skopylov58.functional">Option</a>&lt;T&gt;</code></dd>
 </dl>
 <dl class="notes">
 <dt>All Known Implementing Classes:</dt>
 <dd><code><a href="Option.None.html" title="class in com.github.skopylov58.functional">Option.None</a></code>, <code><a href="Option.Some.html" title="class in com.github.skopylov58.functional">Option.Some</a></code></dd>
 </dl>
 <hr>
-<div class="type-signature"><span class="modifiers">public interface </span><span class="element-name type-name-label">Monad&lt;T&gt;</span></div>
+<div class="type-signature"><span class="modifiers">public interface </span><span class="element-name type-name-label">Monad&lt;T&gt;</span><span class="extends-implements">
+extends <a href="MonadAccessor.html" title="interface in com.github.skopylov58.functional">MonadAccessor</a>&lt;T&gt;</span></div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -95,7 +101,7 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>&lt;R&gt;&nbsp;<a href="Monad.html" title="interface in com.github.skopylov58.functional">Monad</a>&lt;R&gt;</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#flatMap(java.util.function.Function)" class="member-name-link">flatMap</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/Function.html" title="class or interface in java.util.function" class="external-link">Function</a>&lt;? super <a href="Monad.html" title="type parameter in Monad">T</a>,<wbr>? extends <a href="Monad.html" title="interface in com.github.skopylov58.functional">Monad</a>&lt;R&gt;&gt;&nbsp;mapper)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#bind(java.util.function.Function)" class="member-name-link">bind</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/Function.html" title="class or interface in java.util.function" class="external-link">Function</a>&lt;? super <a href="Monad.html" title="type parameter in Monad">T</a>,<wbr>? extends <a href="Monad.html" title="interface in com.github.skopylov58.functional">Monad</a>&lt;R&gt;&gt;&nbsp;mapper)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">&nbsp;</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab1"><code>static &lt;A,<wbr>
 B,<wbr>
@@ -110,6 +116,9 @@ C&gt;&nbsp;<a href="Monad.html" title="interface in com.github.skopylov58.functi
 </div>
 </div>
 </div>
+<div class="inherited-list">
+<h3 id="methods-inherited-from-class-com.github.skopylov58.functional.MonadAccessor">Methods inherited from interface&nbsp;com.github.skopylov58.functional.<a href="MonadAccessor.html" title="interface in com.github.skopylov58.functional">MonadAccessor</a></h3>
+<code><a href="MonadAccessor.html#getOrDefault(T)">getOrDefault</a>, <a href="MonadAccessor.html#optional()">optional</a>, <a href="MonadAccessor.html#stream()">stream</a></code></div>
 </section>
 </li>
 </ul>
@@ -128,9 +137,9 @@ C&gt;&nbsp;<a href="Monad.html" title="interface in com.github.skopylov58.functi
 </section>
 </li>
 <li>
-<section class="detail" id="flatMap(java.util.function.Function)">
-<h3>flatMap</h3>
-<div class="member-signature"><span class="type-parameters">&lt;R&gt;</span>&nbsp;<span class="return-type"><a href="Monad.html" title="interface in com.github.skopylov58.functional">Monad</a>&lt;R&gt;</span>&nbsp;<span class="element-name">flatMap</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/Function.html" title="class or interface in java.util.function" class="external-link">Function</a>&lt;? super <a href="Monad.html" title="type parameter in Monad">T</a>,<wbr>? extends <a href="Monad.html" title="interface in com.github.skopylov58.functional">Monad</a>&lt;R&gt;&gt;&nbsp;mapper)</span></div>
+<section class="detail" id="bind(java.util.function.Function)">
+<h3>bind</h3>
+<div class="member-signature"><span class="type-parameters">&lt;R&gt;</span>&nbsp;<span class="return-type"><a href="Monad.html" title="interface in com.github.skopylov58.functional">Monad</a>&lt;R&gt;</span>&nbsp;<span class="element-name">bind</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/Function.html" title="class or interface in java.util.function" class="external-link">Function</a>&lt;? super <a href="Monad.html" title="type parameter in Monad">T</a>,<wbr>? extends <a href="Monad.html" title="interface in com.github.skopylov58.functional">Monad</a>&lt;R&gt;&gt;&nbsp;mapper)</span></div>
 </section>
 </li>
 <li>
