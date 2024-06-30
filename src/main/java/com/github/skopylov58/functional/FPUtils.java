@@ -477,10 +477,16 @@ public interface FPUtils {
     return retry(callable, numOfRetries, backoff, x -> true);
   }
 
-  static <V> Optional<V> retry(Callable<V> callable, long numOfRetries, Backoff backoff, Predicate<V> isSuccess) {
-    for (long i = 0; i < numOfRetries; i++) {
-      if (Thread.currentThread().isInterrupted()) {
-        break;  //behave gracefully on interruption
+  static <V> Optional<V> retry(Callable<V> callable, long numOfRetries, Backoff backoff,
+      Predicate<V> isSuccess) {
+    for (long i = 0; i < numOfRetries && !Thread.currentThread().isInterrupted(); i++) {
+      if (i != 0) {
+        try {
+          Thread.sleep(backoff.apply(i).toMillis());
+        } catch (InterruptedException ie) {
+          Thread.currentThread().interrupt();
+          break;
+        }
       }
       try {
         V value = callable.call();
@@ -489,16 +495,6 @@ public interface FPUtils {
         }
       } catch (Exception e) {
         System.getLogger(FPUtils.class.getName()).log(Level.INFO, e);
-      }
-      if (i == numOfRetries - 1) {
-        // Last attempt was made, no need to sleep for next try
-        break;
-      }
-      try {
-        Thread.sleep(backoff.apply(i).toMillis());
-      } catch (InterruptedException ie) {
-        Thread.currentThread().interrupt();
-        break;
       }
     }
     return Optional.empty();

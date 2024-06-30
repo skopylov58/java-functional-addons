@@ -2,7 +2,6 @@ package com.github.skopylov58.functional;
 
 import static org.junit.Assert.*;
 import java.util.Properties;
-import java.util.function.Function;
 import org.junit.Test;
 
 public class ReaderTest {
@@ -17,8 +16,8 @@ public class ReaderTest {
     Reader<Properties, String> r = Reader.pure("foo");
     
     Integer length = r.map(s -> "Hello " + s)
-    .flatMap(s -> Reader.of(p -> strLength(s, p)))
-    .apply(props);
+    .flatMap(s -> (p -> strLength(s, p)))
+    .run(props);
     
     System.out.println("Length: " + length);
     assertTrue(9==length);

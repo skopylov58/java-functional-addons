@@ -13,7 +13,10 @@ import java.util.function.Predicate;
  *
  * @param <T> type to validate
  * @param <E> type of validation error
+ * 
+ * @deprecated Use {@link com.github.skopylov58.functional.Validator} instead.
  */
+@Deprecated
 public class Validation<T, E> {
 
     sealed interface Validator permits PredicateValidator, NestedValidator {}

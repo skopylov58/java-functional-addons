@@ -1,35 +1,47 @@
 package com.github.skopylov58.functional;
 
-
 import java.util.function.Function;
 
-public class Reader<CTX, A> {
+/**
+ * Reader monad.
+ * 
+ * @param C context type
+ * @param T value type
+ */
+@FunctionalInterface
+interface Reader<C, T> {
 
-    private final Function<CTX, A> runner;
+  /**
+   * Reader monad is just function C -> T where C is context, T is value
+   * 
+   * @param context
+   * @return value of type T
+   */
+  T run(C context);
 
-    private Reader(Function<CTX, A> runner) {
-        this.runner = runner;
-    }
+  /**
+   * Creates Reader monad from value of type T
+   * @param <C> context type
+   * @param <T> value type
+   * @param t value
+   * @return Reader<C, T> monad
+   */
+  static <C, T> Reader<C, T> pure(T t) {
+    return ctx -> t;
+  }
 
-    public static <CTX, A> Reader<CTX, A> of(Function<CTX, A> f) {
-        return new Reader<>(f);
-    }
+  default <R> Reader<C, R> map(Function<? super T, ? extends R> mapper) {
+    return ctx -> {
+      return mapper.apply(run(ctx));
+    };
+  }
 
-    public static <CTX, A> Reader<CTX, A> pure(A a) {
-        return new Reader<>(ctx -> a);
-    }
-
-    public A apply(CTX ctx) {
-        return runner.apply(ctx);
-    }
-
-    public <U> Reader<CTX, U> map(Function<? super A, ? extends U> f) {
-        return new Reader<>(ctx -> f.apply(apply(ctx)));
-    }
-
-    public <U> Reader<CTX, U> flatMap(Function<? super A, Reader<CTX, ? extends U>> f) {
-        return new Reader<>(ctx -> f.apply(apply(ctx)).apply(ctx));
-    }
-
+  default <R> Reader<C, R> flatMap(Function<? super T, Reader<C, R>> mapper) {
+    return ctx -> {
+      T t = run(ctx);
+      Reader<C, R> r = mapper.apply(t);
+      return r.run(ctx);
+    };
+  }
 
 }
