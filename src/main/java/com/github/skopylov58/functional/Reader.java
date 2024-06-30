@@ -5,8 +5,8 @@ import java.util.function.Function;
 /**
  * Reader monad.
  * 
- * @param C context type
- * @param T value type
+ * @param <C> context type
+ * @param <T> value type
  */
 @FunctionalInterface
 public interface Reader<C, T> {
@@ -24,7 +24,7 @@ public interface Reader<C, T> {
    * @param <C> context type
    * @param <T> value type
    * @param t value
-   * @return Reader<C, T> monad
+   * @return Reader monad
    */
   static <C, T> Reader<C, T> pure(T t) {
     return ctx -> t;
