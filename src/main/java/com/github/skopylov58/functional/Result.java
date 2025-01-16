@@ -54,6 +54,11 @@ public interface Result<T> extends Monad<T> {
     public Optional<T> optional() {
       return Optional.ofNullable(t);
     }
+    
+    @Override
+    public String toString() {
+      return "Success: " + t;
+    }
 
   }
   
@@ -92,6 +97,12 @@ public interface Result<T> extends Monad<T> {
     public Optional<T> optional() {
       return Optional.empty();
     }
+
+    @Override
+    public String toString() {
+      return "Failure: " + e.getMessage();
+    }
+
     
   }
   

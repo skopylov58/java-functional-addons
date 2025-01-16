@@ -132,10 +132,10 @@ public sealed interface Either<L, R> permits Either.Left, Either.Right {
      * Folds Either to type T
      * @param <T> folded type
      * @param leftMapper maps left to T
-     * @param rihgtMapper maps right to T
+     * @param rightMapper maps right to T
      * @return value of T type
      */
-    <T> T fold(Function<? super L, ? extends T> leftMapper, Function<? super R, ? extends T> rihgtMapper);
+    <T> T fold(Function<? super L, ? extends T> leftMapper, Function<? super R, ? extends T> rightMapper);
 
     /**
      * Produces side effects for Either
@@ -151,8 +151,7 @@ public sealed interface Either<L, R> permits Either.Left, Either.Right {
             right -> {
                 rightConsumer.accept(right);
                 return null;
-            }
-            );
+            });
         return this;
     }
 
@@ -183,8 +182,8 @@ public sealed interface Either<L, R> permits Either.Left, Either.Right {
      */
     record Right<L, R>(R right) implements Either<L, R> {
         @Override
-        public <T> T fold(Function<? super L, ? extends T> leftMapper, Function<? super R, ? extends T> rihgtMapper) {
-            return rihgtMapper.apply(right);
+        public <T> T fold(Function<? super L, ? extends T> leftMapper, Function<? super R, ? extends T> rightMapper) {
+            return rightMapper.apply(right);
         }
     }
     
@@ -198,7 +197,7 @@ public sealed interface Either<L, R> permits Either.Left, Either.Right {
 
     record Left<L, R>(L left) implements Either<L, R> {
         @Override
-        public <T> T fold(Function<? super L, ? extends T> leftMapper, Function<? super R, ? extends T> rihgtMapper) {
+        public <T> T fold(Function<? super L, ? extends T> leftMapper, Function<? super R, ? extends T> rightMapper) {
             return leftMapper.apply(left);
         }
     }

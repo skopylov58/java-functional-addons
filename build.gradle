@@ -21,6 +21,10 @@ plugins {
 
   dependencies {
     testImplementation 'junit:junit:4.12'
+
+    // https://mvnrepository.com/artifact/org.projectlombok/lombok
+    //compileOnly group: 'org.projectlombok', name: 'lombok', version: '1.18.36'
+
   }
 
 

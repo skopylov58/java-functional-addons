@@ -8,3 +8,5 @@ function/bin/
 .project
 .settings
 .vscode/settings.json
+.idea
+
